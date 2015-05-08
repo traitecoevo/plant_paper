@@ -1,0 +1,152 @@
+---
+title: "TREE: A package for modelling plant TRait Ecology and Evolution"
+author: "Daniel Falster, Rich FitzJohn, Mark Westoby"
+affiliation: Biological sciences, Macquarie University NSW 2109
+output: pdf_document
+csl: downloads/style.csl
+bibliography: refs.bib
+---
+
+# Abstract
+
+Population dynamics in forest communities are strongly size-structured: larger
+plants shade smaller plants while also expending proportionately more energy
+on building and maintaining woody stems. Although the importance of size-
+structure for demography is widely recognised, many mechanistic models either
+omit it entirely, or include only coarse approximations. In this paper we
+outline an extensible framework and package (called TREE, for TRait Ecology
+and Evolution) for modelling plant demography, driven by a mechanistic model
+of plant function, across the entire life cycle. At its core, TREE is an
+individual-based model, wherein plants are modelled as a system of coupled
+differential equations. Individuals from multiple species can be grown in
+isolation, in patches of competing plants, or in  metapopulations under a
+prevailing disturbance regime. The dynamics within patches of competing plants
+are resolved using either 1) a stochastic simulator, or 2) a deterministic
+approximation of their density. The latter is achieved via a novel extension
+of the Escalator Boxcar Train technique. The combined effects of trait-, size-
+and patch-structured dynamics can then be integrated into a population level
+estimate of reproductive fitness. The core of TREE is programmed in C++ with
+wrappers allowing both interactive and scripted use from R. Moreover, we allow
+for alternative physiologies and hyper-parametrisation on the basis of plant
+functional traits. A detailed test suite is provided to ensure accuracy. We
+discuss how the methods outlined can be used to address fundamental questions
+on how functional traits influence the growth of individual plants, whole patches
+and assembly of ecological communities.
+
+# Introduction
+
+Problem is that only one dominant vegetation model includes size structure, even
+though competition for light widely acknowledged as most fundamental of processes.
+Methods for studying size-structured metapopulations poorly developed, relying mostly
+on simulation.
+Means that unable to answer many questions, particular about traits, where need to
+evaluate affect across entire life cycle, and taking into account effects on growth,
+fecundity and mortality.
+
+What does tree model do
+
+- Individual plants growing
+  - estimate plant growth rates in relation to size, light env, traits
+- Plants competing in a patch (stochastic, deterministic)
+  -  multi-species self-thinning, successional transitions
+- Trait, Size and Patch structured vegetation
+  - emergent behaviours: vegetation (e.g. Falster et al 2011), demography
+- Fitness in metapopulation
+  - community assembly, evolution, adaptation
+- Evolution, community assembly, e.g. successional diversity
+
+Series of nested uses
+
+- has multiple possible spin-offs, we highlight some ways of extended
+- Each step down is just one way of extending thing above
+
+# The methods
+
+# The approach
+
+Briefly about design.
+
+- Extension of @Falster-2011. - separate
+- Major new piece of software (lines), designed with..... 1300 R code, 7000 cpp
+- New method for solving PDEs
+  + estimate density using modified version of EBT, integration along characteristics.
+  + not sure if better than original EBT but simpler
+  + at present don't have cohort mean implemented, but could easily enough [RF ~
+  2 days] --> would
+  need this is wanted to make any claims about one method being better
+- stochastic and deterministic versions
+- multiple models physiological models possible
+- hyper-parametrisation with respect to traits
+- Possible to drive core from C++ (with minimal modification), and thereby interfacing other languages
+
+
+Differences to EBT
+
+- density via point estimates rather than averages across cohorts
+- In original EBT, total number of individuals constrained through formation of a
+cohort,, but only via first-order approximation. Here estimates of n is exact,
+but could be error in total number of individuals.
+- adaptive spacing of cohorts
+
+
+# Use cases
+
+Examples of biological problems solved using the software / How would other people use the model (evolutionary simulations, demographic, etc)
+
+- consider a small code example, expanded on in the vignette
+
+## Demographics
+
+Example from growth trajectories
+
+## Scaling from trait to patch and vegetation
+
+Successional dynamics
+
+Emergent mortality, growth, size distributions
+
+## Community assembly
+
+- Fundamental versus realised niche
+- Niche differentiation and evolved neutrality
+- Evolutionary responses to environmental change
+
+# Closing comments
+
+Lists of unexplored research questions
+
+- questions about complementarity
+
+List of possible extensions
+
+- other resources
+- physiology
+
+
+\newpage
+
+# Figures
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
+\caption{\textbf{Schematic.} Similar to Figure 1 of Falster 2011.
+\label{fig:schematic}}
+\end{figure}
+
+\newpage
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
+\caption{\textbf{Growth trajectories.} something biological to point at, possibly stochastic and deterministic overlaid.
+\label{fig:trajectories}}
+\end{figure}
+
+
+\newpage
+
+# Supplementary material
+
+
+# References

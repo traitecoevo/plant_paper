@@ -1,0 +1,42 @@
+packages:
+  - rmarkdown
+
+sources:
+  - R
+
+plot_options:
+  wide:
+    width: 12
+    height: 4
+  square:
+    width: 8
+    height: 8
+  med_square:
+    width: 10
+    height: 10
+  large_square:
+    width: 12
+    height: 12
+
+targets:
+  all:
+    depends:
+      - ms.pdf
+
+  ms.pdf:
+    command: pandoc_build("ms.md", "template.tex")
+
+  ms.md:
+    knitr: true
+    depends:
+      - refs.bib
+      - downloads/style.csl
+      - output/EBT.pdf
+      - output/empty.pdf
+
+  downloads/style.csl:
+    download: https://raw.githubusercontent.com/citation-style-language/styles/master/methods-in-ecology-and-evolution.csl
+
+  output/empty.pdf:
+    command: empty_box()
+    plot: square
