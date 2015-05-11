@@ -175,7 +175,7 @@
           </group>
         </else>
       </choose>
-       <text prefix=" " macro="access"/>
+<!--       <text prefix=" " macro="access"/> -->
     </layout>
   </bibliography>
 </style>
