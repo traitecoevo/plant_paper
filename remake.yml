@@ -25,17 +25,19 @@ targets:
 
   ms.pdf:
     command: pandoc_build("ms.md", "template.tex")
-
-  ms.md:
-    knitr: true
     depends:
       - refs.bib
       - downloads/style.csl
-      - output/EBT.pdf
       - output/empty.pdf
 
   downloads/style.csl:
     download: https://raw.githubusercontent.com/citation-style-language/styles/master/methods-in-ecology-and-evolution.csl
+
+  output/schematic.gif:
+    download: http://onlinelibrary.wiley.com/store/10.1111/j.1365-2745.2010.01735.x/asset/image_n/JEC_1735_f1.gif?v=1&t=i9jrp98c&s=61a02c8936b244ef39266b0a30934e54517dccd6
+
+  output/schematic.png:
+    command: system(I("convert output/schematic.gif  output/schematic.png"))
 
   output/empty.pdf:
     command: empty_box()
