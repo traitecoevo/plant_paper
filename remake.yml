@@ -22,6 +22,9 @@ targets:
   all:
     depends:
       - ms.pdf
+      - tree_demography.pdf
+      - tree_physiology.pdf
+
 
   ms.pdf:
     command: pandoc_build("ms.md", "template.tex")
@@ -42,3 +45,24 @@ targets:
   output/empty.pdf:
     command: empty_box()
     plot: square
+
+  tree_demography.pdf:
+    command: pandoc_build("tree_demography.md", "template.tex")
+    depends:
+      - refs.bib
+      - downloads/style.csl
+
+  tree_demography.md:
+    knitr: TRUE
+
+  tree_physiology.pdf:
+    command: pandoc_build("tree_physiology.md", "template.tex")
+    depends:
+      - refs.bib
+      - downloads/style.csl
+
+  tree_physiology.md:
+    knitr: TRUE
+    depends:
+      - refs.bib
+      - downloads/style.csl
