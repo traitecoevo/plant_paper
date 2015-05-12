@@ -14,26 +14,26 @@ for the work;  2: indicate the approach and methods used;  3: outline the main
 results;  4: identify the conclusions, the wider implications and the
 relevance to management or policy.)*
 
-Population dynamics in forest communities are strongly size-structured: larger
+* Population dynamics in forest communities are strongly size-structured: larger
 plants shade smaller plants while also expending proportionately more energy
 on building and maintaining woody stems. Although the importance of size-
 structure for demography is widely recognised, many mechanistic models either
-omit it entirely, or include only coarse approximations. In this paper we
-outline an extensible framework and package (called TREE, for TRait Ecology
-and Evolution) for modelling plant demography across the entire life cycle,
-via a mechanistic model of plant function. At its core, TREE is an
-individual-based model, wherein plants are modelled as a system of coupled
+omit it entirely, or include only coarse approximations. Here we introduce the
+TREE (for TRait Ecology and Evolution) package, an extensible framework for
+modelling plant demography across the entire life cycle,
+via a mechanistic model of plant function.
+* At its core, TREE is an individual-based model, wherein plants are modelled as a system of coupled
 differential equations. Individuals from multiple species can be grown in
 isolation, in patches of competing plants, or in  metapopulations under a
 prevailing disturbance regime. The dynamics within patches of competing plants
-are resolved using either novels extensions
-of the Escalator Boxcar Train technique. The combined effects of trait-, size-
+are resolved using either novels extensions of the Escalator Boxcar Train technique. The combined effects of trait-, size-
 and patch-structured dynamics can then be integrated into a population level
 estimate of reproductive fitness. The core of TREE is programmed in C++ with
 wrappers allowing both interactive and scripted use from R. Moreover, we allow
 for alternative physiologies and hyper-parametrisation on the basis of plant
-functional traits. A detailed test suite is provided to ensure accuracy. We
-discuss how the methods outlined can be used to address fundamental questions
+functional traits. A detailed test suite is provided to ensure accuracy.
+* We provide several worked examples, showing illustrating how TREE can be used to ...XXXX.
+* TREE can be used to address fundamental questions
 on how functional traits influence the growth of individual plants, whole patches
 and assembly of ecological communities.
 
@@ -62,57 +62,53 @@ Although the importance of size-structure for demography is widely recognised, m
 - Signs pendulum starting to swing again, importance of representing individuals explicitly recognised in at least two models, also noted in recent analyses.
 - But even so, models geared very, much
 
-Argue that size-structure essential for modelling many problems in ecology and evolution, especially anything regarding ecology and evolution of traits.
+We argue that size-structured dynamics are essential for modelling many problems in ecology and evolution, especially those regarding ecology and evolution of traits.
 
 - Size is key in evolutionary context,
-- Fitness cannot occur without demography.
+- Fitness cannot occur without demography
   - most models not demographic- thus limited ability to link with traits, or allow for species coexistence
 - demography cannot occur without physiology -- because trade-offs expressed at physiological level.
-- Thus size
+- Thus size....
 
-In this note, we describe the `TREE` package for R [@R-2015]. TREE implements methods for .... Below, we describe the general approach of the package and then series of use cases, focussing of different levels of biological organisation (individual plant, patch of competing plants, metapopulation). Each section includes short description of methods, design elements, examples.
-
+In this note, we describe the `TREE` package for R [@R-2015], a mechanistic framework for studying the effects of trait-variation and and size-structure on the demography of individual plants, of patches of competing plants, and of meta-populations structured by a prevailing disturbance regime.  Below, we describe the general approach of the package and then a series of use cases, focussing of different levels of biological organisation. Each section includes a short description of the required methods, design considerations, and then some worked examples illustrating potential use cases and design features.
 
 # The methods
 
-- Methods described in @Falster-2011, @Falster-2015.
-- Series of nested uses
-  - overview Fig. \ref{fig:schematic}
-  - each level has multiple possible spin-offs, we highlight some ways of extended
-  - Each step down is just one way of extending thing above
+TREE is a mechanistic model, meaning the dynamics of the system arise from rules specifying on how individuals grow and interact. In ecology, there is a long history of using simple mechanistic models (such as Lotka-Volterra systems) to understand biological phenomena. TREE was developed with this style of analysis in mind, but allowing for a richer set of ecological dynamics than is possible in the unstructured population models that are widespread in theoretical ecology. The package implements methods for physiological, population, and adaptive dynamics Fig. \ref{fig:schematic} described in @Falster-2011 and @Falster-2015. In TREE, the key rules are for the short-term physiological functioning within an individual plant and how these are influenced by its traits, size and environment. Dynamics at higher levels of organisation then arise as emergent properties of the system, driven by physiology, competition for light and disturbance. Demographic phenomena can be studied at three different levels: individual plants, stands of competing plants, and entire metapopulations. TREE thus offers a series of nested use-cases (Fig. \ref{fig:schematic}). There are surely other ways to extend the core physiological and demographic models than those presented here, which reflect our strong interest in modelling evolutionary dynamics.
 
-Design
-
-- core in C++, R interface
-  - Possible to drive core from C++ (with minimal modification), and thereby interfacing other languages
-
+TREE was developed using a combination of C++ and R. To maximise speed, the core physiological and demographic components of TREE are written in C++, using templated types so that demographic component can be driven by alternative physiological models. The core C++ functions are then made accessible in R, so that users can drive the model with their own scripts and explore results interactively.
 
 TREE makes use of much existing software, including the programming language C++; the R computational environment [@R-2015]; the R packages `BH` [@Eddelbuettel-2015], `Rcpp` [@Eddelbuettel-2011; @Eddelbuettel-2013],  `R6`[Chang-2014], and `testhat` [@Wickham-2011]; the GNU Scientific Library [@Gough-2009]; and the Boost Library for C++ [@Schaling-2014]. Source code is hosted at github.com/traitecoevo/tree.
 
 # Effects of size, trait and environment on demography of individual plants
 
-how traits, size and environment influence vital rates in given environment.
+The  core of TREE is a model for plant physiological function (Fig. \ref{fig:schematic}a).  This sub-model estimates rate of biomass production for a plant, given its size, light environment, and the supplied physiological constants. Assimilation is estimated from total leaf area and the light distribution across the plant's canopy.  The costs of tissue respiration and turnover are then subtracted. The remaining biomass is then allocated between growth and reproduction.
 
-- Vital rates are growth rate, mortality, fecundity.
-- physiology model enhanced from Falster et al, expanded from upcoming publication
-- trait effects
+The core job of the physiological model is to take size, light environment and parameters as inputs, and provide growth rate, mortality, fecundity as outputs. See appendix {#sec:FFW16} for full description of the default model used in TREE.
 
 ## Design features
 
-- multiple models physiological models possible
-  - link to SI material
-- hyper-parametrisation with respect to traits
+TREE includes a default physiological model, however a feature of the package is that alternative physiologies can be used. The parameters of each model can also be altered. Trait differences can then be accounted for by altering relevant parameters. This example shows how to establish a new plant with heigh of 5m, and estimate its physiological and demographic rates in the given light environment.
 
-## Example
+```
+# Example illustrating use of individual plant, all the outputs from plant internals
+```
 
-Figure \ref{fig:trajectories} - sensitivity to diameter growth rate.
+## Use cases and examples
 
+With above functionality, TREE can be used to estimate three core aspects of demography (Fig. \ref{fig:trajectories})
 
-
-
-
+a. Sensitivity of growth rate to changes in trait values (LMA, wood density).
+  - plot height vs height growth rate, using arrows to indicate sensitivity to changes in traits at several points along line
+  - recovers known hump-shaped curve in growth.
+  - tendency for growth rate to change with size
+b. Sensitivity of growth rate to light
+  - whole plant light compensation point
+c. Change in allocation with size (plot amount invested in tissue versus height)
+  - recognised need to better understand how allocation varies
 
 # Plants competing in a patch
+
 
 Integrate physiology over time to get growth trajectory, prob of survival, cumulative fecundity -- life table for individual.
 
@@ -139,7 +135,7 @@ Our approach for modelling solving size-structured population dynamics is based 
   - possible figure to illustrate
 - links to SI material
 
-## Examples
+## Use cases and examples
 
 multi-species self-thinning
 
@@ -158,7 +154,7 @@ Successional dynamics
 
 - Assuming large number, demographics become deterministic
 
-## Examples
+## Use cases and examples
 
 - seed rain to stability?
 - Emergent mortality, growth, size distributions
@@ -175,7 +171,7 @@ Successional dynamics
 
 - simplify by calculating at demographic equilibrium -- R0
 
-## Example
+## Use cases and examples
 
 Fitness landscape
 
@@ -230,7 +226,7 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 \begin{figure}[ht]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
-\caption{\textbf{Growth trajectories.} Sensitivity of diameter growth rate to trait variation across size.
+\caption{\textbf{Growth trajectories.} Sensitivity of height growth rate to trait variation across size.
 \label{fig:trajectories}}
 \end{figure}
 
@@ -256,6 +252,10 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 \newpage
 
 # Supplementary material
+
+## Default physiological model for TREE {#sec:FFW16}
+
+Here we provide a derivation for the default physiological model in TREE, called `FFW16`. Models are named according to the surnames of the corresponding authors and year of publication.
 
 
 # References
