@@ -207,7 +207,21 @@ DS Falster was supported by an ARC discovery grant (DP110102086). RG FitzJohn wa
 \begin{figure}[ht]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/schematic}
-\caption{\textbf{Schematic.} Similar to Figure 1 of Falster et al. 2011.
+\caption{\textbf{Overview of processes included in TREE package,
+including physiological dynamics, population dynamics, and evolutionary
+dynamics.} \textbf{a,} An individual's vital rates are jointly
+determined by its light environment, height, and traits. \textbf{b,} A
+metapopulation consists of a distribution of patches linked by seed
+dispersal. Disturbances occasionally remove all vegetation within a
+patch. Competitive hierarchies within developing patches are modelled by
+tracking the height distribution of individuals across multiple species
+(distinguished by colours) as patches age after a disturbance. The
+intensity of shading indicates the density of individuals at a given
+height. \textbf{c,} The traits of the resident species determine the
+shading environment across the metapopulation, which in turn determines
+fitness landscapes. Resident traits adjust through directional selection
+up the fitness landscape and through the introduction of new species
+where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 \label{fig:schematic}}
 \end{figure}
 
