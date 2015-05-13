@@ -109,58 +109,45 @@ c. Change in allocation with size (plot amount invested in tissue versus height)
 
 # Plants competing in a patch
 
-
-Integrate physiology over time to get growth trajectory, prob of survival, cumulative fecundity -- life table for individual.
-
-Competition requires that account for feedback from other plants
-
-- primarily light, via size-asymmetric shading
-- Assume homogeneous within patch
-- but might be extended to include other feedbacks.
-  - de Roos suggest 3 types of feedback
+Integrating the functions for growth, mortality and fecundity for a plant with given traits, starting size, and light environment yields trajectories of growth, survival and cumulative reproductive output over time  for that individual (see appendix {#sec:demography} for equations, or **possibly include here**). This is essentially what is TREE does when modelling a patch of competing plants, with the added complexities that i) plants arrive (germinate) at different times during the development of a patch, and ii) that established plants affect interact (i.e. affect each others vital rates) by altering the availability of resources. In the `FFW16` physiological model, we consider only the effect of shading on biomass production, although competition for other resources such as nitrogen or water could also be added.
 
 ## Design features
 
-Our approach for modelling solving size-structured population dynamics is based on the Escalator Boxcar Train technique  (EBT) [@Deroos-1997; @Deroos-1992]. We introduce two extensions for the EBT: i) a new method for estimating the size-density distribution, and ii) a technique for handling strong size-asymmetric competitive feedbacks, such as occur under strong competition for light.
+When modelling a patch, we assume that patches are large, height structured but not spatially structured. Similar assumptions are found in most models simulating size-structured dynamics (e.g. XXX). We then track changes in the size-distribution $n$ of individuals within the patch. Under these assumptions, the dynamics of $n$ behave deterministically and can thus be approximated via a Partial Differential Equation (PDE) (see appendix {#sec:demography}). Interestingly, the same PDE is has been shown to capture the average behaviour across a large number of small patches [@Moorcroft-2001].
 
-- Integration along characteristics. Solution to PDE. Core of EBT.
-  - density via point estimates rather than averages across cohorts
-  - In original EBT, total number of individuals constrained through formation of a
-  cohort, but only via first-order approximation. Here estimates of n is exact,
-  but could be error in total number of individuals.
-  - not sure if better than original EBT but simpler
-    - at present don't have cohort mean implemented, but could easily enough [RF ~ 2 days] -->  need this is wanted to make any claims about one method being better
-- Adaptive refining of cohort boundaries
-  - Problem of diverging characteristics
-  - possible figure to illustrate
-- links to SI material
+Our approach for modelling solving size-structured population dynamics is based on the Escalator Boxcar Train technique  (EBT) [@Deroos-1997; @Deroos-1992; @Deroos-1988]. The EBT solves the PDE describing development of $n$ by approximating the density function with a collection of cohorts spanning the size spectrum. Following a disturbance, a series of cohorts are introduced into each patch. These cohorts are then transported along the characteristics of the PDE -- biologically, these are the growth trajectories of individuals, provided they do not die.
+
+We introduce two extensions for the EBT: i) a new method for estimating the size-density distribution, and ii) a technique for handling strong size-asymmetric competitive feedbacks, such as occur under strong competition for light. The original EBT [@Deroos-1997; @Deroos-1992; @Deroos-1988] proceeds by approximating the first and second moments of the density distribution $n$ within each cohort. In TREE we use a different but equally valid approach: instead of tracking the first and second moments of the size-distribution within cohorts, we track a point mass estimate of $n$ along the trajectories corresponding to boundary of each cohort. We found this approach preferable because it does not require us to maintain a separate set of equations for the smallest cohort [@Deroos-1997].
+
+The second extension involves adaptive refining of time points at which new cohorts are introduced into the population. Under strong size-asymmetric competition, the growth trajectories of individuals born at similar times can diverge substantially over time (Fig. \ref{fig:characteristics}a). This is can become a problem later during patch development because much of the population can be located between widely-spaced cohorts, implying low numerical precision. To maintain numerical precision we use an iterative algorithm to adaptively refine the cohort spacing until the trajectories of adjacent cohorts remain adequately resolved throughout development of the patch (Fig. \ref{fig:characteristics}b; see appendix {#sec:demography} for details).
 
 ## Use cases and examples
 
-multi-species self-thinning
-
-Successional dynamics
-
-
-
-
+- self thinning
+- multi-species self-thinning
+- successional dynamics
+- demographic patterns of biomass, leaf area accumulation
 
 # Trait, size and patch structured vegetation
 
-- Scaling to vegetation involves monitoring of multiple patches
-- emergent behaviours -- integrating over entire vegetation
+Most vegetation is subject to a disturbance regime, such that patches of the landscape are cleared at some rate, by either fire, cyclone, landslide, or disease outbreak [@Chambers-2013; @Bormann-1979; @Clark-1991; @Coomes-2007]. The vegetation thus comprises a collection of patches differing in time since last disturbance and linked via seed dispersal (Fig. \ref{fig:schematic}a). Such a system is often refereed to as a metapopulation.
 
 ## Design features
 
-- Assuming large number, demographics become deterministic
+Having simulated a single patch, it is mercifully easy to scale up from a single patch to an entire metapopulation, at least for the  situation of metapopulations at demographic equilibrium and where disturbances remove all established vegetation. While these assumptions make the system a somewhat simplified version of real vegetation, such a system still represents a substantial advance over the unstructured population models often used in ecology.
+
+To scale from single patch to metapopulation we require the frequency-density $p(a)$ of patches age $a$ in the landscape. Assuming there are a large number of patches means the dynamics of $p$ behave deterministically and can be approximated via a second PDE [@Vonfoerster-1959; @Mckendrick-1926] (see appendix {#sec:demography} for details). The scaling from patch to metapopulation is then achieved by weighting the temporal dynamics of a single patch by $p(a)$ -- the relative abundance of patches age $a$ in the metapopulation.
+
+The main numerical challenge in stepping from single patch to metapopulation is to identify the equilibrium seed rain of the metapopulation. This equilibrium is finding the seed rain that would produce an equivalent number of seeds across the metapopulation (Fig. \ref{fig:metapopulation}).
 
 ## Use cases and examples
 
-- seed rain to stability?
-- Emergent mortality, growth, size distributions
-- allocation at level of community?
-- effects of disturbance on recruitment, standing carbon?
-
+- Dynamic equilibrium
+  -  More generally, the approach of modelling a dynamic landscape, in which individual patches constantly change, within an equilibrium framework seems promising for reconciling ‘equilibrium’ and ‘non-equilibrium’ approaches to modelling ecological dynamics (Levin & Paine 1974; Connell 1978; Bormann & Likens 1979).
+- Emergent properties: Trait, size and patch structured vegetation
+  - emergent mortality, growth,  and size distributions
+  - likewise, accounting for the distribution of patch ages across a landscape may be suffi- cient for estimating emergent properties of metapopulations, without considering the spatial arrangement of patches.
+  - allocation at level of community
 
 # Invasion fitness
 
@@ -244,6 +231,15 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 \begin{figure}[ht]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
+\caption{\textbf{Approach for solving equilibrium seed rain across the metapopulation}
+\label{fig:metapopulation}}
+\end{figure}
+
+\newpage
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
 \caption{\textbf{Example fitness landscape for LMA, showing potential for coexistence of multiple types}
 \label{fig:landscape}}
 \end{figure}
@@ -257,5 +253,6 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 
 Here we provide a derivation for the default physiological model in TREE, called `FFW16`. Models are named according to the surnames of the corresponding authors and year of publication.
 
+##  Modelling demography in the TREE package {#sec:demography}
 
 # References
