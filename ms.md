@@ -33,8 +33,8 @@ wrappers allowing both interactive and scripted use from R. Moreover, we allow
 for alternative physiologies and hyper-parametrisation on the basis of plant
 functional traits. A detailed test suite is provided to ensure accuracy.
 * We provide several worked examples, showing illustrating how TREE can be used to ...XXXX.
-* TREE can be used to address fundamental questions
-on how functional traits influence the growth of individual plants, whole patches
+* TREE can be used to address fundamental questions on how functional traits
+influence the growth of individual plants, whole patches
 and assembly of ecological communities.
 
 # Key-words:
@@ -76,13 +76,13 @@ TREE includes a default physiological model, however a feature of the package is
 
 With above functionality, TREE can be used to estimate three core aspects of demography (Fig. \ref{fig:trajectories})
 
-a. Sensitivity of growth rate to changes in trait values (LMA, wood density).
+1. Sensitivity of growth rate to changes in trait values (LMA, wood density).
   - plot height vs height growth rate, using arrows to indicate sensitivity to changes in traits at several points along line
   - recovers known hump-shaped curve in growth.
   - tendency for growth rate to change with size
-b. Sensitivity of growth rate to light
+2. Sensitivity of growth rate to light
   - whole plant light compensation point
-c. Change in allocation with size (plot amount invested in tissue versus height)
+3. Change in allocation with size (plot amount invested in tissue versus height)
   - recognised need to better understand how allocation varies
 
 # Plants competing in a patch
@@ -91,7 +91,7 @@ Integrating the functions for growth, mortality and fecundity for a plant with g
 
 ## Design features
 
-When modelling a patch, we are interested in modelling changes in the size-distribution $n(h,t)$ of individuals height $h$ within the patch over time $t$. We assume that patches are large and are vertically but not spatially-structured within the pathc. Similar assumptions are found in many models simulating size-structured dynamics [].Under these assumptions, the dynamics of $n$ behave deterministically and can thus be approximated via a Partial Differential Equation (PDE) (see [Appendix](#sec:demography)). Interestingly, the same PDE is has been shown to capture the average behaviour across a large number of small patches [@Moorcroft-2001].
+When modelling a patch, we are interested in modelling changes in the size-distribution $n(h,t)$ of individuals height $h$ within the patch over time $t$. We assume that patches are large and are vertically but not spatially-structured within the patch. Similar assumptions are found in many models simulating size-structured dynamics [].Under these assumptions, the dynamics of $n$ behave deterministically and can thus be approximated via a Partial Differential Equation (PDE) (see [Appendix](#sec:demography)). Interestingly, the same PDE is has been shown to capture the average behaviour across a large number of small patches [@Moorcroft-2001].
 
 Our approach for modelling solving size-structured population dynamics is based on the Escalator Boxcar Train technique  (EBT) [@Deroos-1997; @Deroos-1992; @Deroos-1988]. The EBT solves the PDE describing development of $n$ by approximating the density function with a collection of cohorts spanning the size spectrum. Following a disturbance, a series of cohorts are introduced into each patch. These cohorts are then transported along the characteristics of the PDE -- biologically, these are the growth trajectories of individuals, provided they do not die.
 
@@ -101,10 +101,11 @@ The second extension involves adaptive refining of time points at which new coho
 
 ## Use cases and examples
 
-- self thinning
-- multi-species self-thinning
-- successional dynamics
-- demographic patterns of biomass, leaf area accumulation
+Modelling of size-structured dynamics via solving of a deterministic PDE enables multiple phenomena to be investigated.
+
+Firstly, TREE can simulate patterns of stand development after disturbance, including self-thinning behaviours and  successional replacement. Whereas previous approaches for modelling self-thinning limited to researchers to a single species, TREE is easily able to accommodate multiple different species with different traits (Fig. \ref{fig:schematic}b).
+
+Second, TREE allows for the effects of competition and succession on productivity and biomass accumulation within a stand to be investigated [@Falster-2011]. Researchers have long been fascinated by tendency for rates of biomass production to decrease with stand age. Such changes can come about via a combination of physiological and structural changes [@Binkley-2002; @Smith-2001]. TREE enables the effects of competitive feedbacks to be incorporated, in addition to any intrinsic physiological factors. Moreover, TREE allows for the contributions of different species to be mapped (Fig. \ref{fig:patch}).
 
 # Trait, size and patch structured vegetation
 
@@ -114,59 +115,60 @@ Most vegetation is subject to a disturbance regime, such that patches of the lan
 
 Having simulated a single patch, it is mercifully easy to scale up from a single patch to an entire metapopulation, at least for the  situation of metapopulations at demographic equilibrium and where disturbances remove all established vegetation. To scale from single patch to metapopulation we require the frequency-density $p(a)$ of patches age $a$ in the landscape. Assuming there are a large number of patches means the dynamics of $p$ behave deterministically and can be approximated via a second PDE [@Vonfoerster-1959; @Mckendrick-1926] (see [Appendix](#sec:demography) for details). The scaling from patch to metapopulation is then achieved by weighting the temporal dynamics of a single patch by $p(a)$ -- the relative abundance of patches age $a$ in the metapopulation.
 
-The main numerical challenge in stepping from single patch to metapopulation is to identify the equilibrium seed rain of the metapopulation. This equilibrium is finding the seed rain that would produce an equivalent number of seeds across the metapopulation (Fig. \ref{fig:metapopulation}).
+The main numerical challenge in stepping from single patch to metapopulation is to identify the equilibrium seed rain of the metapopulation. This equilibrium is finding the seed rain that would produce an equivalent number of seeds across the metapopulation (Fig. \ref{fig:seed_rain}).
 
 ## Use cases and examples
 
-- Dynamic equilibrium
-  -  More generally, the approach of modelling a dynamic landscape, in which individual patches constantly change, within an equilibrium framework seems promising for reconciling ‘equilibrium’ and ‘non-equilibrium’ approaches to modelling ecological dynamics [@Levin-1974; @{Bormann-1979; ]
-- Emergent properties: Trait, size and patch structured vegetation
-  - emergent mortality, growth,  and size distributions
-  - likewise, accounting for the distribution of patch ages across a landscape may be suffi- cient for estimating emergent properties of metapopulations, without considering the spatial arrangement of patches.
-  - allocation at level of community
+A notable feature of the size-structured metapopulation concept implemented here is that it reconciles equilibrium and non-equilibrium approaches to modelling ecological dynamics [@Levin-1974; @Bormann-1979; @Connell-1978; @Coomes-2007]. An equilibrium may be approached at the level of metapopulation, meaning the seed rain and size structure across the entire metapopulation is approximately stable. Yet, the structure of vegetation within individual patches is constantly in flux: patches continue to move through their life-cycle before being disturbed and starting afresh.
+
+Beyond its conceptual appeal, this idea of a dynamic equilibrium allows us to close the demographic feedback loop and thereby create a self-regulating system. The equilibrium seed rain for multi-species communities is approached demographically, incorporating the combined effects of the model's physiological rules, species traits, competitive interactions and the prevailing disturbance regime on the size-distributions of plants within a metapopulation of patches. Unlike some vegetation models, there is no need to set the density of seeds or seedlings, these arise as outputs from the model. Characteristics of the vegetation such as total leaf area, biomass, productivity and allocation like arise as emergent properties (Fig. \ref{fig:patch}). Similarly, we can observe emergent patterns for size-distribution, growth and mortality  (Fig. \ref{fig:emergent}).
 
 # Invasion fitness
 
-- calculate fitness for new type
-- growth rate of seed rain
-
-## Design features
-
-- simplify by calculating at demographic equilibrium -- R0
+With the extension to metapopulation, we are modelling demography across the entire life cycle and are thus in a position to estimate the fitness of different types. Invasion fitness quantifies the ability of a rare individual with particular traits to establish in a community of established residents at their equilibrium densities. Invasion fitness is ideally calculated as the long-term per capita growth rate of the new type; however, in structured metapopulations, the most convenient indicator of per-capita growth rate is given by the logarithm of the basic reproduction ratio [@Gyllenberg-2001; @Metz-2001]. The basic reproduction ratio $R$ is simply the total seed output of the new type, averaged across the metapopulation. The new type can invade when $R > 1$.
 
 ## Use cases and examples
 
-Fitness landscape
+With fitness defined, it becomes possible to model the adaptive dynamics of community. This includes both adaptation within species and community assembly[@Dieckmann-2007; @Geritz-1998]. The reproductive success of individuals in the size- and patch structured metapopulation is both frequency- and density-dependent, meaning the shape of the fitness landscape depends on the traits and densities of species in the current resident community. In such circumstances, evolution tends to favour different trait mixtures to models optimising some feature of the community, such as total biomass or carbon production, or even seed production in the absence of competition.
 
-enables: community assembly, evolution, adaptation
+Frequency-dependence is a necessary but not sufficient condition for the stable coexistence of different types. The underlying model physiological and demographic model must also include the possibility of niche differentiation. Figure \ref{fig:landscape} shows a fitness landscape for LMA.... assembly.
 
-- Fundamental versus realised niche
-- Niche differentiation and evolved neutrality
-- Evolutionary responses to environmental change
+Identifying the conditions promoting trait diversity is perhaps one the most important use-cases for TREE. It is now well established that coexisting plant species differ in a range of physiological traits, yet the conditions allowing for these different types to coexist in face of competition for a common set of resources remain largely unknown.
 
 # Closing comments
 
-
 Lists of unexplored research questions
 
+- adaptation to climate change
+- tradeoffs promoting diversity
+- competition for other resources
 - questions about complementarity
 
-List of possible extensions
+Structured metapopulations
 
-- other resources
-- physiology
-- structured metapopulation
-  - Although these assumptions make the system a somewhat simplified version of real vegetation, it still represents a substantial advance over the completely unstructured populations used in most vegetation models.
+- Although these assumptions make the system a somewhat simplified version of real vegetation, it still represents a substantial advance over the completely unstructured populations used in most vegetation models.
+
+
 
 # Acknowledgements
 
 DS Falster was supported by an ARC discovery grant (DP110102086). RG FitzJohn was supported by the Science and Industry Endowment Fund (RP04-174).
 
+# Supplementary material
+
+## Default physiological model for TREE {#sec:FFW16}
+
+see attached file [tree_physiology.pdf](tree_physiology.pdf)
+
+##  Modelling demography in the TREE package {#sec:demography}
+
+see attached file [tree_demography.pdf](tree_demography.pdf)
+
 \newpage
 
 # Figures
 
-\begin{figure}[ht]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/schematic}
 \caption{\textbf{Overview of processes included in TREE package,
@@ -189,7 +191,7 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 
 \newpage
 
-\begin{figure}[ht]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
 \caption{\textbf{Growth trajectories.} Sensitivity of height growth rate to trait variation across size.
@@ -198,25 +200,16 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 
 \newpage
 
-\begin{figure}[ht]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
-\caption{\textbf{Adpative cohort spacing solves problem of diverging characteristics}
-\label{fig:characteristics}}
+\caption{\textbf{Patterns of leaf area and biomass accumulation within a patch, showing contribution of different species. Overlay single line showing average for metapopulation.}
+\label{fig:patch}}
 \end{figure}
 
 \newpage
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
-\caption{\textbf{Approach for solving equilibrium seed rain across the metapopulation}
-\label{fig:metapopulation}}
-\end{figure}
-
-\newpage
-
-\begin{figure}[ht]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
 \caption{\textbf{Example fitness landscape for LMA, showing potential for coexistence of multiple types}
@@ -226,12 +219,32 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 
 \newpage
 
-# Supplementary material
 
-## Default physiological model for TREE {#sec:FFW16}
+# Supplementary figures
 
-Here we provide a derivation for the default physiological model in TREE, called `FFW16`. Models are named according to the surnames of the corresponding authors and year of publication.
+\begin{figure}[h!]
+\centering
+\includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
+\caption{\textbf{Adpative cohort spacing solves problem of diverging characteristics}
+\label{fig:characteristics}}
+\end{figure}
 
-##  Modelling demography in the TREE package {#sec:demography}
+\newpage
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
+\caption{\textbf{Approach for solving equilibrium seed rain across the metapopulation}
+\label{fig:seed_rain}}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=15cm,height=15cm,keepaspectratio]{output/empty.pdf}
+\caption{\textbf{Emergent size-distributions across metapopulation}
+\label{fig:emergent}}
+\end{figure}
 
 # References
