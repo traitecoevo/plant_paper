@@ -1,5 +1,6 @@
 packages:
   - rmarkdown
+  - tree
 
 sources:
   - R
@@ -23,7 +24,7 @@ targets:
     depends:
       - ms.pdf
       - tree_demography.pdf
-
+      - figures/plant.pdf
 
   ms.pdf:
     command: pandoc_build("ms.md", "template.tex")
@@ -59,3 +60,7 @@ targets:
     depends:
       - refs.bib
       - downloads/style.csl
+
+  figures/plant.pdf:
+    command: figure_plant()
+    plot: true
