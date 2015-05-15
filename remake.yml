@@ -24,9 +24,6 @@ targets:
     depends:
       - ms.pdf
       - tree_demography.pdf
-      - figures/plant.pdf
-      - figures/fitness_landscape.pdf
-      - figures/growth.pdf
 
   ms.pdf:
     command: pandoc_build("ms.md", "template.tex")
@@ -34,6 +31,9 @@ targets:
       - refs.bib
       - downloads/style.csl
       - output/empty.pdf
+      - output/plant.pdf
+      - output/patch.pdf
+      - output/fitness.pdf
 
   downloads/style.csl:
     download: https://raw.githubusercontent.com/citation-style-language/styles/master/methods-in-ecology-and-evolution.csl
@@ -69,14 +69,14 @@ targets:
   growth_data:
     command: make_growth_data()
 
-  figures/plant.pdf:
+  output/plant.pdf:
     command: figure_plant()
     plot: true
 
-  figures/fitness_landscape.pdf:
+  output/fitness.pdf:
     command: figure_fitness_landscape(fitness_landscape_data)
     plot: true
 
-  figures/growth.pdf:
+  output/patch.pdf:
     command: figure_growth(growth_data)
     plot: true

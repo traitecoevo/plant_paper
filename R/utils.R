@@ -1,3 +1,9 @@
+empty_box <- function() {
+  par(oma=c(0,0,0,0), mar=rep(0.1,4))
+  plot(1,1, ann=FALSE, axes=FALSE, type='n')
+  box()
+}
+
 label <- function(text, px=0.03, py=NULL, ..., adj=c(0, 1)) {
   if (is.null(py)) {
     fin <- par("fin")
