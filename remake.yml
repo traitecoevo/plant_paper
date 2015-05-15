@@ -25,6 +25,7 @@ targets:
       - ms.pdf
       - tree_demography.pdf
       - figures/plant.pdf
+      - figures/fitness_landscape.pdf
 
   ms.pdf:
     command: pandoc_build("ms.md", "template.tex")
@@ -61,6 +62,13 @@ targets:
       - refs.bib
       - downloads/style.csl
 
+  fitness_landscape_data:
+    command: make_fitness_data()
+
   figures/plant.pdf:
     command: figure_plant()
+    plot: true
+
+  figures/fitness_landscape.pdf:
+    command: figure_fitness_landscape(fitness_landscape_data)
     plot: true
