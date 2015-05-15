@@ -18,6 +18,7 @@
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[utf8]{inputenc}
 
+
 $if(euro)$
   \usepackage{eurosym}
 $endif$
@@ -103,8 +104,8 @@ $endif$
             pdfauthor={$author-meta$},
             pdftitle={$title-meta$},
             colorlinks=true,
-            urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
-            linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$grey$endif$,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$grey$endif$,
             pdfborder={0 0 0}}
 $if(links-as-notes)$
 % Make links footnotes instead of hotlinks:
@@ -137,6 +138,7 @@ $for(header-includes)$
 $header-includes$
 $endfor$
 
+
 $if(title)$
 \title{$title$}
 $endif$
@@ -145,8 +147,8 @@ $endif$
 
 \begin{document}
 
-% Double-space the manuscript.
-\baselineskip24pt
+\definecolor{lightgrey}{rgb}{0.2, 0.2, 0.2}
+\definecolor{grey}{rgb}{0.5, 0.5, 0.5}
 
 $if(title)$
 \maketitle
