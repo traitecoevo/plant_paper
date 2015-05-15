@@ -84,6 +84,7 @@ figure_plant <- function() {
   }
   h_t <- lapply(data, f)
   plot(h_t[["1_1"]], type="l", las=1, xlab="Time (years)", ylab="Height (m)")
+  label_panel(1)
   lines(h_t[["2_1"]], type="l", lty=2)
   lines(h_t[["1_2"]], type="l", col="red")
   lines(h_t[["2_2"]], type="l", col="red", lty=2)
@@ -97,6 +98,7 @@ figure_plant <- function() {
   alloc_h <- lapply(data, f)
   plot(NA, xlim=c(0, hmax), ylim=c(0, 1), type="l",
        ylab="Fractional allocation", xlab="Height (m)", las=1)
+  label_panel(2)
   matlines(alloc_h[["1_1"]][, 1],
            alloc_h[["1_1"]][, -1],
            lty=1, col=1:2)
@@ -112,6 +114,7 @@ figure_plant <- function() {
   ylim <- range(sapply(dhdt_h, function(x) range(x[, 2])), 0)
   plot(dhdt_h[["1_1"]], ylim=ylim, type="l",
        las=1, xlab="Height (m)", ylab="d height / d t")
+  label_panel(3)
   lines(dhdt_h[["2_1"]], type="l", lty=2)
   lines(dhdt_h[["1_2"]], type="l", col="red")
   lines(dhdt_h[["2_2"]], type="l", col="red", lty=2)
@@ -120,6 +123,7 @@ figure_plant <- function() {
   ylim <- range(sapply(d2, function(x) range(x[, 2])), 0)
   plot(NA, xlim=c(0, 1), ylim=ylim, las=1,
        xlab="Canopy openness (%)", ylab="d height / d t")
+  label_panel(4)
   for (i in seq_along(d1)) {
     lines(d1[[i]], lty=i)
   }
