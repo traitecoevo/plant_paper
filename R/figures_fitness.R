@@ -23,7 +23,9 @@ make_fitness_data <- function() {
 
   lma_mutant <- seq_log_range(bounds, 101)
 
-  lma <- sort(c(unique(unlist(communities)), lma_mutant))
+  lma_detail <- seq_log_range(communities$attractor1 * c(0.95, 1.05), 14)
+
+  lma <- sort(c(unique(unlist(communities)), lma_mutant, lma_detail))
 
   ## TODO: First strategy should be at 0.1 so that we see an example
   ## that is out of equilibrium...
@@ -36,6 +38,7 @@ make_fitness_data <- function() {
 
   list(communities=communities,
        lma=lma,
+       lma_detail=lma_detail,
        p=pp,
        w=ww)
 }
@@ -49,7 +52,6 @@ figure_fitness_landscape <- function(data) {
   xlim <- c(0.05, 2.00)
   ylim <- c(-2, max(unlist(w)))
 
-  ## TODO: Add an inset showing the disruptive selection in top panel.
   op <- par(mfrow=c(2, 1), mar=c(1.1, 4.1, .5, .5), oma=c(3.1, 0, 0, 0))
   on.exit(par(op))
   plot(lma, w$first, type="l", lty=2,
@@ -60,6 +62,12 @@ figure_fitness_landscape <- function(data) {
   abline(h=0, col="grey")
   points(communities$first, 0, pch=1)
   points(communities$attractor1, 0, pch=19)
+
+  r <- par("pin")[[1]] / par("pin")[[2]]
+  dx <- 0.02
+  dy <- dx * r
+  px <- grconvertX(c(1 - 0.2, 1) - dx, from="npc", to="ndc")
+  py <- grconvertY(c(1 - 0.2, 1) - dy, from="npc", to="ndc")
 
   i <- lma > 0.1
   plot(lma[i], w$second1[i], type="l", lty=2,
@@ -75,4 +83,13 @@ figure_fitness_landscape <- function(data) {
   points(communities$second1[[2]], 0)
   points(communities$second2[[2]], 0, col="grey")
   points(communities$second3[[2]], 0, col="grey")
+
+  ## TODO: Would be nice to scale the spacing automatically.
+  par(fig=c(px, py), mar=rep(0, 4), new=TRUE)
+  i <- lma >= min(data$lma_detail) & lma <= max(data$lma_detail)
+  ylim2 <- c(-0.25, 0.25)
+  plot(lma[i], w$attractor1[i], type="l", ylim=ylim2, axes=FALSE)
+  box()
+  abline(h=0, col="grey")
+  points(communities$attractor1, 0, pch=19)
 }
