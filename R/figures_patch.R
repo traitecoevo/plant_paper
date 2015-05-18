@@ -57,8 +57,9 @@ figure_patch <- function(data) {
   axis(1, labels=FALSE)
 
   ## Then, the total leaf area.
-  matplot(t, data$area_leaf, lty=1, col=c("red", "blue"), type="l",
-          xlab="Time (years)", ylab="Leaf area index")
+  y <- cbind(total=rowSums(data$area_leaf), data$area_leaf)
+  matplot(t, y, lty=c(3, 1, 1), col=c("black", "red", "blue"), type="l",
+          xlab="Time (years)", ylab="Leaf area index", las=1)
   label_panel(3)
   mtext("Time (years)", 1, 3, cex=.6)
 }
