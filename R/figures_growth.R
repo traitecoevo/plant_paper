@@ -3,6 +3,8 @@ make_growth_data <- function() {
   p0$control$equilibrium_nsteps <- 30
   p0$control$equilibrium_solver_name <- "hybrid"
   p0$disturbance_mean_interval <- 30.0
+  ## NOTE: These lma values; 0.08 and 0.267 are the equilibrium values
+  ## in the fitness figure (see attractor2).
   p2 <- expand_parameters(trait_matrix(c(0.08, 0.267), "lma"), p0, FALSE)
   p2_eq <- equilibrium_seed_rain(p2)
   run_ebt_collect(p2_eq, TRUE)
@@ -26,15 +28,16 @@ figure_growth <- function(data) {
   rd1 <- rel(d1, -4)
   rd2 <- rel(d2, -4)
 
-  ## col1 <- matrix(make_transparent("red", rd1), nrow(d1))
-  ## col2 <- matrix(make_transparent("blue", rd2), nrow(d2))
+  col1 <- matrix(make_transparent("red", rd1), nrow(d1))
+  col2 <- matrix(make_transparent("blue", rd2), nrow(d2))
 
-  col1 <- matrix(mix_colours("red", "white", rd1), nrow(d1))
-  col2 <- matrix(mix_colours("blue", "white", rd2), nrow(d2))
-  col1[rd1 < 0.05] <- NA
-  col2[rd2 < 0.05] <- NA
+  ## col1 <- matrix(mix_colours("red", "white", rd1), nrow(d1))
+  ## col2 <- matrix(mix_colours("blue", "white", rd2), nrow(d2))
+  ## col1[rd1 < 0.05] <- NA
+  ## col2[rd2 < 0.05] <- NA
 
-  par(mfrow=c(3, 1), mar=c(1.1, 4.1, .5, .5), oma=c(3.1, 0, 0, 0))
+  op <- par(mfrow=c(3, 1), mar=c(1.1, 4.1, .5, .5), oma=c(3.1, 0, 0, 0))
+  on.exit(par(op))
   matplot(t, h1, type="l", col="#ff000055", lty=1,
           las=1, xlab="Time (years)", ylab="Cohort height (m)", xaxt="n")
   matlines(t, h2, col="#0000ff55", lty=1)

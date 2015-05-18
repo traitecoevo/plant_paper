@@ -175,7 +175,7 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 \begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/plant.pdf}
-\caption{\textbf{Growth trajectories.} Sensitivity of height growth rate to trait variation across size.
+\caption{\textbf{Growth trajectories.} Individual plant height growth with different LMA values and light environments.  (a) Lower light environments flatten growth trajectories, and different species traits have nonlinear interactions with the light level.  (b) Over time, the fraction of living tissue switches from leaf towards sapwood, with high LMA species having relatively more mass in leaf than low LMA species.  (c) Growth rates peak around 5m high, but this position varies with both trait and light level (not that this is the derivative of panel (a)).  (d) Growth rates vary with plant size (seedling and mature shown) and with traits; growth rate differences are more pronounced in low light.  Whole plant light compensation points emerge from the model as the point where growth rate is zero (x intercept).  The light level for panels (a) and (c) is indicated with dots.  Throughout "low LMA" is 0.1 and solid lines, "high LMA" is 0.267 and dashed.
 \label{fig:trajectories}}
 \end{figure}
 

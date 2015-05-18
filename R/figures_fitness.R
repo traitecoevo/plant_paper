@@ -10,6 +10,9 @@ make_fitness_data <- function() {
   bounds <- check_bounds(bounds)
 
   ## Communities:
+  ## NOTE: If updating attractor2, update in
+  ## figures_growth.R:make_growth_data() and
+  ## figures_plant.R:figure_plant()
   communities <-
     list(first      = 0.10,           # first individual
          attractor1 = 0.08,           # first branching point
@@ -47,7 +50,8 @@ figure_fitness_landscape <- function(data) {
   ylim <- c(-2, max(unlist(w)))
 
   ## TODO: Add an inset showing the disruptive selection in top panel.
-  par(mfrow=c(2, 1), mar=c(1.1, 4.1, .5, .5), oma=c(3.1, 0, 0, 0))
+  op <- par(mfrow=c(2, 1), mar=c(1.1, 4.1, .5, .5), oma=c(3.1, 0, 0, 0))
+  on.exit(par(op))
   plot(lma, w$first, type="l", lty=2,
        log="x", xlim=xlim, ylim=ylim, ylab="Fitness", las=1, xaxt="n")
   label_panel(1)

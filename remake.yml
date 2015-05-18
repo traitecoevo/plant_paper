@@ -30,6 +30,10 @@ targets:
     depends:
       - refs.bib
       - downloads/style.csl
+      - figures
+
+  figures:
+    depends:
       - output/empty.pdf
       - output/plant.pdf
       - output/patch.pdf

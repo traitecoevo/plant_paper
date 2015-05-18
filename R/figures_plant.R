@@ -6,6 +6,7 @@
 ## First, growth trajectories of plants
 default_parameters <- function() {
   p <- ebt_base_parameters()
+  p$disturbance_mean_interval <- 30.0
   p$strategy_default <- FFW16_Strategy(hmat = 30.0)
   p
 }
@@ -54,9 +55,12 @@ figure_plant <- function() {
   ## Everything will be done against two strategies (differing in LMA)
   ## and against two light environments (with the exception of the LCP
   ## plot).
-  p <- default_parameters()
-  s1 <- strategy_default(p)
-  s2 <- strategy(trait_matrix(0.1, "lma"), p)
+  p <- ebt_base_parameters()
+  p$disturbance_mean_interval <- 30.0
+  ## NOTE: These lma values; 0.08 and 0.267 are the equilibrium values
+  ## in the fitness figure (see attractor2).
+  s1 <- strategy(trait_matrix(0.08,  "lma"), p)
+  s2 <- strategy(trait_matrix(0.267, "lma"), p)
   env1 <- fixed_environment(1.0)
   env2 <- fixed_environment(0.5)
 
@@ -70,41 +74,56 @@ figure_plant <- function() {
 
   ## And then the LCP data
   hmax <- s1$hmat / 2
-  h1 <- seq_log(FFW16_PlantPlus(s1)$height, hmax, 3)
-  h2 <- seq_log(FFW16_PlantPlus(s2)$height, hmax, 3)
+  h1 <- seq_log(FFW16_PlantPlus(s1)$height, hmax, 2)
+  h2 <- seq_log(FFW16_PlantPlus(s2)$height, hmax, 2)
   openness <- seq(0, 1, length.out=51)
   d1 <- lapply(h1, height_dt_openness, openness, s1)
   d2 <- lapply(h2, height_dt_openness, openness, s2)
 
-  par(mfrow=c(2, 2), mar=c(3.6, 4.1, .5, .5), mgp=c(2.2, 1, 0))
+  ## TODO: I think these should actually get rerun to a common time;
+  ## at the moment they run off the RHS because they're run to a
+  ## common *height*.
 
+  cols_light <- c("black", "red")
+  cols_height <- c("grey60", "black")
+  cols_part <- c("black", "blue")
+
+  op <- par(mfrow=c(2, 2), mar=c(3.6, 4.1, .5, .5), mgp=c(2.2, 1, 0))
+  on.exit(par(op))
   ## Panel a: height vs time
   f <- function(x) {
     cbind(time=x$trajectory[, "time"], height=x$trajectory[, "height"])
   }
   h_t <- lapply(data, f)
-  plot(h_t[["1_1"]], type="l", las=1, xlab="Time (years)", ylab="Height (m)")
+  plot(h_t[["1_1"]], type="l", lty=1, col=cols_light[[1]],
+       las=1, xlab="Time (years)", ylab="Height (m)")
+  lines(h_t[["2_1"]], type="l", lty=2, col=cols_light[[1]])
+  lines(h_t[["1_2"]], type="l", lty=1, col=cols_light[[2]])
+  lines(h_t[["2_2"]], type="l", lty=2, col=cols_light[[2]])
   label_panel(1)
-  lines(h_t[["2_1"]], type="l", lty=2)
-  lines(h_t[["1_2"]], type="l", col="red")
-  lines(h_t[["2_2"]], type="l", col="red", lty=2)
+
+  legend("bottomright",
+         c("High light", "Low light"), lty=1, col=cols_light,
+         bty="n")
 
   ## Panel b: fractions of biomass over time
   f <- function(x) {
     cbind(height=x$info[, "height"],
           leaf=x$info[, "mass_leaf"] / x$info[, "mass_live"],
           sapwood=x$info[, "mass_sapwood"] / x$info[, "mass_live"])
+    ## seed=x$info[, "fraction_allocation_reproduction"])
   }
   alloc_h <- lapply(data, f)
-  plot(NA, xlim=c(0, hmax), ylim=c(0, 1), type="l",
+  plot(NA, xlim=c(0, s1$hmat), ylim=c(0, 1), type="l",
        ylab="Fractional allocation", xlab="Height (m)", las=1)
   label_panel(2)
   matlines(alloc_h[["1_1"]][, 1],
            alloc_h[["1_1"]][, -1],
-           lty=1, col=1:2)
+           lty=1, col=cols_part)
   matlines(alloc_h[["2_1"]][, 1],
            alloc_h[["2_1"]][, -1],
-           lty=2, col=1:2)
+           lty=2, col=cols_part)
+  legend("topright", c("Sapwood", "Leaf"), lty=1, col=rev(cols_part), bty="n")
 
   ## Panel c: d(height)/dt vs height
   f <- function(x) {
@@ -112,22 +131,27 @@ figure_plant <- function() {
   }
   dhdt_h <- lapply(data, f)
   ylim <- range(sapply(dhdt_h, function(x) range(x[, 2])), 0)
-  plot(dhdt_h[["1_1"]], ylim=ylim, type="l",
-       las=1, xlab="Height (m)", ylab="d height / d t")
+  plot(dhdt_h[["1_1"]], ylim=ylim, lty=1, col=cols_light[[1]],
+       type="l", las=1, xlab="Height (m)", ylab="d height / d t")
+  lines(dhdt_h[["2_1"]], type="l", lty=2, col=cols_light[[1]])
+  lines(dhdt_h[["1_2"]], type="l", lty=1, col=cols_light[[2]])
+  lines(dhdt_h[["2_2"]], type="l", lty=2, col=cols_light[[2]])
   label_panel(3)
-  lines(dhdt_h[["2_1"]], type="l", lty=2)
-  lines(dhdt_h[["1_2"]], type="l", col="red")
-  lines(dhdt_h[["2_2"]], type="l", col="red", lty=2)
+  legend("bottomleft",
+         c("High light", "Low light"), lty=1, col=cols_light,
+         bty="n")
 
   ## Panel d: wplcp
-  ylim <- range(sapply(d2, function(x) range(x[, 2])), 0)
   plot(NA, xlim=c(0, 1), ylim=ylim, las=1,
        xlab="Canopy openness (%)", ylab="d height / d t")
   label_panel(4)
   for (i in seq_along(d1)) {
-    lines(d1[[i]], lty=i)
+    lines(d1[[i]], lty=1, col=cols_height[[i]])
   }
   for (i in seq_along(d2)) {
-    lines(d2[[i]], lty=i, col="red")
+    lines(d2[[i]], lty=2, col=cols_height[[i]])
   }
+  points(c(env1$canopy_openness(0), env2$canopy_openness(0)),
+         c(0, 0), pch=19, col=1:2)
+  legend("topright", c("Seedling", "Adult"), lty=1, col=cols_height, bty="n")
 }
