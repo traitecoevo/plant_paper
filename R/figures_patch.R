@@ -1,4 +1,4 @@
-make_growth_data <- function() {
+make_patch_data <- function() {
   p0 <- ebt_base_parameters()
   p0$control$equilibrium_nsteps <- 30
   p0$control$equilibrium_solver_name <- "hybrid"
@@ -10,7 +10,7 @@ make_growth_data <- function() {
   run_ebt_collect(p2_eq, TRUE)
 }
 
-figure_growth <- function(data) {
+figure_patch <- function(data) {
   t <- data$time
   h1 <- data$species[[1]]["height", , ]
   h2 <- data$species[[2]]["height", , ]

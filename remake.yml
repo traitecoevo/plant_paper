@@ -70,17 +70,17 @@ targets:
   fitness_landscape_data:
     command: make_fitness_data()
 
-  growth_data:
-    command: make_growth_data()
+  patch_data:
+    command: make_patch_data()
 
   output/plant.pdf:
     command: figure_plant()
     plot: true
 
-  output/fitness.pdf:
-    command: figure_fitness_landscape(fitness_landscape_data)
+  output/patch.pdf:
+    command: figure_patch(patch_data)
     plot: true
 
-  output/patch.pdf:
-    command: figure_growth(growth_data)
+  output/fitness.pdf:
+    command: figure_fitness_landscape(fitness_landscape_data)
     plot: true

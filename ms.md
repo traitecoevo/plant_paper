@@ -56,12 +56,12 @@ TREE includes a default physiological model (fully described and derived in the 
 
 ## Use cases and examples
 
-With above functionality, TREE can be used to estimate essential demographic rates for individual plants (Fig. \ref{fig:trajectories}). The function `grow_plant_to_size` takes a given strategy and light environment and grows the plant, producing a trajectory of size over time (Fig. \ref{fig:trajectories}a). This is achieved by integrating an Ordinary Differential Equation (ODE) of size-dependent growth rate (Fig. \ref{fig:trajectories}b; see Appendix[demography-section-XXX](#sec:demography) for more details). Fig. \ref{fig:trajectories} shows growth trajectories (panel a) and associated growth rates (panel b) for two different lma strategies under high and low light. Growth rates respond to size, light environment and traits.
+With above functionality, TREE can be used to estimate essential demographic rates for individual plants (Fig. \ref{fig:plant}). The function `grow_plant_to_size` takes a given strategy and light environment and grows the plant, producing a trajectory of size over time (Fig. \ref{fig:plant}a). This is achieved by integrating an Ordinary Differential Equation (ODE) of size-dependent growth rate (Fig. \ref{fig:plant}b; see Appendix[demography-section-XXX](#sec:demography) for more details). Fig. \ref{fig:plant} shows growth trajectories (panel a) and associated growth rates (panel b) for two different lma strategies under high and low light. Growth rates respond to size, light environment and traits.
 
-Panel d in Fig. \ref{fig:trajectories} shows the continuous response of growth rate to light. The point at which growth rate reaches zero is referred to as the Whole-Plant Light Compensation Point (WPLCP). WPLCP is increasingly  regarded as the most useful measure of a strategy's shade tolerance [@Givnish-1988; @Baltzer-2007; @Lusk-2013]. As expected, WPLCP increases with plant size (Fig. \ref{fig:trajectories}d), due to increased costs of building and maintaining stem and leaf tissues [@Givnish-1988]. Likewise, WPLCP decreases with LMA, because high LMA species have lower leaf turnover  [@Baltzer-2007; @Lusk-2013].
+Panel d in Fig. \ref{fig:plant} shows the continuous response of growth rate to light. The point at which growth rate reaches zero is referred to as the Whole-Plant Light Compensation Point (WPLCP). WPLCP is increasingly  regarded as the most useful measure of a strategy's shade tolerance [@Givnish-1988; @Baltzer-2007; @Lusk-2013]. As expected, WPLCP increases with plant size (Fig. \ref{fig:plant}d), due to increased costs of building and maintaining stem and leaf tissues [@Givnish-1988]. Likewise, WPLCP decreases with LMA, because high LMA species have lower leaf turnover  [@Baltzer-2007; @Lusk-2013].
 
 (MW Needs to go more systematically through panels a, b, c, d -- or maybe all panels aren't needed? I don't see where the fig separates replacement costs from construction costs)
-Panel c [b?] in Fig. \ref{fig:trajectories} shows how allocation to different tissues changes with size. As plants increase in size, the amount of energy allocated to replacing stem increases, as does the amount allocated to [replacing?] leaf. Consequently the amount invested in productive leaf area declines. This shift alone generates a distinctive hump-shaped pattern of absolute growth with size, and equally the widely regarded decline in relative growth rate with size from birth onwards.
+Panel c [b?] in Fig. \ref{fig:plant} shows how allocation to different tissues changes with size. As plants increase in size, the amount of energy allocated to replacing stem increases, as does the amount allocated to [replacing?] leaf. Consequently the amount invested in productive leaf area declines. This shift alone generates a distinctive hump-shaped pattern of absolute growth with size, and equally the widely regarded decline in relative growth rate with size from birth onwards.
 
 # Plants competing in a patch
 
@@ -176,7 +176,7 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/plant.pdf}
 \caption{\textbf{Growth trajectories.} Individual plant height growth with different LMA values and light environments.  (a) Lower light environments flatten growth trajectories, and different species traits have nonlinear interactions with the light level.  (b) Over time, the fraction of living tissue switches from leaf towards sapwood, with high LMA species having relatively more mass in leaf than low LMA species.  (c) Growth rates peak around 5m high, but this position varies with both trait and light level (not that this is the derivative of panel (a)).  (d) Growth rates vary with plant size (seedling and mature shown) and with traits; growth rate differences are more pronounced in low light.  Whole plant light compensation points emerge from the model as the point where growth rate is zero (x intercept).  The light level for panels (a) and (c) is indicated with dots.  Throughout "low LMA" is 0.1 and solid lines, "high LMA" is 0.267 and dashed.
-\label{fig:trajectories}}
+\label{fig:plant}}
 \end{figure}
 
 \newpage
@@ -184,7 +184,7 @@ where the fitness landscape is positive. Adapted from Falster *et al.* (2015).
 \begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{output/patch.pdf}
-\caption{\textbf{Patterns of leaf area accumulation within a patch, showing contribution of different species. Overlay single line showing average for metapopulation.}
+\caption{Cohorts of two species growing within a competitive environment.  Each line represents a "cohort"; some number of individuals that share a birth time.  Red lines are the low LMA species from figure \ref{fig:plant}, blue lines are the high LMA species.  The initial growth rate advantage of the low LMA species (see Figure \ref{fig:plant} c) means it quickly overtops the high LMA species, suppressing its growth.  Self-thining leaves space for the high LMA species to invade.  (a) all cohorts, equally weighted; the spacing is generated by an adaptive refinement algorithm.  (b) Cohorts shaded by by their density.  (c) The Leaf area index at ground level for each species.
 \label{fig:patch}}
 \end{figure}
 
