@@ -36,6 +36,7 @@ targets:
       - output/empty.pdf
       - output/plant.pdf
       - output/patch.pdf
+      - output/emergent.pdf
       - output/fitness.pdf
 
   downloads/style.csl:
@@ -72,6 +73,9 @@ targets:
   patch_data:
     command: make_patch_data()
 
+  emergent_data:
+    command: make_emergent_data()
+
   output/plant.pdf:
     command: figure_plant()
     plot: true
@@ -82,4 +86,8 @@ targets:
 
   output/fitness.pdf:
     command: figure_fitness_landscape(fitness_landscape_data)
+    plot: true
+
+  output/emergent.pdf:
+    command: figure_emergent(emergent_data)
     plot: true
