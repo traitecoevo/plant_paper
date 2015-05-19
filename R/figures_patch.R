@@ -28,19 +28,22 @@ figure_patch <- function(data) {
   rd1 <- rel(d1, -4)
   rd2 <- rel(d2, -4)
 
-  col1 <- matrix(make_transparent("red", rd1), nrow(d1))
-  col2 <- matrix(make_transparent("blue", rd2), nrow(d2))
+  cols <- c("#e34a33", "#045a8d")
+
+  col1 <- matrix(make_transparent(cols[[1]], rd1), nrow(d1))
+  col2 <- matrix(make_transparent(cols[[2]], rd2), nrow(d2))
 
   ## col1 <- matrix(mix_colours("red", "white", rd1), nrow(d1))
   ## col2 <- matrix(mix_colours("blue", "white", rd2), nrow(d2))
   ## col1[rd1 < 0.05] <- NA
   ## col2[rd2 < 0.05] <- NA
 
-  op <- par(mfrow=c(3, 1), mar=c(1.1, 4.1, .5, .5), oma=c(3.1, 0, 0, 0))
+  op <- par(mfrow=c(3, 1), mar=c(1.0, 3.6, .5, .5), oma=c(2.6, 0, 0, 0),
+            mgp=c(2.3, 1, 0))
   on.exit(par(op))
-  matplot(t, h1, type="l", col="#ff000055", lty=1,
+  matplot(t, h1, type="l", col=make_transparent(cols[[1]], 0.5), lty=1,
           las=1, xlab="Time (years)", ylab="Cohort height (m)", xaxt="n")
-  matlines(t, h2, col="#0000ff55", lty=1)
+  matlines(t, h2, col=make_transparent(cols[[2]], 0.5), lty=1)
   label_panel(1)
   axis(1, labels=FALSE)
 
@@ -51,15 +54,15 @@ figure_patch <- function(data) {
   x <- matrix(rep(t, ncol(h1)), nrow(h1))
   plot(NA, xlim=range(t), ylim=range(h1, na.rm=TRUE),
        las=1, xlab="Time (years)", ylab="Cohort height (m)", xaxt="n")
-  segments(x[-1, ], h2[-1, ], x[-n, ], h2[-n, ], col=col2[-n, ])
-  segments(x[-1, ], h1[-1, ], x[-n, ], h1[-n, ], col=col1[-n, ])
+  segments(x[-1, ], h2[-1, ], x[-n, ], h2[-n, ], col=col2[-n, ], lend="butt")
+  segments(x[-1, ], h1[-1, ], x[-n, ], h1[-n, ], col=col1[-n, ], lend="butt")
   label_panel(2)
   axis(1, labels=FALSE)
 
   ## Then, the total leaf area.
   y <- cbind(total=rowSums(data$area_leaf), data$area_leaf)
-  matplot(t, y, lty=c(3, 1, 1), col=c("black", "red", "blue"), type="l",
+  matplot(t, y, lty=c(3, 1, 1), col=c("black", cols), type="l",
           xlab="Time (years)", ylab="Leaf area index", las=1)
   label_panel(3)
-  mtext("Time (years)", 1, 3, cex=.6)
+  mtext("Time (years)", 1, 2.2, cex=.7)
 }
