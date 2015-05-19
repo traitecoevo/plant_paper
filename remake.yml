@@ -22,15 +22,14 @@ plot_options:
 targets:
   all:
     depends:
-      - ms.pdf
       - tree_demography.pdf
+      - .ms_deps
 
-  ms.pdf:
-    command: pandoc_build("ms.md", "template.tex")
+  .ms_deps:
     depends:
-      - refs.bib
-      - downloads/style.csl
-      - figures
+      figures
+    type: file
+    command: ms_deps_timestamp(target_name)
 
   figures:
     depends:

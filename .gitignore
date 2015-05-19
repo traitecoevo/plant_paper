@@ -9,3 +9,5 @@ tree_demography.md
 tree_demography.pdf
 
 figures
+.ms_deps
+*.tdo
