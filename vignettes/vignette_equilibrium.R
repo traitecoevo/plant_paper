@@ -16,7 +16,9 @@ cobweb <- function(m, ...) {
   lines(rep(m[,1], each=2), c(t(m)), ...)
 }
 
-## Try to establish what the equilubrium seed rain is.
+## Try to establish what the equilibrium seed rain is.
+
+## Set model parameters
 p0 <- ebt_base_parameters()
 p <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
 
@@ -49,14 +51,14 @@ cobweb(approach, pch=19, cex=.5, type="o")
 
 ## # 2: Near the equilibrium point:
 
-## Then, in the vinicity of the root we should look at what the curve
+## Then, in the vicinity of the root we should look at what the curve
 ## actually looks like, without adaptive refinement.
 dr <- 2 # range of input to vary (plus and minus this many seeds)
 seed_rain_in <- seq(p_eq$seed_rain - dr,
                     p_eq$seed_rain + dr, length.out=31)
 seed_rain_out <- unlist(mclapply(seed_rain_in, run, p_eq))
 
-## Here is input seeds vs output seeds:
+## Here is input seeds vs. output seeds:
 ##+ seeds_in_seeds_out
 plot(seed_rain_in, seed_rain_out, xlab="Incoming seed rain",
      ylab="Outgoing seed rain", las=1, type="l", asp=5)

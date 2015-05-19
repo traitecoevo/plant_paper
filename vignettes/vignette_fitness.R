@@ -20,7 +20,8 @@ w0 <- fitness_landscape(lma, p0)
 plot(lma, w0, type="l", log="x", las=1, ylab="Fitness (empty environment)")
 abline(h=0, col="grey")
 
-## Any trait value along this point can persist:
+## Any trait value along this point can persist, so start with random sample
+## (Set seed for random number generator so that get same results when rerun)
 set.seed(5)
 lma1 <- sort(sample(lma, 4))
 
@@ -40,7 +41,7 @@ matplot(lma, w1, lty=1, type="l", log="x", ylim=c(-5, max(w1)))
 abline(h=0, col="grey")
 points(lma1, rep(0, 4), col=1:4, pch=19)
 
-## For this system, there is an evolutionary branching point around
+## For this system, there is an evolutionary attractor around
 ## lma 0.08:
 lma_b <- 0.08
 p1b <- add_eq(lma_b, p0)
