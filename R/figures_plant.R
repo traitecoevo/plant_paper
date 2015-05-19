@@ -84,9 +84,9 @@ figure_plant <- function() {
   ## at the moment they run off the RHS because they're run to a
   ## common *height*.
 
-  cols_light <- c("black", "red")
-  cols_height <- c("grey60", "black")
-  cols_part <- c("black", "blue")
+  cols_light <- c("black", "#e34a33")
+  cols_height <- c("#31a354", "black")
+  cols_part <- c("black", "#045a8d")
 
   op <- par(mfrow=c(2, 2), mar=c(3.6, 4.1, .5, .5), mgp=c(2.2, 1, 0))
   on.exit(par(op))
@@ -130,8 +130,10 @@ figure_plant <- function() {
     cbind(h=x$info[, "height"], dhdt=x$info[, "height_dt"])
   }
   dhdt_h <- lapply(data, f)
-  ylim <- range(sapply(dhdt_h, function(x) range(x[, 2])), 0)
-  plot(dhdt_h[["1_1"]], ylim=ylim, lty=1, col=cols_light[[1]],
+  ymax_dhdt <- max(sapply(dhdt_h, function(x) max(x[, 2])), 0)
+  ylim_dhdt <- c(-0.05 * ymax_dhdt, ymax_dhdt)
+
+  plot(dhdt_h[["1_1"]], ylim=ylim_dhdt, lty=1, col=cols_light[[1]],
        type="l", las=1, xlab="Height (m)", ylab="d height / d t")
   lines(dhdt_h[["2_1"]], type="l", lty=2, col=cols_light[[1]])
   lines(dhdt_h[["1_2"]], type="l", lty=1, col=cols_light[[2]])
@@ -142,7 +144,7 @@ figure_plant <- function() {
          bty="n")
 
   ## Panel d: wplcp
-  plot(NA, xlim=c(0, 1), ylim=ylim, las=1,
+  plot(NA, xlim=c(0, 1), ylim=ylim_dhdt, las=1,
        xlab="Canopy openness (%)", ylab="d height / d t")
   label_panel(4)
   for (i in seq_along(d1)) {
@@ -152,6 +154,20 @@ figure_plant <- function() {
     lines(d2[[i]], lty=2, col=cols_height[[i]])
   }
   points(c(env1$canopy_openness(0), env2$canopy_openness(0)),
-         c(0, 0), pch=19, col=1:2)
+         c(0, 0), pch="|", col=cols_light)
   legend("topright", c("Seedling", "Adult"), lty=1, col=cols_height, bty="n")
+
+  first <- function(x) x[[1]]
+  x1 <- sapply(d1, first)
+  x2 <- sapply(d2, first)
+  y1 <- rep(par("usr")[[3]] * 1 / 3, length(x1))
+  y2 <- rep(par("usr")[[3]] * 2 / 3, length(x2))
+  p <- 0.25
+  z1 <- sum(x1 * c(p, 1 - p))
+  z2 <- sum(x2 * c(p, 1 - p))
+
+  points(x1, y1, col=cols_height, pch=19)
+  points(x2, y2, col=cols_height, pch=1)
+  arrows(x1[1], y1[1], z1, y1[2], length=0.05, col=cols_height[[1]])
+  arrows(x2[1], y2[1], z2, y2[2], length=0.05, col=cols_height[[1]])
 }
