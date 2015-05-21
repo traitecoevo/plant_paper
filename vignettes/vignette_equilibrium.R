@@ -103,5 +103,31 @@ for (i in 1:2) {
 }
 abline(v=p2_eq$seed_rain, col=1:2, lty=3)
 
-## In theory, we could create a vector field showing the overall
-## approach...
+## Vector field showing the overall appoach
+n <- seq(0.001, max(approach), length.out=21)
+nn <- as.matrix(expand.grid(n, n))
+
+x_in  <- unname(split(nn, seq_len(nrow(nn))))
+x_out <- mclapply(x_in, run, p2_eq)
+
+xx <- do.call("rbind", x_out, quote=TRUE)
+r <- diff(n[1:2])
+len <- rowSums(sqrt((xx - nn)^2))
+llen <- log(len)
+rlen <- llen / max(llen) * r * 0.8
+
+theta <- atan2(xx[, 2] - nn[, 2], xx[, 1] - nn[, 1])
+
+x1 <- cbind(nn[, 1] + rlen * cos(theta),
+            nn[, 2] + rlen * sin(theta))
+
+lim <- range(n) + c(-1, 1) * 0.5 * r
+
+plot(NA, xlim=lim, ylim=lim, xlab="n1", ylab="n2")
+points(nn[, 1], nn[, 2], cex=.25, col="grey")
+arrows(nn[, 1], nn[, 2], x1[, 1], x1[, 2], length=0.02)
+lines(rbind(approach[1, 1:2], approach[, 3:4]), type="o", col="red")
+points(p2_eq$seed_rain[[1]], p2_eq$seed_rain[[2]], pch=19)
+
+## TODO: Add the unstable equilibria here, which means running this
+## with greater single-species seed rains.
