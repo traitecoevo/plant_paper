@@ -20,6 +20,11 @@ plot_options:
     width: 12
     height: 12
 
+knitr_options:
+  vignette:
+    auto_figure_prefix: true
+    chdir: true
+
 targets:
   all:
     depends:
@@ -113,8 +118,8 @@ targets:
     command: sowsear("vignettes/src/fitness.R", output=target_name)
 
   vignettes/plant.md:
-    knitr: true
+    knitr: vignette
   vignettes/equilibrium.md:
-    knitr: true
+    knitr: vignette
   vignettes/fitness.md:
-    knitr: true
+    knitr: vignette
