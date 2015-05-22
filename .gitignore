@@ -11,3 +11,6 @@ tree_demography.pdf
 figures
 .ms_deps
 *.tdo
+
+vignettes/*.md
+vignettes/*.Rmd
