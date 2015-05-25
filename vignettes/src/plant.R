@@ -1,3 +1,7 @@
+## ---
+## title: "tree: A package for modelling plant TRait Ecology & Evolution: _plant level traits_"
+## ---
+
 ## This vignette covers the sort of analysis in the plant figure in
 ## the manuscript.  It also shows some of the features of working
 ## with plant components of the model.
@@ -27,7 +31,7 @@ pl$mortality
 pl$ode_state
 
 ## To compute rates of change for these variables we need a light
-## environment.  The function \code{fixed_environment} creates an
+## environment.  The function `fixed_environment` creates an
 ## environment that has the same light level (here 100%) at all
 ## heights.  The plant *does not affect* this light environment.
 env <- fixed_environment(1.0)
@@ -87,9 +91,8 @@ pl$height # also 1!
 ## height.
 ##
 ## It's possible to directly integrate the equations exposed by the
-## plant, using the \code{ode_state} field, \code{compute_vars_phys}
-## method and \code{ode_rates} field.  For example, for use with
-## \code{deSolve}:
+## plant, using the `ode_state` field, `compute_vars_phys` method and
+## `ode_rates` field.  For example, for use with `deSolve`:
 derivs <- function(t, y, plant, env) {
   plant$ode_state <- y
   plant$compute_vars_phys(env)

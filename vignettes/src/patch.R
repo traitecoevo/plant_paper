@@ -1,4 +1,6 @@
-## # Patch level dynamics
+## ---
+## title: "tree: A package for modelling plant TRait Ecology & Evolution: _patch level dynamics_"
+## ---
 
 ## The aim here is to use tree to investigate dynamics of plants
 ## within a single patch.

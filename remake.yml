@@ -104,13 +104,22 @@ targets:
       - vignettes/plant.Rmd
       - vignettes/equilibrium.Rmd
       - vignettes/patch.Rmd
+      - vignettes/emergent.Rmd
       - vignettes/fitness.Rmd
   vignettes:
     depends:
       - vignettes/plant.md
       - vignettes/equilibrium.md
       - vignettes/patch.md
+      - vignettes/emergent.md
       - vignettes/fitness.md
+  vignettes_html:
+    depends:
+      - vignettes/plant.html
+      - vignettes/equilibrium.html
+      - vignettes/patch.html
+      - vignettes/emergent.html
+      - vignettes/fitness.html
 
   vignettes/plant.Rmd:
     command: sowsear("vignettes/src/plant.R", output=target_name)
@@ -118,6 +127,8 @@ targets:
     command: sowsear("vignettes/src/equilibrium.R", output=target_name)
   vignettes/patch.Rmd:
     command: sowsear("vignettes/src/patch.R", output=target_name)
+  vignettes/emergent.Rmd:
+    command: sowsear("vignettes/src/emergent.R", output=target_name)
   vignettes/fitness.Rmd:
     command: sowsear("vignettes/src/fitness.R", output=target_name)
 
@@ -127,5 +138,21 @@ targets:
     knitr: vignette
   vignettes/patch.md:
     knitr: vignette
+  vignettes/emergent.md:
+    knitr: vignette
   vignettes/fitness.md:
     knitr: vignette
+
+  vignettes/plant.pdf:
+    command: pandoc_build2("vignettes/plant.md", "vignettes/template.tex")
+
+  vignettes/plant.html:
+    command: render("vignettes/plant.md", quiet=TRUE)
+  vignettes/equilibrium.html:
+    command: render("vignettes/equilibrium.md", quiet=TRUE)
+  vignettes/patch.html:
+    command: render("vignettes/patch.md", quiet=TRUE)
+  vignettes/emergent.html:
+    command: render("vignettes/emergent.md", quiet=TRUE)
+  vignettes/fitness.html:
+    command: render("vignettes/fitness.md", quiet=TRUE)

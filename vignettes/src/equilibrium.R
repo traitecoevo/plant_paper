@@ -1,3 +1,7 @@
+## ---
+## title: "tree: A package for modelling plant TRait Ecology & Evolution: _finding demographic equilibrium_"
+## ---
+
 library(tree)
 library(parallel)
 

@@ -1,3 +1,7 @@
+## ---
+## title: "tree: A package for modelling plant TRait Ecology & Evolution: _fitness_"
+## ---
+
 library(tree)
 
 ## Start by setting a few parameters; this is the base set of

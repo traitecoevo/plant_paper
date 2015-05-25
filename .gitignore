@@ -14,5 +14,8 @@ figures
 
 vignettes/*.md
 vignettes/*.Rmd
+vignettes/*.html
+vignettes/*.tex
+vignettes/*.pdf
 vignettes/figure*
 vignettes/cache/*
