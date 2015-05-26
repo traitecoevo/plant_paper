@@ -80,6 +80,7 @@ targets:
       - vignettes/patch.Rmd
       - vignettes/emergent.Rmd
       - vignettes/fitness.Rmd
+      - vignettes/cohort_spacing.Rmd
   vignettes:
     depends:
       - vignettes/plant.md
@@ -87,6 +88,7 @@ targets:
       - vignettes/patch.md
       - vignettes/emergent.md
       - vignettes/fitness.md
+      - vignettes/cohort_spacing.md
 
   vignettes_html:
     depends:
@@ -95,6 +97,7 @@ targets:
       - vignettes/patch.html
       - vignettes/emergent.html
       - vignettes/fitness.html
+      - vignettes/cohort_spacing.html
 
   vignettes_pdf:
     depends:
@@ -110,6 +113,8 @@ targets:
     command: sowsear("vignettes/src/emergent.R", output=target_name)
   vignettes/fitness.Rmd:
     command: sowsear("vignettes/src/fitness.R", output=target_name)
+  vignettes/cohort_spacing.Rmd:
+    command: sowsear("vignettes/src/cohort_spacing.R", output=target_name)
 
   vignettes/plant.md:
     knitr: vignette
@@ -121,9 +126,8 @@ targets:
     knitr: vignette
   vignettes/fitness.md:
     knitr: vignette
-
-  vignettes/plant.pdf:
-    command: pandoc_build("vignettes/plant.md", "vignettes/template.tex")
+  vignettes/cohort_spacing.md:
+    knitr: vignette
 
   vignettes/plant.html:
     command: render("vignettes/plant.md", quiet=TRUE)
@@ -135,6 +139,8 @@ targets:
     command: render("vignettes/emergent.md", quiet=TRUE)
   vignettes/fitness.html:
     command: render("vignettes/fitness.md", quiet=TRUE)
+  vignettes/cohort_spacing.html:
+    command: render("vignettes/cohort_spacing.md", quiet=TRUE)
 
   vignettes/demography.pdf:
     command: pandoc_build("vignettes/demography.md", "vignettes/template.tex", citeproc=TRUE)
