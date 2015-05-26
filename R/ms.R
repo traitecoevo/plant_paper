@@ -2,7 +2,7 @@
 ## rmarkdown::pandoc_convert's wd argument.  I may be misusing it, but
 ## it seems basically not to work to me.  So instead we'll do the
 ## chdir ourselves.
-pandoc_build2 <- function(file, template=NULL, format="pdf", ...) {
+pandoc_build <- function(file, template=NULL, format="pdf", ...) {
   if (!grep("\\.md$", file)) {
     stop("Expected a markdown input")
   }

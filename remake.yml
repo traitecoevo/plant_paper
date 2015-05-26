@@ -125,7 +125,7 @@ targets:
     knitr: vignette
 
   vignettes/plant.pdf:
-    command: pandoc_build2("vignettes/plant.md", "vignettes/template.tex")
+    command: pandoc_build("vignettes/plant.md", "vignettes/template.tex")
 
   vignettes/plant.html:
     command: render("vignettes/plant.md", quiet=TRUE)
@@ -139,14 +139,14 @@ targets:
     command: render("vignettes/fitness.md", quiet=TRUE)
 
   vignettes/demography.pdf:
-    command: pandoc_build2("vignettes/demography.md", "vignettes/template.tex", citeproc=TRUE)
+    command: pandoc_build("vignettes/demography.md", "vignettes/template.tex", citeproc=TRUE)
     depends:
       - refs.bib
       - downloads/style.csl
   vignettes/EBT.pdf:
-    command: pandoc_build2("vignettes/EBT.md", "vignettes/template.tex", citeproc=TRUE)
+    command: pandoc_build("vignettes/EBT.md", "vignettes/template.tex", citeproc=TRUE)
     depends:
       - refs.bib
       - downloads/style.csl
   vignettes/PDE.pdf:
-    command: pandoc_build2("vignettes/PDE.md", "vignettes/template.tex")
+    command: pandoc_build("vignettes/PDE.md", "vignettes/template.tex")
