@@ -71,7 +71,6 @@ cobweb(approach)
 seed_rain_in_global <- seq(1, max(approach), length.out=51)
 
 ## This takes quite a while to compute.
-##+ cache=TRUE
 seed_rain_out_global <-
   unlist(mclapply(seed_rain_in_global, run_new_schedule, p))
 
