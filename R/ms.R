@@ -1,17 +1,8 @@
-pandoc_build <- function(file, template, toc=FALSE, engine="xelatex" ){
-  args <- list(sprintf('--template=%s',template), "--listings", sprintf('--latex-engine=%s', engine))
-  if(toc){
-    args[[length(args) +1]] <- "--toc"
-  }
-  pandoc_convert(file, output= paste0(tools::file_path_sans_ext(file), ".pdf"),
-    citeproc = TRUE, options = args, verbose = TRUE)
-}
-
 ## This works around the (frankly) weird misbehaviour of
 ## rmarkdown::pandoc_convert's wd argument.  I may be misusing it, but
 ## it seems basically not to work to me.  So instead we'll do the
 ## chdir ourselves.
-pandoc_build2 <- function(file, template=NULL, format="pdf") {
+pandoc_build2 <- function(file, template=NULL, format="pdf", ...) {
   if (!grep("\\.md$", file)) {
     stop("Expected a markdown input")
   }
@@ -36,7 +27,7 @@ pandoc_build2 <- function(file, template=NULL, format="pdf") {
     }
     args <- list(sprintf("--template=%s", template))
   }
-  pandoc_convert(file_local, output=file_out, options=args, verbose=FALSE)
+  pandoc_convert(file_local, output=file_out, options=args, verbose=FALSE, ...)
 }
 
 ms_deps_timestamp <- function(filename) {

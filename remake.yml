@@ -39,7 +39,6 @@ targets:
 
   figures:
     depends:
-      - output/empty.pdf
       - output/plant.pdf
       - output/patch.pdf
       - output/emergent.pdf
@@ -47,31 +46,6 @@ targets:
 
   downloads/style.csl:
     download: https://raw.githubusercontent.com/citation-style-language/styles/master/methods-in-ecology-and-evolution.csl
-
-  output/empty.pdf:
-    command: empty_box()
-    plot: square
-
-  tree_demography.pdf:
-    command: pandoc_build("tree_demography.md", "template.tex", toc=TRUE)
-    depends:
-      - refs.bib
-      - downloads/style.csl
-
-  tree_demography.md:
-    knitr: TRUE
-
-  tree_physiology.pdf:
-    command: pandoc_build("tree_physiology.md", "template.tex", toc=TRUE)
-    depends:
-      - refs.bib
-      - downloads/style.csl
-
-  tree_physiology.md:
-    knitr: TRUE
-    depends:
-      - refs.bib
-      - downloads/style.csl
 
   fitness_landscape_data:
     command: make_fitness_data()
@@ -113,6 +87,7 @@ targets:
       - vignettes/patch.md
       - vignettes/emergent.md
       - vignettes/fitness.md
+
   vignettes_html:
     depends:
       - vignettes/plant.html
@@ -120,6 +95,12 @@ targets:
       - vignettes/patch.html
       - vignettes/emergent.html
       - vignettes/fitness.html
+
+  vignettes_pdf:
+    depends:
+    - vignettes/demography.pdf 
+    - vignettes/EBT.pdf
+    - vignettes/PDE.pdf
 
   vignettes/plant.Rmd:
     command: sowsear("vignettes/src/plant.R", output=target_name)
@@ -156,3 +137,16 @@ targets:
     command: render("vignettes/emergent.md", quiet=TRUE)
   vignettes/fitness.html:
     command: render("vignettes/fitness.md", quiet=TRUE)
+
+  vignettes/demography.pdf:
+    command: pandoc_build2("vignettes/demography.md", "vignettes/template.tex", citeproc=TRUE)
+    depends:
+      - refs.bib
+      - downloads/style.csl
+  vignettes/EBT.pdf:
+    command: pandoc_build2("vignettes/EBT.md", "vignettes/template.tex", citeproc=TRUE)
+    depends:
+      - refs.bib
+      - downloads/style.csl
+  vignettes/PDE.pdf:
+    command: pandoc_build2("vignettes/PDE.md", "vignettes/template.tex")
