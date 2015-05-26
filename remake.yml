@@ -28,7 +28,7 @@ knitr_options:
 targets:
   all:
     depends:
-      - tree_demography.pdf
+      - vignettes/demography.pdf
       - .ms_deps
 
   .ms_deps:
