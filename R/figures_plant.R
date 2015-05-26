@@ -139,7 +139,7 @@ figure_plant <- function() {
   lines(dhdt_h[["1_2"]], type="l", lty=1, col=cols_light[[2]])
   lines(dhdt_h[["2_2"]], type="l", lty=2, col=cols_light[[2]])
   label_panel(3)
-  legend("bottomleft",
+  legend("topright",
          c("High light", "Low light"), lty=1, col=cols_light,
          bty="n")
 
