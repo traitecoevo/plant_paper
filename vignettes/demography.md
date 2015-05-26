@@ -167,7 +167,8 @@ From equation  $\ref{eq:size}$, the boundary develops as
   h_i(x, a_0, a) = h_0 + \int_{a_0}^{a} g(x,h_i(x, a_0, a^\prime),a^\prime) \, \rm{d}a^\prime.
 \end{equation}
 
-*Numerical technique:* Equation $\ref{eq:boundSize}$ can be expressed as an initial-value ODE problem (IVP) and solved using an ODE stepper:
+### Numerical technique
+Equation $\ref{eq:boundSize}$ can be expressed as an initial-value ODE problem (IVP) and solved using an ODE stepper:
 $$\frac{dy}{dt} = g(x,y,t),$$
 $$ y(0) = h_0.$$
 
@@ -177,7 +178,8 @@ From equation  $\ref{eq:survivalIndividual}$, the survival of the individuals at
 \begin{equation} \label{eq:boundSurv} S_{\rm I} (x, a_0, a) =  \pi_1 (x^\prime,h_0, a_0)  \exp\left(- \int_{a_0}^{a} d(x,h_i(x, a_0 ,a^\prime), a^\prime) \, {\rm d} a^\prime \right).
 \end{equation}
 
-*Numerical technique:* To solve equations $\ref{eq:boundSurv}$ we solve the IVP problem:
+### Numerical technique
+To solve equations $\ref{eq:boundSurv}$ we solve the IVP problem:
 $$\frac{dy}{dt} = d(x,h_i(a^\prime), a^\prime ),$$
 $$ y(0) = - \ln\left(\pi_1 (x^\prime,h_0, a_0)\right) .$$
 
@@ -203,7 +205,8 @@ where
   \end{array} \right.
 \end{equation}
 
-*Numerical technique:* To solve Eq. $\ref{eq:boundN}$ we need to solve the IVP:
+### Numerical technique
+To solve Eq. $\ref{eq:boundN}$ we need to solve the IVP:
 $$\frac{dy}{dt} = \frac{\partial g(x,h_i(a^\prime), }{\partial m} +d(x,h_i(a^\prime),a^\prime),$$
 $$ y(0) = -\ln\left(n(x,h_0 ,a_0) \, \pi_1 (x^\prime,h_0, a_0) \right).$$
 
@@ -211,7 +214,8 @@ Density is then given by
 
 $$n(x,h_0 ,a_0) =\exp(-y(a)).$$
 
-*Test case:* In cases where the environment and seed rain are constant and time-independent (i.e $g(x,h,a) = g(x,h)$, $d(x,h,a) = d(x,h)$  for all $a_0, a^\prime$),  it is possible to further simplify Eq. \ref{eq:boundN} to:
+### Test case
+In cases where the environment and seed rain are constant and time-independent (i.e $g(x,h,a) = g(x,h)$, $d(x,h,a) = d(x,h)$  for all $a_0, a^\prime$),  it is possible to further simplify Eq. \ref{eq:boundN} to:
 
 \begin{equation}\label{eq:boundN3}
 	n(x,h,a)=\frac{y_x}{ g(x,h) } \exp \bigg(-\int _{m_{0} }^{m}\frac{d(x , m^\prime) }{g(x, m^\prime)} \, \textrm{d}m^\prime \bigg).
@@ -237,7 +241,8 @@ The lifetime seed production of boundary individuals  is calculated according to
 where $S_{\rm I}$ is individual survival (defined above) and
 $S_{\rm P}$ is calculated as in Eq. $\ref{eq:survivalPatch}$.
 
-*Numerical technique:* To solve equation \ref{eq:tildeR} we need solve the IVP:
+### Numerical technique
+To solve equation \ref{eq:tildeR} we need solve the IVP:
 $$\frac{dy}{dt} = \pi_0 \,f(x, m_i(a^\prime), a^\prime) \, S_{\rm I} (x, a_0, a^\prime) \, S_{\rm P} (a_0,a^\prime),$$
 $$ y(0) = 0.$$
 
@@ -247,13 +252,15 @@ To scale up seed production for the metapopulation need to integrate Eq. $\ref{e
 \begin{equation} R(x) = \int_0^{\infty}  p(a) \, \tilde{R}(x, a, \infty) \, {\rm d}a.
 \end{equation}
 
-*Numerical technique:*  Note that we have individual's introduced at a series of patch ages, and an estimate for $\tilde{R}(x, a, \infty)$ for each of these (see Eq. $\ref{eq:boundR}$). These points can then be integrated using a quadrature routine, e.g.
+### Numerical technique
+ Note that we have individual's introduced at a series of patch ages, and an estimate for $\tilde{R}(x, a, \infty)$ for each of these (see Eq. $\ref{eq:boundR}$). These points can then be integrated using a quadrature routine, e.g.
 
 ## Environmental feedback
 
 The estimated density function  (Eq. \ref{eq:boundN4}) is used to calculate the amount of shading on each individual from other individuals in the patch, as described in Eq. \ref{eq:light}.
 
-*Numerical technique:*  $E(z,a)$ is estimated by integrating  Eq. \ref{eq:light} using the numerical estimate for $n(x,h,a)$ obtained from Eq. \ref{eq:boundN4} via trapezoidal rule with uneven grid (Eq. \ref{trap_uneven}), taking the cohort boundaries as the knots in the integration.
+### Numerical technique
+ $E(z,a)$ is estimated by integrating  Eq. \ref{eq:light} using the numerical estimate for $n(x,h,a)$ obtained from Eq. \ref{eq:boundN4} via trapezoidal rule with uneven grid (Eq. \ref{trap_uneven}), taking the cohort boundaries as the knots in the integration.
 
 # Approximating system dynamics using the EBT
 
@@ -281,7 +288,8 @@ From equation  $\ref{eq:size}$, the boundary develops as
   h_i(x, a_0, a) = h_0 + \int_{a_0}^{a} g(x,h_i(x, a_0, a^\prime),a^\prime) \, \rm{d}a^\prime.
 \end{equation}
 
-*Numerical technique:* Equation $\ref{eq:boundSize}$ can be expressed as an initial-value ODE problem (IVP) and solved using an ODE stepper:
+### Numerical technique
+Equation $\ref{eq:boundSize}$ can be expressed as an initial-value ODE problem (IVP) and solved using an ODE stepper:
 $$\frac{dy}{dt} = g(x,y,t),$$
 $$ y(0) = h_0.$$
 
@@ -291,7 +299,8 @@ From equation  $\ref{eq:survivalIndividual}$, the survival of the individuals at
 \begin{equation} \label{eq:boundSurv} S_{\rm I} (x, a_0, a) =  \pi_1 (x^\prime,h_0, a_0)  \exp\left(- \int_{a_0}^{a} d(x,h_i(x, a_0 ,a^\prime), a^\prime) \, {\rm d} a^\prime \right).
 \end{equation}
 
-*Numerical technique:* To solve equations $\ref{eq:boundSurv}$ we solve the IVP problem:
+### Numerical technique
+To solve equations $\ref{eq:boundSurv}$ we solve the IVP problem:
 $$\frac{dy}{dt} = d(x,h_i(a^\prime), a^\prime ),$$
 $$ y(0) = - \ln\left(\pi_1 (x^\prime,h_0, a_0)\right) .$$
 
@@ -317,7 +326,8 @@ where
   \end{array} \right.
 \end{equation}
 
-*Numerical technique:* To solve Eq. $\ref{eq:boundN}$ we need to solve the IVP:
+### Numerical technique
+To solve Eq. $\ref{eq:boundN}$ we need to solve the IVP:
 $$\frac{dy}{dt} = \frac{\partial g(x,h_i(a^\prime), }{\partial m} +d(x,h_i(a^\prime),a^\prime),$$
 $$ y(0) = -\ln\left(n(x,h_0 ,a_0) \, \pi_1 (x^\prime,h_0, a_0) \right).$$
 
@@ -325,7 +335,8 @@ Density is then given by
 
 $$n(x,h_0 ,a_0) =\exp(-y(a)).$$
 
-*Test case:* In cases where the environment and seed rain are constant and time-independent (i.e $g(x,h,a) = g(x,h)$, $d(x,h,a) = d(x,h)$  for all $a_0, a^\prime$),  it is possible to further simplify Eq. \ref{eq:boundN} to:
+### Test case
+In cases where the environment and seed rain are constant and time-independent (i.e $g(x,h,a) = g(x,h)$, $d(x,h,a) = d(x,h)$  for all $a_0, a^\prime$),  it is possible to further simplify Eq. \ref{eq:boundN} to:
 
 \begin{equation}\label{eq:boundN3}
   n(x,h,a)=\frac{y_x}{ g(x,h) } \exp \bigg(-\int _{m_{0} }^{m}\frac{d(x , m^\prime) }{g(x, m^\prime)} \, \textrm{d}m^\prime \bigg).
@@ -351,7 +362,8 @@ The lifetime seed production of boundary individuals  is calculated according to
 where $S_{\rm I}$ is individual survival (defined above) and
 $S_{\rm P}$ is calculated as in Eq. $\ref{eq:survivalPatch}$.
 
-*Numerical technique:* To solve equation \ref{eq:tildeR} we need solve the IVP:
+### Numerical technique
+To solve equation \ref{eq:tildeR} we need solve the IVP:
 $$\frac{dy}{dt} = \pi_0 \,f(x, m_i(a^\prime), a^\prime) \, S_{\rm I} (x, a_0, a^\prime) \, S_{\rm P} (a_0,a^\prime),$$
 $$ y(0) = 0.$$
 
@@ -361,13 +373,16 @@ To scale up seed production for the metapopulation need to integrate Eq. $\ref{e
 \begin{equation} R(x) = \int_0^{\infty}  p(a) \, \tilde{R}(x, a, \infty) \, {\rm d}a.
 \end{equation}
 
-*Numerical technique:*  Note that we have individual's introduced at a series of patch ages, and an estimate for $\tilde{R}(x, a, \infty)$ for each of these (see Eq. $\ref{eq:boundR}$). These points can then be integrated using a quadrature routine, e.g.
+### Numerical technique
+ Note that we have individual's introduced at a series of patch ages, and an estimate for $\tilde{R}(x, a, \infty)$ for each of these (see Eq. $\ref{eq:boundR}$). These points can then be integrated using a quadrature routine, e.g.
 
 ## Environmental feedback
 
+
 The estimated density function  (Eq. \ref{eq:boundN4}) is used to calculate the amount of shading on each individual from other individuals in the patch, as described in Eq. \ref{eq:light}.
 
-*Numerical technique:*  $E(z,a)$ is estimated by integrating  Eq. \ref{eq:light} using the numerical estimate for $n(x,h,a)$ obtained from Eq. \ref{eq:boundN4} via trapezoidal rule with uneven grid (Eq. \ref{trap_uneven}), taking the cohort boundaries as the knots in the integration.
+### Numerical technique
+ $E(z,a)$ is estimated by integrating  Eq. \ref{eq:light} using the numerical estimate for $n(x,h,a)$ obtained from Eq. \ref{eq:boundN4} via trapezoidal rule with uneven grid (Eq. \ref{trap_uneven}), taking the cohort boundaries as the knots in the integration.
 
 # Controlling error in the EBT
 
