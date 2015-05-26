@@ -1,5 +1,5 @@
 ---
-title: "tree: A package for modelling plant TRait Ecology & Evolution: _patch level dynamics_"
+title: "tree: A package for modelling plant TRait Ecology & Evolution: _Modelling demography of plants, patchs and metapopulations_"
 csl: ../downloads/style.csl
 bibliography: ../refs.bib
 ---
