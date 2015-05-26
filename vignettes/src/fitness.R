@@ -49,15 +49,17 @@ points(lma1, rep(0, 4), col=1:4, pch=19)
 ## lma 0.08:
 lma_b <- 0.08
 p1b <- add_eq(lma_b, p0)
-lma_detail <- seq_log(lma_b * 0.95, lma_b * 1.05, 51)
+lma_detail <- trait_matrix(seq_log(lma_b * 0.95, lma_b * 1.05, 51), "lma")
 
 w1b <- fitness_landscape(lma, p1b)
 w1b_detail <- fitness_landscape(lma_detail, p1b)
 
-plot(lma, w1b, log="x", type="l")
+plot(lma, w1b, log="x", type="l", las=1,
+     xlab="Leaf mass per unit area", ylab="Fitness")
 abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
 
-plot(lma_detail, w1b_detail, log="x", type="l")
+plot(lma_detail, w1b_detail, log="x", type="l", las=1,
+     xlab="Leaf mass per unit area", ylab="Fitness")
 abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
