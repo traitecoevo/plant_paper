@@ -34,17 +34,20 @@ pandoc_build <- function(file, template=NULL, format="pdf", ...) {
 ## TODO: options for saying what command is being run
 latex_build <- function(filename, bibliography=NULL,
                         chdir=TRUE, interaction="nonstopmode",
-                        max_attempts=5L, clean=FALSE) {
+                        max_attempts=5L, clean=FALSE, engine="pdflatex") {
   if (chdir && dirname(filename) != "") {
     owd <- setwd(dirname(filename))
     on.exit(setwd(owd))
     filename <- basename(filename)
   }
 
-  res <- run_latex(filename, interaction)
+  res <- run_latex(filename, interaction, engine)
+  if(engine=="xelatex") {
+      res <- run_latex(filename, interaction, engine)    
+  }
   if (!is.null(bibliography)) {
     run_bibtex(filename)
-    res <- run_latex(filename, interaction)
+    res <- run_latex(filename, interaction, engine)
   }
 
   pat <- c("Rerun to get cross-references right",
@@ -54,7 +57,7 @@ latex_build <- function(filename, bibliography=NULL,
   }
   for (i in seq_len(max_attempts)) {
     if (any(vapply(pat, isin, logical(1), res))) {
-      res <- run_latex(filename, interaction)
+      res <- run_latex(filename, interaction, engine)
     } else {
       break
     }
@@ -75,11 +78,11 @@ latex_clean <- function(filename) {
   file.remove(aux[file.exists(aux)])
 }
 
-run_latex <- function(filename, interaction="nonstopmode") {
+run_latex <- function(filename, interaction="nonstopmode", engine="pdflatex") {
   args <- c(paste0("-interaction=", interaction),
             "-halt-on-error",
             filename)
-  callr::run_system(Sys_which("pdflatex"), args)
+  callr::run_system(Sys_which(engine), args)
 }
 
 run_bibtex <- function(filename) {
