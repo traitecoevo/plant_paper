@@ -102,6 +102,7 @@ targets:
   vignettes_pdf:
     depends:
     - vignettes/demography.pdf 
+    - vignettes/physiology.pdf 
 
   vignettes/plant.Rmd:
     command: sowsear("vignettes/src/plant.R", output=target_name)
@@ -144,6 +145,12 @@ targets:
 
   vignettes/demography.pdf:
     command: pandoc_build("vignettes/demography.md", "vignettes/template.tex", citeproc=TRUE)
+    depends:
+      - refs.bib
+      - downloads/style.csl
+
+  vignettes/physiology.pdf:
+    command: pandoc_build("vignettes/physiology.md", "vignettes/template.tex", citeproc=TRUE)
     depends:
       - refs.bib
       - downloads/style.csl
