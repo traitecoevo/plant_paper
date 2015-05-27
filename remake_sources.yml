@@ -1,3 +1,6 @@
 tree:
   source: github
   repo: traitecoevo/tree
+sowsear:
+  source: github
+  repo: richfitz/sowsear

@@ -36,6 +36,8 @@ add_eq <- function(x, p) {
   equilibrium_seed_rain(p)
 }
 
+## If run interactively it will produce a lot of output
+##+ results="hide"
 p1 <- lapply(lma1, add_eq, p0)
 
 ## Then compute fitness landscapes for each of these:
@@ -49,17 +51,101 @@ points(lma1, rep(0, 4), col=1:4, pch=19)
 ## lma 0.08:
 lma_b <- 0.08
 p1b <- add_eq(lma_b, p0)
-lma_detail <- trait_matrix(seq_log(lma_b * 0.95, lma_b * 1.05, 51), "lma")
 
 w1b <- fitness_landscape(lma, p1b)
-w1b_detail <- fitness_landscape(lma_detail, p1b)
-
 plot(lma, w1b, log="x", type="l", las=1,
      xlab="Leaf mass per unit area", ylab="Fitness")
 abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
 
+## Zooming in in the vicinity of the result shows that this is
+## disruptive selection: fitness increases to both sides of the
+## resident!
+lma_detail <- trait_matrix(seq_log(lma_b * 0.95, lma_b * 1.05, 51), "lma")
+w1b_detail <- fitness_landscape(lma_detail, p1b)
 plot(lma_detail, w1b_detail, log="x", type="l", las=1,
      xlab="Leaf mass per unit area", ylab="Fitness")
 abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
+
+## Holding the first species at 0.08 we can introduce additional
+## species (it's close enough to the optimium here, though in general
+## this point might move substantially as new species are introduced).
+
+## Consider introducing a new species at the point of maximum fitness:
+lma_new <- lma[which.max(w1b)]
+lma_new
+
+plot(lma, w1b, log="x", type="l", las=1,
+     xlab="Leaf mass per unit area", ylab="Fitness")
+abline(h=0, col="grey")
+points(lma_b, 0, pch=19)
+abline(v=lma_new, col="red")
+
+p2 <- add_eq(lma_new, p1b)
+w2 <- fitness_landscape(lma, p2)
+
+## After introducing this species, the fitness landscape is *drawn
+## down* around the second species, with a fitness gradient that
+## points towards increased lma.
+plot(lma, w1b, log="x", type="l", las=1,
+     xlab="Leaf mass per unit area", ylab="Fitness", col="grey")
+lines(lma, w2)
+abline(h=0, col="grey")
+points(lma_b, 0, pch=19)
+points(lma_new, 0, pch=19, col="red")
+lma_new2 <- lma[which.max(w2)]
+abline(v=lma_new2)
+
+## At the cost of extremely tedious copy/paste code, here is the
+## result of repeatedly taking the lma value with highest fitness and
+## moving the second species to this point, running to equilibrium,
+## and plotting.  For comparison the previous landscapes are retained
+## as dotted lines.
+p2_2 <- add_eq(lma_new2, p1b)
+w2_2 <- fitness_landscape(lma, p2_2)
+
+plot(lma, w1b, log="x", type="l", las=1,
+     xlab="Leaf mass per unit area", ylab="Fitness", col="grey")
+lines(lma, w2, lty=2)
+lines(lma, w2_2)
+abline(h=0, col="grey")
+points(lma_b, 0, pch=19)
+points(lma_new, 0)
+points(lma_new2, 0, pch=19, col="red")
+lma_new3 <- lma[which.max(w2_2)]
+abline(v=lma_new3)
+
+p2_3 <- add_eq(lma_new3, p1b)
+w2_3 <- fitness_landscape(lma, p2_3)
+
+plot(lma, w1b, log="x", type="l", las=1,
+     xlab="Leaf mass per unit area", ylab="Fitness", col="grey")
+lines(lma, w2, lty=2)
+lines(lma, w2_2, lty=2)
+lines(lma, w2_3)
+abline(h=0, col="grey")
+points(lma_b, 0, pch=19)
+points(lma_new, 0)
+points(lma_new2, 0)
+points(lma_new3, 0, pch=19, col="red")
+lma_new4 <- lma[which.max(w2_3)]
+abline(v=lma_new4)
+
+p2_4 <- add_eq(lma_new4, p1b)
+w2_4 <- fitness_landscape(lma, p2_4)
+
+plot(lma, w1b, log="x", type="l", las=1,
+     xlab="Leaf mass per unit area", ylab="Fitness", col="grey")
+lines(lma, w2, lty=2)
+lines(lma, w2_2, lty=2)
+lines(lma, w2_3, lty=2)
+lines(lma, w2_4)
+abline(h=0, col="grey")
+points(lma_b, 0, pch=19)
+points(lma_new, 0)
+points(lma_new2, 0)
+points(lma_new3, 0)
+points(lma_new4, 0, pch=19, col="red")
+lma_new5 <- lma[which.max(w2_4)]
+abline(v=lma_new5)
