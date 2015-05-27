@@ -44,6 +44,7 @@ targets:
       - output/patch.pdf
       - output/emergent.pdf
       - output/fitness.pdf
+      - schematic.pdf
 
   downloads/style.csl:
     download: https://raw.githubusercontent.com/citation-style-language/styles/master/methods-in-ecology-and-evolution.csl
@@ -72,6 +73,13 @@ targets:
   output/emergent.pdf:
     command: figure_emergent(emergent_data)
     plot: true
+
+  schematic.pdf:
+    command: latex_build("schematic.tex", clean=TRUE, engine=I("xelatex"))
+    depends:
+      - vignettes/schematic-frame.pdf
+      - vignettes/schematic-phys.pdf
+      - output/middle.png
 
   # Compile vignette sources into Rmd:
   vignette_sources:
