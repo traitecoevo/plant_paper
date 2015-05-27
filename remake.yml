@@ -29,14 +29,13 @@ knitr_options:
 targets:
   all:
     depends:
-      - vignettes/demography.pdf
-      - .ms_deps
+      - ms.pdf
+      - vignettes_rendered
 
-  .ms_deps:
+  ms.pdf:
+    command: latex_build("ms.tex", "refs.bib", clean=TRUE)
     depends:
-      figures
-    type: file
-    command: ms_deps_timestamp(target_name)
+      - figures
 
   figures:
     depends:
@@ -104,6 +103,11 @@ targets:
     depends:
     - vignettes/demography.pdf 
     - vignettes/physiology.pdf 
+
+  vignettes_rendered:
+    depends:
+      - vignettes_pdf
+      - vignettes_html
 
   vignettes/plant.Rmd:
     command: sowsear("vignettes/src/plant.R", output=target_name)
