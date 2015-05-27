@@ -2,6 +2,7 @@ packages:
   - rmarkdown
   - tree
   - sowsear
+  - xtable
 
 sources:
   - R
@@ -149,8 +150,16 @@ targets:
       - refs.bib
       - downloads/style.csl
 
+  vignettes/physiology.md:
+    knitr: vignette
+    depends:
+      - notes/growth_model_pars.csv
+
   vignettes/physiology.pdf:
     command: pandoc_build("vignettes/physiology.md", "vignettes/template.tex", citeproc=TRUE)
     depends:
       - refs.bib
       - downloads/style.csl
+
+  output/table-pars.tex:
+    command: table_tree_parameters("notes/growth_model_pars.csv", target_name)
