@@ -125,7 +125,14 @@ expressed as a sum of construction costs per unit leaf area:
 The third term in eq \ref{eq:dhdt},
 \(\textrm{d}m_\textrm{a} / \textrm{d}m_\textrm{b}\), gives the fraction
 of net biomass production (eq. \ref{eq:dbdt}) that is allocated to
-growth rather than reproduction or storage.
+growth rather than reproduction or storage. In the default physiological model
+we let the growth fraction decrease with height according to the function
+\begin{equation}\label{eq:allocation}
+\frac{\textrm{d}m_\textrm{a}}{\textrm{d}b}(h) = 1 - 
+ \frac{c_{r1}} {1.0 + \exp\left(c_{r2}  \left(1.0 - h / h_\textrm{mat}\right)\right)},
+\end{equation}
+where $c_{r1}$ is the maximum possible allocation (0-1) and $c_{r2}$
+determines the sharpness of the transition.
 
 \section{A functional-balance model for
 allocation}\label{a-functional-balance-model-for-allocation}
@@ -183,7 +190,7 @@ Q(z,h)= \left(1-\left(\frac{z}{h}\right)^\eta\right)^2.
 Differentiating with respect to \(z\) then yields a solution for the
 probability density of leaf area as a function of height:
 \begin{equation}\label{eq:crown3}
-q(z,h)= 2\eta(1-z^\eta h^{-\eta})z^{\eta-1} h^{-\eta}.
+q(z,h)= 2\frac{\eta}{h}(1-\left(\frac{z}{h}\right)^{\eta}) \left(\frac{z}{h}\right)^{\eta-1}.
 \end{equation}
 
 \subsection{Mass of sapwood}\label{mass-of-sapwood}
@@ -237,6 +244,11 @@ where \(s\) is the mass of the seed and \(c_{\textrm{acc}}\) is the cost
 per seed of accessories, such as fruits, flowers and dispersal
 structures.
 
+The function $\frac{\textrm{d}m_\textrm{a}}{\textrm{d}b}$ gives the fraction
+of $\frac{\textrm{d}b}{\textrm{d}t}$ that is allocated to growth, while 
+$1-\frac{\textrm{d}m_\textrm{a}}{\textrm{d}b}$ gives the  fraction allocated
+to reproduction.
+
 \section{Mortality}\label{mortality}
 
 Instantaneous rates of plant mortality are taken as the sum of a growth
@@ -260,6 +272,64 @@ the parameters \(c_{d2}\) and \(c_{d3}\).
 
 \section{Hyper-parameterisation of physiological model via
 traits}\label{traits}
+
+The plant physiological model includes default values for all parameters needed 
+(see Table \ref{tab:params}). Species are known to vary considerably
+in many of these parameters, such as $\phi,\rho,c_{p1},s$. By varying  parameters
+one can therefore account for different ecologies.
+
+When altering one parameter in the model, one must also consider whether there 
+are trade-offs linking parameters. \texttt{TREE} allows for 
+hyper-parameterisation of the plant physiological model via plant functional traits, i.e. 
+simultaneous variation in multiple parameters because of assumed trade-off.
+
+In the default physiological model we implement the following relationships. For more 
+details see \texttt{make\_FFW16\_hyperpar.R}.
+
+\subsection{Leaf mass per area}
+
+The trait leaf mass per area ($\phi$) directly influences growth by changing 
+$\textrm{d}a_\textrm{l} / \textrm{d}m_\textrm{a}$. In addition we  
+link $\phi$ to the rate of leaf turnover,
+based on widely observed scaling relationship from \citet{Wright-2004}:
+$$k_l=k_{l0} \, \left(\frac{\phi}{\phi_0}\right)^{-B_4}.$$
+We normalise the relationship around a global mean LMA of $\phi_0$ -- this
+allows us to vary $k_{l0}$ and $B_4$ without displacing the relationship from the 
+observed mean.
+
+We also vary mass based leaf respiration rate so that it stays constant per unit leaf area and
+varies with LMA, as is empirically observed \citet{Wright-2004}:
+$$c_{Rl}= \frac{c_{Rl0}}{\phi}.$$
+
+\subsection{Wood density}
+
+The trait wood density ($\rho$) directly influences growth by changing 
+$\textrm{d}a_\textrm{l} / \textrm{d}m_\textrm{a}$.  In addition we  
+link $\rho$ to the rate of growth independent mortality:
+$$c_{d0}=d_{00} \, \left(\frac{\rho}{\rho_0}\right) ^ {-d1}.$$
+
+In addition, $\rho$ is assumed to influence the rate of sapwood turnover, 
+$$k_s=k_{s0} \, \left(\frac{\rho}{\rho_0}\right)^ {-B5},$$
+and the rate of sapwood respiration per unit mass:
+$$c_{Rs} <- \frac{4012.0}{\rho}.$$
+
+As we did with $\phi$, we normalise the mortality and turnover 
+relationships around a global mean value of $\rho_0$. 
+
+\subsection{Seed mass}
+
+Effects of the trait seed mass ($s$) are naturally embedded in the equation determining 
+fecundity (Eq. \ref{eq:fecundity}) and the initial height of seedlings (XXX). In addition,
+we let the accessory cost per seed be a linear function of seed size:
+$$c_{acc} = 3.0 * s,$$
+following observed relationships \citep{Henery-2001}.
+
+\subsection{Nitrogen per leaf area}
+
+Photosynthesis per unit leaf area and respiration rates per unit leaf mass (or area) 
+are assumed to vary with leaf nitrogen per unit area $\nu$:
+$$c_{p1}=c_{PN} \, \nu,$$
+$$c_{Rl}=c_{RN}  \, \nu.$$
 
 \clearpage
 
