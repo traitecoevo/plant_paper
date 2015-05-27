@@ -31,7 +31,8 @@ This vignette outlines methods used to model demography in the \texttt{TREE}
 package, using methods from \citet{Deroos-1997}; \citet{Kohyama-1993};
 \citet{Moorcroft-2001}, \citet{Falster-2011}; and \citet{Falster-2015}.
 We first outline the system dynamics and then describe the numerical
-techniques used to solve the equations.
+techniques used to solve the equations. Variable definitions and units are
+summarised in Table \ref{tab:definitions}.
 
 \section{System dynamics}\label{system-dynamics}
 
@@ -554,6 +555,60 @@ have implemented several different approaches (see
 \texttt{equlibrium.R} for details).
 
 
+\clearpage
+
+\section{Tables}\label{tables}
+
+\begin{table}[ht]
+ \caption{Variable names and definitions in demographic model.}
+\centering
+  \begin{tabular}{p{2cm}p{2cm}p{9cm}}
+  \hline
+  Symbol & Unit & Description \\
+  \hline
+  \multicolumn{3}{l}{\textbf{Patch state variables}} \\
+  $N$   & & number of species \\
+  $a, a^{\prime}$ & yr & patch age \\
+  $a_0$ & yr & patch age when plant germinates \\
+  $E_a$ & & profile of canopy opennesses within patch age $a$\\
+  $E_a(z)$& 0-1 & canopy opennesses at height $z$ within a patch age $a$\\
+
+  \multicolumn{3}{l}{\textbf{Plant state variables}} \\
+  $x$   & & vector of traits for a species\\
+  $h$   & m & height of plant\\
+  $h_0$   & m  & height of seedling after germinating\\
+  $z$   & m & height in canopy\\
+  $a_l(h)$  & m$^{-2}$ & leaf area of plant height $h$ \\
+  $Q(z, h)$ & 0-1 & fraction of leaf area for plant height $h$ above $z$\\
+ 
+  \multicolumn{3}{l}{\textbf{Abundance measures}} \\
+  $p(a)$ & yr$^{-1}$ & frequency-density of patches age $a$ \\
+  $y_x$ & m$^{-2}$ yr$^{-1}$ & vector of seed rains for a species with traits $x$\\
+  $n(x,h,a)$ & m$^{-1}$ m$^{-2}$ & density of plants per unit height per ground area\\
+
+  \multicolumn{3}{l}{\textbf{Demographic rates}} \\
+  $g(x,h, E_a)$ & m yr$^{-1}$ & height growth rate \\
+  $d(x,h, E_a)$ & yr$^{-1}$ & instantaneous mortality rate \\
+  $f(x,h, E_a)$ & yr$^{-1}$ & seed production rate \\
+  $\gamma(a)$ & yr$^{-1}$ & instantaneous disturbance rate\\
+
+  \multicolumn{3}{l}{\textbf{Demographic outcomes}} \\
+  $h(x,a_0,a)$   & m  & height of plant germinating in patch age $a_0$ at age $a$\\
+  $S_{\rm D}$ & 0-1 & probability a seed survives dispersal \\
+  $S_{\rm G} (x,h_0, E_{a_0})$ & 0-1 & probability a seed germinates successfully \\
+  $S_{\rm I} (x, a_0, a)$ & 0-1 & probability an individual survives from $a_0$ to $a$\\
+  $S_{\rm P} ( a_0, a)$ & 0-1 & probability a patch remains undisturbed from $a_0$ to $a$\\
+  $\tilde{R}(x, a_0, a)$ & & cumulative seed output for plant from $a_0$ to $a$ \\
+  $R\left(x^\prime,x\right)$ & & basic reproduction ratio for mutant growing in environment of residents \\
+ 
+  \multicolumn{3}{l}{\textbf{Miscellaneous constants}} \\
+  $c_\textrm{ext}$ & 0-1  & light extinction coefficient\\
+  \hline
+  \end{tabular}
+\label{tab:definitions}
+\end{table}
+
+\clearpage
 
 \section{Appendices}\label{appendices}
 
