@@ -97,7 +97,7 @@ deterministically via the following Partial Differential Equation (PDE)
 \begin{equation} \label{eq:PDE} 
   \frac{\partial }{\partial a} n(x,h,a)= -d(x,h, E_a) \; n(x,h,a)-\frac{\partial }{\partial m} \left[g(x,h,E_a) \; n(x,h,a)\right].
 \end{equation}
-(See appendix XXX.)
+(See section \ref{derivation-of-pde-describing-size-structured-dynamics} for derivation.)
 
 Eq. \(\ref{eq:PDE}\) has two boundary conditions. The first links the
 flux of individuals across the lower bound \((h_0)\) of the size
@@ -112,11 +112,7 @@ The function \(\pi_1 (x^\prime,h_0, E_{a_0})\) denotes survival through
 germination and must be chosen such that
 \(\pi_1 (x^\prime,h_0, E_{a_0}) / g(x,h_0, E_{a_0}) \rightarrow 0\) as
 \(g(x,h_0, E_{a_0}) \rightarrow 0\) to ensure a smooth decline in
-initial density as conditions deteriorate \citep{Falster-2011}. The
-function has that property
-\begin{equation} \label{eq:pi1}
-  pi_1 (x^\prime,h_0, E_{a_0}) = XXXX.
-\end{equation}
+initial density as conditions deteriorate \citep{Falster-2011}.
 
 The second boundary condition of Eq. \(\ref{eq:PDE}\) gives the size
 distribution for patches when \(a=0\). Throughout we consider only
@@ -136,8 +132,9 @@ age-dependent probability that a patch of age \(a\) is transformed into
 a patch of age 0 by a disturbance event. Here we focus on the situation
 where the age structure has reached an equilibrium state, which causes
 the PDE to reduce to an ordinary differential equation (ODE) with
-respect to patch age. (See appendix XXX for derivation and
-non-equilibrium case and derivation). The dynamics of \(p\) are given by
+respect to patch age. (See section
+\ref{derivation-of-pde-describing-age-structured-dynamics} for derivation and
+non-equilibrium case). The dynamics of \(p\) are given by
 \citep{Vonfoerster-1959, Mckendrick-1926}:
 \begin{equation} \label{eq:agepde}
 \frac{{\rm d}}{{\rm d} a} p(a)  = -\gamma(a) \, p(a) ,
@@ -160,6 +157,10 @@ where
 \end{equation}
 is the average lifespan of a patch and the frequency-density of patches
 age \(0\).
+
+The default approach in \texttt{TREE} is to assume  $\gamma(a)$ is an 
+increasing function of patch age, which leads to a Weibull distribution
+(see section \ref{derivation-of-pde-describing-age-structured-dynamics}).
 
 \subsection{Trait-, size- and patch-structured
 metapopulations}\label{trait--size--and-patch-structured-metapopulations}
@@ -389,10 +390,10 @@ it's seed mass, and the equilibrium seed rains across the
 metapopulation. As with all numerical techniques, the solutions are
 accurate only up to some specified level. These levels are controlled
 via parameters found within the \texttt{control} object. Below we
-provide a brief overview of the different numerical routines being
-applied and how error tolerance can be increased or decreased, as
-desired. For examples illustrating how the error controls are adjusted,
-see vignette XXXXX.
+provide a brief overview of the different numerical techniques being
+applied and outline how error tolerance can be increased or decreased. 
+We refer to various control parameters, which can be found within the 
+\texttt{control} object. 
 
 \subsection{Initial height of plants}\label{initial-height-of-plants}
 
@@ -455,7 +456,7 @@ integrating two specified functions over the size distribution to jump
 over the allowable error threshold \texttt{schedule\_eps}. This
 calculation is repeated for every time step in the development of the
 patch. A new cohort is introduced immediately prior to any cohort
-failing the above tests (See fig XXX). The dynamics of the patch are
+failing the above tests. The dynamics of the patch are
 then simulated again and the process repeated, until all integrations at
 all time points have error below the tolerable limit
 \texttt{schedule\_eps}. Decreasing \texttt{schedule\_eps} demands higher
@@ -463,7 +464,7 @@ accuracy from the solver and thus increases the number of cohorts being
 introduced. Note we are asking whether removing an existing cohort would
 cause error to jump above the threshold limit, and using this to decide
 whether an extra cohort -- in addition to the one used in the test --
-should be introduced (See fig XXX). Thus the actual error is likely to
+should be introduced. Thus the actual error is likely to
 be lower than but at most equal to \texttt{schedule\_eps}.
 
 To determine the error associated with a specified cohort, we integrate
@@ -477,11 +478,6 @@ performed by the function \texttt{seed\_rain\_error}, asks how much
 removal of the focal cohort would increase error in the total seed
 produced from the patch. The relative error in each integration is then
 calculated using the \texttt{local\_error\_integration} function.
-
-TODO: Figure XXXX illustrating progressive refinement of schedule
-
-TODO: Figure XXXX illustrating \texttt{local\_error\_integration}
-routine
 
 \subsection{Calculation of light environment and influence on
 assimilation}\label{calculation-of-light-environment-and-influence-on-assimilation}
@@ -511,7 +507,7 @@ increase in CPU cost with the number of cohorts is highly undesirable.
 We reduced the computational cost of the continuous competitive feedback
 from \(O(k^2) \rightarrow O(k)\), by approximating the \(E(z,a)\) with a
 spline. Biologically, Eq. \ref{eq:light} is a simple monotonically
-increasing function of size (Fix XXX). This function is easily
+increasing function of size. This function is easily
 approximated using a piece-wise continuous spline fitted to a limited
 number of points. Once fitted, the spline can be used to estimate any
 additional evaluations of competitive effect, and since spline
@@ -549,9 +545,13 @@ rain}\label{solving-demographic-seed-rain}
 
 For a single species, solving for \(y_x\) is a straightforward
 one-dimensional root-finding problem, which can be solved with accuracy
-\texttt{equilibrium\_eps} using XXXX.
+\texttt{equilibrium\_eps} via a simple bisection algorithm (see 
+\texttt{equlibrium.R} for details). 
 
-Expand here XXX.
+Solving seed rains in multi-species systems is significantly harder,
+because there is no sure method for multi-dimensional root finding. We
+have implemented several different approaches (see 
+\texttt{equlibrium.R} for details).
 
 \section{Appendices}\label{appendices}
 
