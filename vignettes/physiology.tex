@@ -1,14 +1,42 @@
----
-title: "tree: A package for modelling plant TRait Ecology & Evolution: _Plant physiological model_"
-csl: ../downloads/style.csl
-bibliography: ../refs.bib
----
+\documentclass[10pt,twoside]{article}
 
-The core job of the physiological model in TREE is to take a plant's current size, light
-environment and physiological parameters as inputs, and return it's growth,
-mortality and fecundity rates. In the default physiological model within TREE, these 
-vital demographic rates are all derived from the rate at which living biomass is produced 
-by the plant, which in turn is calculated based on well understood physiology (Fig. \ref{fig:schematic-phys}). Various physiological parameters (see Table \ref{tab:definitions}, \ref{tab:params} for units and definitions) influence how demographic outcomes. Varying these parameters allows for species-differences to be included, potentially via traits (see last section). 
+\usepackage{suppmat}
+\usepackage{listings}
+
+
+\usepackage{graphicx}
+% We will generate all images so they have a width \maxwidth. This means
+% that they will get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
+\title{tree: A package for modelling plant TRait Ecology \& Evolution:
+\emph{Plant physiological model}}
+\date{}
+
+\usepackage[sort&compress]{natbib}
+\bibliographystyle{../mee}
+
+\begin{document}
+
+\maketitle
+
+
+The core job of the physiological model in TREE is to take a plant's
+current size, light environment and physiological parameters as inputs,
+and return it's growth, mortality and fecundity rates. In the default
+physiological model within TREE, these vital demographic rates are all
+derived from the rate at which living biomass is produced by the plant,
+which in turn is calculated based on well understood physiology (Fig.
+\ref{fig:schematic-phys}). Various physiological parameters (see Table
+\ref{tab:definitions}, \ref{tab:params} for units and definitions)
+influence how demographic outcomes. Varying these parameters allows for
+species-differences to be included, potentially via traits (see last
+section).
 
 \begin{figure}[h!]
 \centering
@@ -18,26 +46,37 @@ demographic rates on the basis of its traits, size and light environment.}
 \label{fig:schematic-phys}
 \end{figure}
 
-# Leaf photosynthesis
+\section{Leaf photosynthesis}\label{leaf-photosynthesis}
 
-Let $p(x,E)$ denote the gross rate of leaf photosynthesis per unit area at height within the canopy of a plant with traits $x$ at light level $E(z)$. We assume a relationship of the form
+Let \(p(x,E)\) denote the gross rate of leaf photosynthesis per unit
+area at height within the canopy of a plant with traits \(x\) at light
+level \(E(z)\). We assume a relationship of the form
+
 \begin{equation}\label{eq:photosynthesis}
 p(x,E(z))=\frac{c_\textrm{p1}}{E(z)+c_\textrm{p2}},
 \end{equation}
-for the average of $p$ across the year. The parameters $c_\textrm{p1}, c_\textrm{p2}$ alter the shape of curve and can be derived from a detailed leaf-level model.
 
-The average rate of  leaf photosynthesis across the plant is then
+for the average of \(p\) across the year. The parameters
+\(c_\textrm{p1}, c_\textrm{p2}\) alter the shape of curve and can be
+derived from a detailed leaf-level model.
+
+The average rate of leaf photosynthesis across the plant is then
+
 \begin{equation}\label{eq:photosynthesis_av}
 \bar{p}(x,h,E_a)=\int_0^h p(x,E(z)) \, q(z, h),
 \end{equation}
-where $q(z, h)$ gives the density of leaf area at height $z$ (Eq. \ref{eq:crown3}). 
 
-# Standard model for mass production
+where \(q(z, h)\) gives the density of leaf area at height \(z\) (Eq.
+\ref{eq:crown3}).
 
-The amount of biomass available for
-growth, $\textrm{d}b / \textrm{d}t$, is given by the difference between income
+\section{Standard model for mass
+production}\label{standard-model-for-mass-production}
+
+The amount of biomass available for growth,
+\(\textrm{d}b / \textrm{d}t\), is given by the difference between income
 (total photosynthesis) and losses (respiration and turnover) within the
-plant [@Makela-1997; @Thornley-2000; @Falster-2011]:
+plant \citep{Makela-1997, Thornley-2000, Falster-2011}:
+
 \begin{equation}\label{eq:dbdt}
 \underbrace{\strut \frac{\textrm{d}b}{\textrm{d}t}}_\textrm{net biomass production}
   = \underbrace{\strut y}_\textrm{yield}
@@ -45,19 +84,26 @@ plant [@Makela-1997; @Thornley-2000; @Falster-2011]:
      \underbrace{\strut \,\sum_\textrm{i=l,b,s,r}{m_\textrm{i} \, r_\textrm{i}}}_\textrm{respiration}\big)
     - \underbrace{\strut \sum_\textrm{i=l,b,s,r}{m_\textrm{i} \, k_\textrm{i}}}_\textrm{turnover}.
 \end{equation}
-Here, $m,r$, and $k$ refer to the mass, respiration rate, and
-turnover rate of different tissues, denoted by subscripts $l$=leaves,
-$b$=bark, $s$=sapwood and $r$=roots. $A$ is the assimilation
-rate of CO$_2$ per leaf area and $y$ is yield: the fraction of
+
+Here, \(m,r\), and \(k\) refer to the mass, respiration rate, and
+turnover rate of different tissues, denoted by subscripts \(l\)=leaves,
+\(b\)=bark, \(s\)=sapwood and \(r\)=roots. \(A\) is the assimilation
+rate of CO\(_2\) per leaf area and \(y\) is yield: the fraction of
 assimilated carbon fixed in biomass (the remaining fraction being lost
 as growth respiration) (see Table \ref{tab:params} for units and
 definitions). Total photosynthesis is proportional to leaf area,
-$a_\textrm{l} = m_\textrm{l} / \phi$, where $\phi$ is leaf mass per area.
-The total mass of living tissues $m_\textrm{a}=m_\textrm{l}+m_\textrm{b}+m_\textrm{s}+m_\textrm{r}.$
+\(a_\textrm{l} = m_\textrm{l} / \phi\), where \(\phi\) is leaf mass per
+area. The total mass of living tissues
+\(m_\textrm{a}=m_\textrm{l}+m_\textrm{b}+m_\textrm{s}+m_\textrm{r}.\)
 
-# Height growth rate 
+\section{Height growth rate}\label{height-growth-rate}
 
-To model growth in  height requires that account not just for mass production, but also for the costs of building new tissues, allocation to reproduction, and architectural layout. Mathematically, height growth can be decomposed into a product of physiologically relevant terms [@Falster-2011]:
+To model growth in height requires that account not just for mass
+production, but also for the costs of building new tissues, allocation
+to reproduction, and architectural layout. Mathematically, height growth
+can be decomposed into a product of physiologically relevant terms
+\citep{Falster-2011}:
+
 \begin{equation} \label{eq:dhdt}
 \frac{\textrm{d}h}{\textrm{d}t}= \frac{\textrm{d}h}{\textrm{d}a_\textrm{l}}
 \times \frac{\textrm{d}a_\textrm{l}}{\textrm{d}m_\textrm{a}}
@@ -66,18 +112,18 @@ To model growth in  height requires that account not just for mass production, b
 \end{equation}
 
 The first term on the right of eq \ref{eq:dhdt},
-$\textrm{d}h / \textrm{d}a_\textrm{l}$, is the growth in plant height
+\(\textrm{d}h / \textrm{d}a_\textrm{l}\), is the growth in plant height
 per unit growth in total leaf area -- accounting for the architectural
 strategy of the plant. Some species tend to leaf out more than grow
-tall, while other species emphasise vertical
-extension.
+tall, while other species emphasise vertical extension.
 
-The second term in eq \ref{eq:dhdt}, $\textrm{d}a_\textrm{l} / \textrm{d}m_\textrm{a}$,
-accounts for the marginal cost of deploying an additional unit of leaf
-area, including construction of the leaf itself and various support
-structures. As such, $\textrm{d}a_\textrm{l} / \textrm{d}m_\textrm{a}$
-can itself be expressed as a sum of construction costs per unit leaf
-area:
+The second term in eq \ref{eq:dhdt},
+\(\textrm{d}a_\textrm{l} / \textrm{d}m_\textrm{a}\), accounts for the
+marginal cost of deploying an additional unit of leaf area, including
+construction of the leaf itself and various support structures. As such,
+\(\textrm{d}a_\textrm{l} / \textrm{d}m_\textrm{a}\) can itself be
+expressed as a sum of construction costs per unit leaf area:
+
 \begin{equation}\label{eq:daldmt}
 \frac{\textrm{d}a_\textrm{l}}{\textrm{d}m_\textrm{a}}
 = \big(\phi
@@ -85,88 +131,109 @@ area:
 \end{equation}
 
 The third term in eq \ref{eq:dhdt},
-$\textrm{d}m_\textrm{a} / \textrm{d}m_\textrm{b}$, gives the fraction of net
-biomass production (eq. \ref{eq:dbdt}) that is allocated to growth
-rather than reproduction or storage.
+\(\textrm{d}m_\textrm{a} / \textrm{d}m_\textrm{b}\), gives the fraction
+of net biomass production (eq. \ref{eq:dbdt}) that is allocated to
+growth rather than reproduction or storage.
 
-# A functional-balance model for allocation
+\section{A functional-balance model for
+allocation}\label{a-functional-balance-model-for-allocation}
 
 Here we describe an allometric model linking the various size dimensions
 of a plant required by most ecologically realistic vegetation models
 (i.e. =mass of leaves, mass of sapwood, mass of bark, mass of fine
-roots) to a plant's height. This approach allows us to track only the plant's height, while still accounting for the mass need to build leaves, roots, and stems. The growth rates
-of various tissues can then also be derived (Table \ref{tab:allometry}).
+roots) to a plant's height. This approach allows us to track only the
+plant's height, while still accounting for the mass need to build
+leaves, roots, and stems. The growth rates of various tissues can then
+also be derived (Table \ref{tab:allometry}).
 
-## Leaf area
+\subsection{Leaf area}\label{leaf-area}
 
-Based on empirically observed allometry, we assume an
-allometric log-log scaling relationship between the accumulated leaf
-area of a plant and its height:
+Based on empirically observed allometry, we assume an allometric log-log
+scaling relationship between the accumulated leaf area of a plant and
+its height:
+
 \begin{equation}\label{eq:ha}
 a_\textrm{l}=\alpha_1 \, h^{\beta_1}.
 \end{equation}
 
-Note, scaling relationship reversed from [@Falster-2011].
+Note, scaling relationship reversed from \citep{Falster-2011}.
 
-## Vertical distribution of leaf area 
+\subsection{Vertical distribution of leaf
+area}\label{vertical-distribution-of-leaf-area}
 
-We follow the model of @Yokozawa-1995 describing the
-vertical distribution of leaf area within the crowns of individual
-plants. This model can account for a variety of canopy profiles through
-a single parameter $\eta$. Setting $\eta=1$ results in a conical
-canopy, as seen in many conifers, while higher values, e.g. $\eta=12$
-, gives a top-weighted canopy profile similar to those seen among
-angiosperms. Let $a_\textrm{s}(z)$ be the sapwood area at height $z$ for a
-plant with top height $h$, $a_\textrm{s} =$a_\textrm{s}(0)$ be the  sapwood area at the base of the plant,
-$q(z,h)$ the probability density of leaf area at height $z$ and $Q(z,h)$ the cumulative fraction of a plant's leaf above height $z$. Following @Yokozawa-1995 we
-assume a relationship between $a_\textrm{s}(z)$ and height such that
+We follow the model of \citet{Yokozawa-1995} describing the vertical
+distribution of leaf area within the crowns of individual plants. This
+model can account for a variety of canopy profiles through a single
+parameter \(\eta\). Setting \(\eta=1\) results in a conical canopy, as
+seen in many conifers, while higher values, e.g. \(\eta=12\) , gives a
+top-weighted canopy profile similar to those seen among angiosperms. Let
+\(a_\textrm{s}(z)\) be the sapwood area at height \(z\) for a plant with
+top height \(h\), \(a_\textrm{s} =\)a\_\textrm{s}(0)\$ be the sapwood
+area at the base of the plant, \(q(z,h)\) the probability density of
+leaf area at height \(z\) and \(Q(z,h)\) the cumulative fraction of a
+plant's leaf above height \(z\). Following \citet{Yokozawa-1995} we
+assume a relationship between \(a_\textrm{s}(z)\) and height such that
+
 \begin{equation}\label{eq:crown1}
 \frac{a_\textrm{s}(z)}{a_\textrm{s}}= \left(1-\left(\frac{z}{h}\right)^\eta\right)^2.
 \end{equation}
+
 We also assume that each unit of sapwood area supports a fixed area of
-leaf [the pipe model @Shinozaki-1964], so that the total
-canopy area of a plant relates to basal sapwood area $a_\textrm{s}$:
+leaf \citep[the pipe model][]{Shinozaki-1964}, so that the total canopy
+area of a plant relates to basal sapwood area \(a_\textrm{s}\):
+
 \begin{equation}\label{eq:crown2}
 \frac{m_\textrm{l}}{\phi}= \theta \, a_\textrm{s}.
 \end{equation}
-The pipe model is assumed to hold within individual plants, as well as across plants of different size. It directly follows that
+
+The pipe model is assumed to hold within individual plants, as well as
+across plants of different size. It directly follows that
+
 \begin{equation}\label{eq:crown1}
 Q(z,h)= \left(1-\left(\frac{z}{h}\right)^\eta\right)^2.
 \end{equation}
-Differentiating with respect to $z$ then yields a solution for the probability density of leaf area as a function of height:
+
+Differentiating with respect to \(z\) then yields a solution for the
+probability density of leaf area as a function of height:
+
 \begin{equation}\label{eq:crown3}
 q(z,h)= 2\eta(1-z^\eta h^{-\eta})z^{\eta-1} h^{-\eta}.
 \end{equation}
 
-## Mass of sapwood
+\subsection{Mass of sapwood}\label{mass-of-sapwood}
 
-Integrating $a_\textrm{s}(z)$ gives a solution for the total mass of sapwood in
-the plant:
+Integrating \(a_\textrm{s}(z)\) gives a solution for the total mass of
+sapwood in the plant:
+
 \begin{equation}\label{eq:ms1}
 m_\textrm{s}=\rho \, \int_0^h \, a_\textrm{s}(z) \, \textrm{d}z= \rho \, a_\textrm{s} \, h \, \eta_c, \end{equation}
-where
-$\eta_c=1-\frac{2}{1+\eta} + \frac{1}{1+2\eta}$ [@Yokozawa-1995].
-Substituting from eq. \ref{eq:crown2} into eq. \ref{eq:ms1} then gives an
-expression for sapwood mass as a function leaf area and height:
+
+where \(\eta_c=1-\frac{2}{1+\eta} + \frac{1}{1+2\eta}\)
+\citep{Yokozawa-1995}. Substituting from eq. \ref{eq:crown2} into eq.
+\ref{eq:ms1} then gives an expression for sapwood mass as a function
+leaf area and height:
+
 \begin{equation}\label{eq:ms2}
 m_\textrm{s}=\rho \, \eta_c \, \theta \, a_\textrm{l} \, h.
 \end{equation}
 
-## Bark mass
+\subsection{Bark mass}\label{bark-mass}
 
 Bark and phloem tissue are modelled using an analogue of the pipe model,
 leading to a similar equation as that for sapwood mass (eq.
 \ref{eq:ms2}). Cross sectional-area of bark per unit leaf area is
-assumed to be a constant fraction $b$ of sapwood area per unit leaf
+assumed to be a constant fraction \(b\) of sapwood area per unit leaf
 area such that
+
 \begin{equation}\label{eq:mb}
 m_\textrm{b}=b m_\textrm{s}.
 \end{equation}
 
-## Root mass
+\subsection{Root mass}\label{root-mass}
 
 Also consistent with pipe-model assumption, we assume a fixed ratio of
 root mass per unit leaf area
+
 \begin{equation}\label{eq:mr}
 m_\textrm{r}=\alpha_3 \, a_\textrm{l}.
 \end{equation}
@@ -176,33 +243,50 @@ imposing a fixed ratio of root mass to leaf area ensures that
 approximate costs of root production are included in calculations of
 carbon budget.
 
-# Seed production
+\section{Seed production}\label{seed-production}
 
-The rate of seed production from the plant $f(x,h,E_a)$ is a direct function of mass allocated to reproduction:
+The rate of seed production from the plant \(f(x,h,E_a)\) is a direct
+function of mass allocated to reproduction:
+
 \begin{equation}\label{eq:fecundity}
 f(x,h,E_a) = \frac{(1-\frac{\textrm{d}m_\textrm{a}}{\textrm{d}b}) \times \frac{\textrm{d}b}{\textrm{d}t}}{
   s + c_{\textrm{acc}}},
 \end{equation}
-where $s$ is the mass of the seed and $c_{\textrm{acc}}$ is the cost per seed of accessories, such as fruits, flowers and dispersal structures.
 
-# Mortality
+where \(s\) is the mass of the seed and \(c_{\textrm{acc}}\) is the cost
+per seed of accessories, such as fruits, flowers and dispersal
+structures.
 
-Instantaneous rates of plant mortality are taken as the sum of a growth independent and growth dependent terms [@Falster-2011; @Moorcroft-2001]:
+\section{Mortality}\label{mortality}
+
+Instantaneous rates of plant mortality are taken as the sum of a growth
+independent and growth dependent terms
+\citep{Falster-2011, Moorcroft-2001}:
+
 \begin{equation}\label{eq:mortality}
 d(x,h,E_a) = d_{\textrm{I}}(x,h) + d_{\textrm{D}}(x,h,E_a).
 \end{equation}
 
-The growth independent rate is taken to be a constant, independent of plant performance, but potentially varying with species traits. The growth dependent part is assumed to decline exponentially  with the rate of mass production per unit leaf area, i.e. 
+The growth independent rate is taken to be a constant, independent of
+plant performance, but potentially varying with species traits. The
+growth dependent part is assumed to decline exponentially with the rate
+of mass production per unit leaf area, i.e.
+
 \begin{equation}\label{eq:mortality_GD}
 d_{\textrm{D}}(x,h,E_a) =  c_{d2}  \exp(-c_{d3} X),
 \end{equation}
-where $X = \textrm{d}b / \textrm{d}t / a_\textrm{l}$. This relationship allows for plants to increase mortality as growth rate approaches zero, while also allowing for differences among species in the parameters  $c_{d2}$ and $c_{d3}$. 
 
-# Hyper-parameterisation of physiological model via traits {#traits}
+where \(X = \textrm{d}b / \textrm{d}t / a_\textrm{l}\). This
+relationship allows for plants to increase mortality as growth rate
+approaches zero, while also allowing for differences among species in
+the parameters \(c_{d2}\) and \(c_{d3}\).
+
+\section{Hyper-parameterisation of physiological model via
+traits}\label{traits}
 
 \clearpage
 
-# Tables
+\section{Tables}\label{tables}
 
 \begin{table}[ht]
  \caption{Key variables in physiological model. 
@@ -269,22 +353,15 @@ where $X = \textrm{d}b / \textrm{d}t / a_\textrm{l}$. This relationship allows f
 
 \newpage
 
-
 \begin{table}[h!]
 \caption{Model parameters}
-```{r, echo=FALSE, results="asis"}
-  tree_parameters <- read.csv("../notes/growth_model_pars.csv", stringsAsFactors=FALSE)
-  x <- xtable(tree_parameters,
-              hline.after=c(1),
-              align='lp{7cm}lll')
-  y <- print(x, sanitize.text.function=as.character,
-             include.rownames=FALSE, floating=FALSE,
-             print.results=FALSE)
-  writeLines(y)
-```
+\input{table-pars}
 \label{tab:params}
 \end{table}
 
 \clearpage
 
-# References
+\bibliography{../refs}
+
+
+\end{document}
