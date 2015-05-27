@@ -1,8 +1,13 @@
 
 table_tree_parameters <- function(filename, dest){
 
-  tree_parameters <- read.csv(filename, stringsAsFactors=FALSE)
-  x <- xtable(tree_parameters,
+  xx <- read.csv(filename, stringsAsFactors=FALSE)
+
+  to_bold <- which(xx$Symbol =="" )
+
+  xx$Description[to_bold] <- sprintf("\\textbf{%s}", xx$Description[to_bold])
+
+  x <- xtable(xx,
               hline.after=c(1),
               align='lp{5cm}lll')
   y <- print(x, sanitize.text.function=as.character,
