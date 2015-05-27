@@ -149,10 +149,10 @@ targets:
     command: render("vignettes/cohort_spacing.md", quiet=TRUE)
 
   vignettes/demography.pdf:
-    command: latex_build("vignettes/demography.tex", "refs.bib", clean=TRUE) 
+    command: latex_build("vignettes/demography.tex", "refs.bib", clean=TRUE)
 
   vignettes/physiology.pdf:
-    command: latex_build("vignettes/physiology.tex", "refs.bib", clean=TRUE) 
+    command: latex_build("vignettes/physiology.tex", "refs.bib", clean=TRUE)
     depends:
       - vignettes/table-pars.tex
 

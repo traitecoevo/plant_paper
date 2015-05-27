@@ -27,8 +27,6 @@
 
 
 \section{Introduction}\label{introduction}
-system
-
 This vignette outlines methods used to model demography in the TREE
 package, using methods from \citet{Deroos-1997}; \citet{Kohyama-1993};
 \citet{Moorcroft-2001}, \citet{Falster-2011}; and \citet{Falster-2015}.
@@ -50,17 +48,14 @@ plant. Then,
 \begin{equation} \label{eq:size}
   h(x, a_0, a) = h_0 + \int_{a_0}^{a} g(x, h(x, a_0, a^\prime),E_{a^\prime}) \, \rm{d}a^\prime
 \end{equation}
-
 is the trajectory of plant height,
 \begin{equation} \label{eq:survivalIndividual}
   S_{\rm I} (x, a_0, a) = \pi_1 (x,h_0, E_{a_0}) \, \exp\left(- \int_{a_0}^{a} d(x,h(x, a_0, a^\prime), E_{a^\prime}) \, {\rm d} a^\prime \right)
 \end{equation}
-
 is the probability of survival \(S_{\rm I}\) within the patch, and
 \begin{equation} \label{eq:tildeR1}
   \tilde{R}(x, a_0, a) =\int_{a_0}^{a} f(x, h(x, a_0, a^\prime), E_{a^\prime}) \, S_{\rm I} (x, a_0, a^\prime) {\rm d} a^\prime
 \end{equation}
-
 is the cumulative seed output for the plant from its birth at age
 \(a=a_0 \rightarrow a\), and where the term \(\pi_1 (x,h_0, E_{a_0})\)
 denotes survival through germination.
@@ -91,7 +86,6 @@ with the total amount of leaf area above \(z\), i.e.
 \begin{equation} \label{eq:light}
   E(z,a) = \exp \left(-c_{ext}  \sum_{i=1}^{N} \int_{0}^{\infty} \phi(h) \, L(z, h) \, n(x_i,h,a) \, dm \right),
 \end{equation}
-
 where \(\phi(h)\) is total leaf area and \(L(z, h(m))\) is fraction of
 this leaf area held above height \(z\) for plants size \(h\),
 \(c_{ext}\) is the light extinction coefficient, and \(N\) is the number
@@ -103,7 +97,6 @@ deterministically via the following Partial Differential Equation (PDE)
 \begin{equation} \label{eq:PDE} 
   \frac{\partial }{\partial a} n(x,h,a)= -d(x,h, E_a) \; n(x,h,a)-\frac{\partial }{\partial m} \left[g(x,h,E_a) \; n(x,h,a)\right].
 \end{equation}
-
 (See appendix XXX.)
 
 Eq. \(\ref{eq:PDE}\) has two boundary conditions. The first links the
@@ -115,7 +108,6 @@ distribution to the rate at which seeds arrive in the patch, \(y_x\):
   0 & \textrm{otherwise.}
   \end{array} \right.
 \end{equation}
-
 The function \(\pi_1 (x^\prime,h_0, E_{a_0})\) denotes survival through
 germination and must be chosen such that
 \(\pi_1 (x^\prime,h_0, E_{a_0}) / g(x,h_0, E_{a_0}) \rightarrow 0\) as
@@ -131,7 +123,6 @@ distribution for patches when \(a=0\). Throughout we consider only
 situations where we start with an empty patch, i.e.
 \begin{equation} \label{eq:BC2} n\left(x,h,0\right) =0,
 \end{equation}
-
 although non--zero distributions could be specified
 \citep[e.g][]{Moorcroft-2001}.
 
@@ -151,11 +142,9 @@ non-equilibrium case and derivation). The dynamics of \(p\) are given by
 \begin{equation} \label{eq:agepde}
 \frac{{\rm d}}{{\rm d} a} p(a)  = -\gamma(a) \, p(a) ,
 \end{equation}
-
 with boundary condition
 \begin{equation}  p(0)  = \int_0^\infty \gamma(a) \, p(a) \; {\rm d} a.
 \end{equation}
-
 The probability a patch remains undisturbed from \(a_0\) to \(a\) is
 then
 \begin{equation} \label{eq:survivalPatch}
@@ -165,12 +154,10 @@ then
 The above equations lead to an equilibrium distribution of patch-ages
 \begin{equation} p(a) = p(0) S_{\rm P} (0,a),
 \end{equation}
-
 where
 \begin{equation}
   p(0) = \frac1{\int_0^\infty S_{\rm P} (0,a) {\rm d}a},
 \end{equation}
-
 is the average lifespan of a patch and the frequency-density of patches
 age \(0\).
 
@@ -194,7 +181,6 @@ which seeds are produced across all patches,
 \begin{equation}  \label{eq:seed_rain} 
   y_x = \int_0^{\infty} p(a)  \int_0^{\infty}  \pi_0 f(x,h,E_a) \; n(x,h,a)\,{\rm d} m \, {\rm d} a,
 \end{equation}
-
 where \(\pi_0\) is the average survival of seeds during dispersal.
 
 A convenient feature of Eqs. \(\ref{eq:PDE}\) - \(\ref{eq:BC2}\) is that
@@ -220,7 +206,6 @@ The total number of individuals in the metapopulation is given by
 \begin{equation}
   \hat{n}(x) = \int_{0}^{\infty} \int_{0}^{\infty}p(a) \; n(x,h,a) \, {\rm d}a \, {\rm d}h;
 \end{equation}
-
 and the average density of plants size \(h\) by
 \begin{equation}
   \bar{n}(x,h) = \int_{0}^{\infty}p(a) \; n(x,h,a) \, {\rm d}a.
@@ -233,7 +218,6 @@ value of \(\phi\) across the metapopulation is
 \begin{equation}
   \hat{\phi}(x) = \frac1{\hat{n}(x) }\int_{0}^{\infty} \int_{0}^{\infty} p(a) \; n(x,h,a) \phi(x,h,E_a) \, {\rm d}a \, {\rm d}h,
 \end{equation}
-
 while the average value of \(\phi\) for plants size \(h\) is
 \begin{equation}\bar{\phi}(x,h) = \frac1{\bar{n}(x,h) }\int_{0}^{\infty}p(a)  n(x,h,a) \phi(x,h,E_a)\, {\rm d}a.
 \end{equation}
@@ -278,7 +262,6 @@ of \(x^\prime\) has probability \(p(a)\) of landing in a patch age
 \begin{equation} \label{eq:InvFit}
   R\left(x^\prime,x\right)=\int _0^{\infty }p\left(a\right)\tilde{R}\left(x^\prime,a, \infty \right)\; {\rm d}a ,
 \end{equation}
-
 where \(\tilde{R}\left(x^\prime,a_0,a \right)\) is the expected number
 of dispersing offspring produced by a single dispersing seed arriving in
 a patch of age \(a_0\) up until age \(a\)
@@ -333,7 +316,6 @@ the density of individuals with time of birth \(a_{0}\) is given by
   n(x, m, a)  =n(x,h_0 ,a_0) 
    \exp \left(-\int _{a_0}^{a} \left[\frac{\partial g(x,h(x, a_0, a^\prime),E_{a^\prime})}{\partial h} +d(x,h(x, a_0, a^\prime),E_{a^\prime})\right] {\rm d}a^\prime \right).
 \end{equation}
-
 Eq. \ref{eq:boundN} states that the density \(n\) at a specific time is
 a product of density at the origin adjusted for changes through
 development and mortality. Density decreases through time because of
@@ -676,16 +658,14 @@ interval spanned by \([h-0.5\Delta h,h+0.5\Delta h)\) is
 class can be expressed as
 \begin{equation}\begin{array}{ll} J(h,a)=&g(h-0.5 \Delta h,a) \; n(h-0.5 \Delta h,a)-g(h+0.5 \Delta h,a) \; n(h+0.5 \Delta h,a) \\ &-d (h,a) \; n(h,a)\Delta h\\ \end{array}.
 \end{equation}
-
 The first two terms describe the flux in and out of the size class
-through growth; the last term describes lossed due through mortality.
+through growth; the last term describes losses due through mortality.
 The change in number of individuals within the interval across a time
 step \textit{$\Delta $t} is thus:
 \begin{equation}
   \begin{array}{ll} n(h,a+\Delta a)\Delta h-n(h,a)\Delta h= &g(h-0.5 \Delta h,a) \; n(h-0.5 \Delta h,a)\Delta a \\ &-g(h+0.5 \Delta h,a) \; n(h+0.5 \Delta h,a)\Delta a\\&-d (h,a) \; n(h,a)\Delta h\Delta a.
   \end{array}
 \end{equation}
-
 Rearranging,
 \begin{equation}
   \begin{array}{ll}
@@ -693,7 +673,6 @@ Rearranging,
   &-\frac{g(h+0.5 \Delta h,a) \; n(h+0.5 \Delta h,a)-g(h-0.5 \Delta h,a) \; n(h-0.5 \Delta h,a)}{\Delta h}.
   \end{array}
 \end{equation}
-
 The LHS is corresponds to the derivative of \(n\) as \(\Delta a\to 0\).
 For thin slices, \(\Delta h \sim 0\), we obtain
 \begin{equation} \label{eq:PDE-app}
@@ -730,15 +709,12 @@ one-to-one function which h for a given \(m\): \(h = \hat{h}(m)\). Then
 the following must hold
 \begin{equation} \label{eq:n_conversion} \int_{m_1}^{m_2} n(x,m,a) \; \textrm{d}m =  \int_{\hat{h}(m_1)}^{\hat{h}(m_2)} n^\prime(x,m,a) \; \textrm{d}h
 \end{equation}
-
 For very small size intervals, this equation is equivalent to
 \begin{equation} \left(m_2- m_1 \right) \; n(x,m_1,a) = \left( \hat{h}(m_2) - \hat{h}(m_1)\right) \; n^\prime(x, \hat{h}(m_1),a).
 \end{equation}
-
 Rearranging gives
 \begin{equation}  n^\prime(x, \hat{h}(m_1),a) = n(x, m_1,a) \; \frac{m_2- m_1}{\hat{h}(m_2) - \hat{h}(m_1)}
 \end{equation}
-
 Noting that the second term on the RHS is simply the definition of
 \(\frac{\delta m}{\delta h}\) evaluated at \(m_1\), we have
 \begin{equation} \label{eq:n_conversion2} n^\prime(x, h, a) = n(x, m,a) \; \frac{\delta m}{\delta h}.
