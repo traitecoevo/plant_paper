@@ -1,56 +1,38 @@
-\documentclass[]{article}
-\usepackage{lmodern}
-\usepackage{amssymb,amsmath}
-\usepackage{graphicx}
-\usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-
-\usepackage[verbose,tmargin=2cm,bmargin=2cm,lmargin=3.5cm,rmargin=2.5cm]{geometry}
-
-\usepackage{color}
-\definecolor{grey}{rgb}{0.5, 0.5, 0.5}
-
-\usepackage[unicode=true]{hyperref}
-\urlstyle{same}  % don't use monospace font for urls
-\hypersetup{breaklinks=true,
-            bookmarks=true,
-            pdfauthor={Daniel Falster, Rich FitzJohn, Mark Westoby},
-            pdftitle={\texttt{TREE}: A package for modelling plant TRait Ecology and Evolution},
-            colorlinks=true,
-            citecolor=grey,
-            urlcolor=grey,
-            linkcolor=grey,
-            pdfborder={0 0 0}}
-
-\usepackage{lineno}
-\linespread{2}
+\documentclass[a4paper,11pt]{article}
+\usepackage[osf]{mathpazo}
+\usepackage{ms}
+\usepackage[sort&compress]{natbib}
+\raggedright
 
 \usepackage[colorinlistoftodos]{todonotes}
 
-\usepackage{authblk}
 \title{\texttt{TREE}: A package for modelling plant TRait Ecology and Evolution}
-\author[1]{Daniel S. Falster}
-\author[1]{Richard G. FitzJohn}
-\author[1]{Mark Westoby}
-\affil[1]{Dept of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia}
+\author{Daniel S. Falster, Richard G. FitzJohn, and Mark Westoby}
+\affiliation{
+Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia\\
+Email for correspondence: \texttt{daniel.falster@mq.edu.au}\\
+A manuscript in consideration as a research paper for
+publication in MEE as part of the Special Feature \emph{Demography
+  beyond the Population}.}
 \date{}
 
-\usepackage[sort&compress]{natbib}
 \bibliographystyle{mee}
 
 \usepackage[title,titletoc,toc]{appendix}
 
+\mstype{Applications Note}
+\runninghead{TREE}
+% TODO: need more keywords here
+\keywords{demography}
+
 \begin{document}
-\maketitle
-
-\noindent A manuscript in consideration as a research paper for publication in MEE
-as part of the Special Feature \emph{Demography beyond the Population}.
-
+\mstitlepage
+\noindent
+\parindent=1.5em
+\addtolength{\parskip}{.3em}
+\doublespacing
 \linenumbers
-
-\section{Abstract}\label{abstract}
+\section{Summary}\label{abstract}
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \itemsep1pt\parskip0pt\parsep0pt
