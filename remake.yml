@@ -75,7 +75,7 @@ targets:
     plot: true
 
   schematic.pdf:
-    command: latex_build("schematic.tex", clean=TRUE, engine=I("xelatex"))
+    command: latex_build("schematic.tex", clean=TRUE)
     depends:
       - vignettes/schematic-frame.pdf
       - vignettes/schematic-phys.pdf
