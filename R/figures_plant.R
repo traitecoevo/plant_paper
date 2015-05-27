@@ -111,11 +111,10 @@ figure_plant <- function() {
     cbind(height=x$info[, "height"],
           leaf=x$info[, "mass_leaf"] / x$info[, "mass_live"],
           sapwood=x$info[, "mass_sapwood"] / x$info[, "mass_live"])
-    ## seed=x$info[, "fraction_allocation_reproduction"])
   }
   alloc_h <- lapply(data, f)
   plot(NA, xlim=c(0, s1$hmat), ylim=c(0, 1), type="l",
-       ylab="Fractional allocation", xlab="Height (m)", las=1)
+       ylab="Fractional of biomass", xlab="Height (m)", las=1)
   label_panel(2)
   matlines(alloc_h[["1_1"]][, 1],
            alloc_h[["1_1"]][, -1],
@@ -134,7 +133,7 @@ figure_plant <- function() {
   ylim_dhdt <- c(-0.05 * ymax_dhdt, ymax_dhdt)
 
   plot(dhdt_h[["1_1"]], ylim=ylim_dhdt, lty=1, col=cols_light[[1]],
-       type="l", las=1, xlab="Height (m)", ylab="d height / d t")
+       type="l", las=1, xlab="Height (m)", ylab="Height growth rate (m/yr)")
   lines(dhdt_h[["2_1"]], type="l", lty=2, col=cols_light[[1]])
   lines(dhdt_h[["1_2"]], type="l", lty=1, col=cols_light[[2]])
   lines(dhdt_h[["2_2"]], type="l", lty=2, col=cols_light[[2]])
@@ -145,7 +144,8 @@ figure_plant <- function() {
 
   ## Panel d: wplcp
   plot(NA, xlim=c(0, 1), ylim=ylim_dhdt, las=1,
-       xlab="Canopy openness (%)", ylab="d height / d t")
+       xlab="Canopy openness (%)", ylab="Height growth rate (m/yr)")
+  abline(h=0)
   label_panel(4)
   for (i in seq_along(d1)) {
     lines(d1[[i]], lty=1, col=cols_height[[i]])
