@@ -80,9 +80,13 @@ latex_build <- function(filename, bibliography=NULL,
     res <- run_system(latex, args)
   }
 
-  pat <- "Rerun to get cross-references right"
+  pat <- c("Rerun to get cross-references right",
+           "Rerun to get citations correct")
+  isin <- function(p, x) {
+    any(grepl(p, x))
+  }
   for (i in seq_len(max_attempts)) {
-    if (any(grepl(pat, res))) {
+    if (any(vapply(pat, isin, logical(1), res))) {
       res <- run_system(latex, args)
     } else {
       break
