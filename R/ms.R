@@ -30,54 +30,21 @@ pandoc_build <- function(file, template=NULL, format="pdf", ...) {
   pandoc_convert(file_local, output=file_out, options=args, verbose=FALSE, ...)
 }
 
-ms_deps_timestamp <- function(filename) {
-  writeLines(as.character(Sys.time()), filename)
-}
-
-## TODO: move this into callr
-run_system <- function(command, args, env=character()) {
-  res <- suppressWarnings(system2(command, args,
-                                  env=env, stdout=TRUE, stderr=TRUE))
-  ok <- attr(res, "status")
-  if (!is.null(ok) && ok != 0) {
-    cmd <- paste(c(env, shQuote(command), args), collapse = " ")
-
-    msg <- sprintf("Running command:\n  %s\nhad status %d", cmd, ok)
-    errmsg <- attr(cmd, "errmsg")
-    if (!is.null(errmsg)) {
-      msg <- c(msg, sprintf("%s\nerrmsg: %s", errmsg))
-    }
-
-    sep <- paste(rep("-", getOption("width")), collapse="")
-    msg <- c(msg, "Program output:", sep, res, sep)
-    stop(paste(msg, collapse="\n"))
-  }
-  invisible(res)
-}
-
 ## TODO: move this into remake
 ## TODO: options for saying what command is being run
 latex_build <- function(filename, bibliography=NULL,
                         chdir=TRUE, interaction="nonstopmode",
                         max_attempts=5L, clean=FALSE) {
-  latex <- Sys.which("pdflatex")
-  if (latex == "") {
-    stop("latex not found in $PATH")
-  }
-
   if (chdir && dirname(filename) != "") {
     owd <- setwd(dirname(filename))
     on.exit(setwd(owd))
     filename <- basename(filename)
   }
 
-  args <- c(paste0("-interaction=", interaction),
-            "-halt-on-error",
-            filename)
-  res <- run_system(latex, args)
+  res <- run_latex(filename, interaction)
   if (!is.null(bibliography)) {
-    run_system(Sys.which("bibtex"), sub(".tex$", "", filename))
-    res <- run_system(latex, args)
+    run_bibtex(filename)
+    res <- run_latex(filename, interaction)
   }
 
   pat <- c("Rerun to get cross-references right",
@@ -87,7 +54,7 @@ latex_build <- function(filename, bibliography=NULL,
   }
   for (i in seq_len(max_attempts)) {
     if (any(vapply(pat, isin, logical(1), res))) {
-      res <- run_system(latex, args)
+      res <- run_latex(filename, interaction)
     } else {
       break
     }
@@ -106,4 +73,23 @@ latex_clean <- function(filename) {
             ".nav", ".tdo", ".toc")
   aux <- paste0(filebase, exts)
   file.remove(aux[file.exists(aux)])
+}
+
+run_latex <- function(filename, interaction="nonstopmode") {
+  args <- c(paste0("-interaction=", interaction),
+            "-halt-on-error",
+            filename)
+  callr::run_system(Sys_which("pdflatex"), args)
+}
+
+run_bibtex <- function(filename) {
+  callr::run_system(Sys_which("bibtex"), sub(".tex$", "", filename))
+}
+
+Sys_which <- function(x) {
+  ret <- Sys.which(x)
+  if (ret == "") {
+    stop(sprintf("%s not found in $PATH", x))
+  }
+  ret
 }

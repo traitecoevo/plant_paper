@@ -4,3 +4,6 @@ tree:
 sowsear:
   source: github
   repo: richfitz/sowsear
+callr:
+  source: github
+  repo: traitecoevo/callr

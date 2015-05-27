@@ -3,6 +3,7 @@ packages:
   - tree
   - sowsear
   - xtable
+  - callr
 
 sources:
   - R
