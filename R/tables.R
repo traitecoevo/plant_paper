@@ -9,7 +9,7 @@ table_tree_parameters <- function(filename, dest){
 
   x <- xtable(xx,
               hline.after=c(1),
-              align='lp{5cm}lll')
+              align='lp{7cm}lll')
   y <- print(x, sanitize.text.function=as.character,
              include.rownames=FALSE, floating=FALSE,
              print.results=FALSE)

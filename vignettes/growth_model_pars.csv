@@ -26,7 +26,7 @@
 "Maximum allocation to reproduction","$c_\textrm{r1}$","0-1","1.0"
 "Parameter determining rate of change in $r(x, m_\textrm{l})$ around $h_m$","$c_\textrm{r2}$","-","50"
 "Mortality","","",""
-"Survival probability during dispersal","$\Pi_0$","0-1","0.25"
+"Survival probability during dispersal","$S_D$","0-1","0.25"
 "Parameter influencing survival through germination","$c_\textrm{s0}$","kg m$^{-2}$ yr$^{-1}$","0.1"
 "Baseline rate for intrinsic mortality","$c_\textrm{d0}$","yr$^{-1}$","0.52"
 "Baseline rate for growth-related mortality","$c_\textrm{d2}$","yr$^{-1}$","5.5"

@@ -42,7 +42,7 @@ plant as having traits \(x\) and size \(h\), notionally it's height. The
 plant grows in an environment \(E\), a function giving the distribution
 of light with respect to height. Ultimately \(E\) depends on the
 composition of the patch at age \(a\). To indicate this dependence we
-write \(E_a\).\\Now let the functions \(g(x,h,E_a)\), \(d(x,h,E_a)\) and
+write \(E_a\). Now let the functions \(g(x,h,E_a)\), \(d(x,h,E_a)\) and
 \(f(x,h,E_a)\) denote the growth, death, and fecundity rates of the
 plant. Then,
 \begin{equation} \label{eq:size}
@@ -50,14 +50,14 @@ plant. Then,
 \end{equation}
 is the trajectory of plant height,
 \begin{equation} \label{eq:survivalIndividual}
-  S_{\rm I} (x, a_0, a) = \pi_1 (x,h_0, E_{a_0}) \, \exp\left(- \int_{a_0}^{a} d(x,h(x, a_0, a^\prime), E_{a^\prime}) \, {\rm d} a^\prime \right)
+  S_{\rm I} (x, a_0, a) = S_{\rm G} (x,h_0, E_{a_0}) \, \exp\left(- \int_{a_0}^{a} d(x,h(x, a_0, a^\prime), E_{a^\prime}) \, {\rm d} a^\prime \right)
 \end{equation}
 is the probability of survival \(S_{\rm I}\) within the patch, and
 \begin{equation} \label{eq:tildeR1}
-  \tilde{R}(x, a_0, a) =\int_{a_0}^{a} f(x, h(x, a_0, a^\prime), E_{a^\prime}) \, S_{\rm I} (x, a_0, a^\prime) {\rm d} a^\prime
+  \tilde{R}(x, a_0, a) =\int_{a_0}^{a} f(x, h(x, a_0, a^\prime), E_{a^\prime}) \, S_{\rm I} (x, a_0, a^\prime) \, {\rm d} a^\prime
 \end{equation}
 is the cumulative seed output for the plant from its birth at age
-\(a=a_0 \rightarrow a\), and where the term \(\pi_1 (x,h_0, E_{a_0})\)
+\(a=a_0 \rightarrow a\), and where the term \(S_{\rm G} (x,h_0, E_{a_0})\)
 denotes survival through germination.
 
 The notational complexity required in Eqs. \ref{eq:size} -
@@ -81,12 +81,12 @@ equations.
 
 In the current version of \texttt{TREE} plants interact by shading one another.
 Following standards biophysical principles, we let canopy openness
-\(E(z,a)\) at height \(z\) in a patch of age \(a\) decline exponentially
+\(E_a(z)\) at height \(z\) in a patch of age \(a\) decline exponentially
 with the total amount of leaf area above \(z\), i.e.
 \begin{equation} \label{eq:light}
-  E(z,a) = \exp \left(-c_{ext}  \sum_{i=1}^{N} \int_{0}^{\infty} \phi(h) \, L(z, h) \, n(x_i,h,a) \, dm \right),
+  E_a(z) = \exp \left(-c_{ext}  \sum_{i=1}^{N} \int_{0}^{\infty} a_l(h) \, Q(z, h) \, n(x_i,h,a) \, {\rm d}h \right),
 \end{equation}
-where \(\phi(h)\) is total leaf area and \(L(z, h(m))\) is fraction of
+where \(a_l(h)\) is total leaf area and \(Q(z, h)\) is fraction of
 this leaf area held above height \(z\) for plants size \(h\),
 \(c_{ext}\) is the light extinction coefficient, and \(N\) is the number
 of species.
@@ -95,7 +95,7 @@ Assuming patches are large, the dynamics of \(n\) can be modelled
 deterministically via the following Partial Differential Equation (PDE)
 \citep{Kohyama-1993, Deroos-1997, Moorcroft-2001}:
 \begin{equation} \label{eq:PDE} 
-  \frac{\partial }{\partial a} n(x,h,a)= -d(x,h, E_a) \; n(x,h,a)-\frac{\partial }{\partial m} \left[g(x,h,E_a) \; n(x,h,a)\right].
+  \frac{\partial }{\partial a} n(x,h,a)= -d(x,h, E_a) \, n(x,h,a)-\frac{\partial }{\partial h} \left[g(x,h,E_a) \, n(x,h,a)\right].
 \end{equation}
 (See section \ref{derivation-of-pde-describing-size-structured-dynamics} for derivation.)
 
@@ -104,13 +104,13 @@ flux of individuals across the lower bound \((h_0)\) of the size
 distribution to the rate at which seeds arrive in the patch, \(y_x\):
 \begin{equation} \label{eq:BC1}
   n(x,h_0,a_0)  = \left\{
-  \begin{array}{ll}   \frac{y_x  \pi_1 (x^\prime,h_0, E_{a_0}) }{ g(x,h_0, E_{a_0}) }  & \textrm{if } g(x,h_0, E_{a_0}) > 0 \\
+  \begin{array}{ll}   \frac{y_x  \, S_{\rm G} (x, h_0, E_{a_0}) }{ g(x,h_0, E_{a_0}) }  & \textrm{if } g(x,h_0, E_{a_0}) > 0 \\
   0 & \textrm{otherwise.}
   \end{array} \right.
 \end{equation}
-The function \(\pi_1 (x^\prime,h_0, E_{a_0})\) denotes survival through
+The function \(S_{\rm G} (x, h_0, E_{a_0})\) denotes survival through
 germination and must be chosen such that
-\(\pi_1 (x^\prime,h_0, E_{a_0}) / g(x,h_0, E_{a_0}) \rightarrow 0\) as
+\(S_{\rm G} (x, h_0, E_{a_0}) / g(x,h_0, E_{a_0}) \rightarrow 0\) as
 \(g(x,h_0, E_{a_0}) \rightarrow 0\) to ensure a smooth decline in
 initial density as conditions deteriorate \citep{Falster-2011}.
 
@@ -140,7 +140,7 @@ non-equilibrium case). The dynamics of \(p\) are given by
 \frac{{\rm d}}{{\rm d} a} p(a)  = -\gamma(a) \, p(a) ,
 \end{equation}
 with boundary condition
-\begin{equation}  p(0)  = \int_0^\infty \gamma(a) \, p(a) \; {\rm d} a.
+\begin{equation}  p(0)  = \int_0^\infty \gamma(a) \, p(a) \, {\rm d} a.
 \end{equation}
 The probability a patch remains undisturbed from \(a_0\) to \(a\) is
 then
@@ -180,9 +180,9 @@ Eqs. \ref{eq:agepde} and \ref{eq:PDE}.
 The seed rain of each species in the metapopulation is given by rate at
 which seeds are produced across all patches,
 \begin{equation}  \label{eq:seed_rain} 
-  y_x = \int_0^{\infty} p(a)  \int_0^{\infty}  \pi_0 f(x,h,E_a) \; n(x,h,a)\,{\rm d} m \, {\rm d} a,
+  y_x = \int_0^{\infty} p(a)  \int_0^{\infty}  S_D \, f(x,h,E_a) \, n(x,h,a)\,{\rm d} m \, {\rm d} a,
 \end{equation}
-where \(\pi_0\) is the average survival of seeds during dispersal.
+where \(S_D\) is the average survival of seeds during dispersal.
 
 A convenient feature of Eqs. \(\ref{eq:PDE}\) - \(\ref{eq:BC2}\) is that
 the dynamics of a single patch scale up to give the dynamics of the
@@ -205,11 +205,11 @@ Summary statistics of the metapopulation are obtained by integrating
 over the density distribution, weighting by patch abundance \(p(a)\).
 The total number of individuals in the metapopulation is given by
 \begin{equation}
-  \hat{n}(x) = \int_{0}^{\infty} \int_{0}^{\infty}p(a) \; n(x,h,a) \, {\rm d}a \, {\rm d}h;
+  \hat{n}(x) = \int_{0}^{\infty} \int_{0}^{\infty}p(a) \, n(x,h,a) \, {\rm d}a \, {\rm d}h;
 \end{equation}
 and the average density of plants size \(h\) by
 \begin{equation}
-  \bar{n}(x,h) = \int_{0}^{\infty}p(a) \; n(x,h,a) \, {\rm d}a.
+  \bar{n}(x,h) = \int_{0}^{\infty}p(a) \, n(x,h,a) \, {\rm d}a.
 \end{equation}
 
 Average values for other quantities can also be calculated. Let
@@ -217,10 +217,10 @@ Average values for other quantities can also be calculated. Let
 growth rate, mortality rate, light environment, or size. The average
 value of \(\phi\) across the metapopulation is
 \begin{equation}
-  \hat{\phi}(x) = \frac1{\hat{n}(x) }\int_{0}^{\infty} \int_{0}^{\infty} p(a) \; n(x,h,a) \phi(x,h,E_a) \, {\rm d}a \, {\rm d}h,
+  \hat{\phi}(x) = \frac1{\hat{n}(x) }\int_{0}^{\infty} \int_{0}^{\infty} p(a) \, n(x,h,a) \, \phi(x,h,E_a) \, {\rm d}a \, {\rm d}h,
 \end{equation}
 while the average value of \(\phi\) for plants size \(h\) is
-\begin{equation}\bar{\phi}(x,h) = \frac1{\bar{n}(x,h) }\int_{0}^{\infty}p(a)  n(x,h,a) \phi(x,h,E_a)\, {\rm d}a.
+\begin{equation}\bar{\phi}(x,h) = \frac1{\bar{n}(x,h) }\int_{0}^{\infty}p(a)  \, n(x,h,a) \, \phi(x,h,E_a)\, {\rm d}a.
 \end{equation}
 
 When calculating average mortality rate, one must decide whether
@@ -261,7 +261,7 @@ of \(x^\prime\) has probability \(p(a)\) of landing in a patch age
 \(a\). The basic reproduction ratio for individuals with traits
 \(x^\prime\) is then:
 \begin{equation} \label{eq:InvFit}
-  R\left(x^\prime,x\right)=\int _0^{\infty }p\left(a\right)\tilde{R}\left(x^\prime,a, \infty \right)\; {\rm d}a ,
+  R\left(x^\prime,x\right)=\int _0^{\infty }p\left(a\right) \, \tilde{R}\left(x^\prime,a, \infty \right)\, {\rm d}a ,
 \end{equation}
 where \(\tilde{R}\left(x^\prime,a_0,a \right)\) is the expected number
 of dispersing offspring produced by a single dispersing seed arriving in
@@ -272,7 +272,7 @@ an individual's fecundity over the expected lifetime the patch, taking
 into account competitive shading from residents with traits \(x\), the
 individual's probability of surviving, and its traits via the equation:
 \begin{equation} \label{eq:tildeR}
-  \tilde{R}(x^\prime, a_0, a) =\int_{a_0}^{a}  \pi_0f(x^\prime, h(x^\prime, a_0, a^\prime), E_{a^\prime}) \, S_{\rm I} (x^\prime, a_0, a^\prime) \, S_{\rm P} (a_0,a^\prime)  {\rm d} a^\prime.
+  \tilde{R}(x^\prime, a_0, a) =\int_{a_0}^{a}  S_D \, f(x^\prime, h(x^\prime, a_0, a^\prime), E_{a^\prime}) \, S_{\rm I} (x^\prime, a_0, a^\prime) \, S_{\rm P} (a_0,a^\prime) \,  {\rm d} a^\prime.
 \end{equation}
 
 \section{Approximating system dynamics using the escalator boxcar train
@@ -352,14 +352,14 @@ The probability of an individual located on the boundary surviving from
 \(a_0 \rightarrow a\) is obtained via Eq. \ref{eq:survivalIndividual},
 which is solved via the IVP:
 \[\frac{dy}{dt} = d(x,h_i(a^\prime), E_{a^\prime}),\]
-\[ y(0) = - \ln\left(\pi_1 (x^\prime,h_0, E_{a_0})\right) .\]
+\[ y(0) = - \ln\left(S_{\rm G} (x^\prime,h_0, E_{a_0})\right) .\]
 Survival is then \[ S_{\rm I} (x, a_0, a) = \exp\left(- y(a) \right).\]
 
 \subsection{Seed production}\label{seed-production}
 
 The lifetime seed production of individuals located on the boundary is
 obtained via Eq. \ref{eq:tildeR}, which is solved via the IVP:
-\[\frac{dy}{dt} = \pi_0 \,f(x, m_i(a^\prime), E_{a^\prime}) \, S_{\rm I} (x, a_0, a^\prime) \, S_{\rm P} (a_0,a^\prime),\]
+\[\frac{dy}{dt} = S_D \,f(x, m_i(a^\prime), E_{a^\prime}) \, S_{\rm I} (x, a_0, a^\prime) \, S_{\rm P} (a_0,a^\prime),\]
 \[ y(0) = 0,\] where \(S_{\rm I}\) is individual survival (defined
 above) and \(S_{\rm P}\) is calculated as in Eq.
 \(\ref{eq:survivalPatch}\).
@@ -369,7 +369,7 @@ above) and \(S_{\rm P}\) is calculated as in Eq.
 The density of individuals located on the boundary is obtained via Eq.
 \ref{eq:boundN}, which is solved via the IVP:
 \[\frac{dy}{dt} = \frac{\partial g(x,h_i(a^\prime), E_{a^\prime})}{\partial h} +d(x,h_i(a^\prime),E_{a^\prime}),\]
-\[ y(0) = -\ln\left(n(x,h_0 ,a_0) \, \pi_1 (x^\prime,h_0, E_{a_0}) \right).\]
+\[ y(0) = -\ln\left(n(x,h_0 ,a_0) \, S_{\rm G} (x^\prime,h_0, E_{a_0}) \right).\]
 Density is then given by \[n(x,h_0 ,a_0) =\exp(-y(a)).\]
 
 \section{Controlling error in the \texttt{TREE}
@@ -486,7 +486,7 @@ To progress the system of ODE's requires that we calculate the amount of
 shading on each of the cohort boundaries, from all other plants in the
 patch.
 
-Calculating canopy openness at a given height \(E(z,a)\) requires that
+Calculating canopy openness at a given height \(E_a(z)\) requires that
 we integrate over the size distribution (Eq. \ref{eq:light}). This
 integration is performed using the trapezium rule, within the function
 \texttt{area\_leaf\_above} in \texttt{species.h}. The main factor
@@ -497,7 +497,7 @@ is within some specified limit. Thus the simple trapezium integration
 within the \texttt{area\_leaf\_above} function \emph{is} refined
 adaptively via the \texttt{build\_schedule} function.
 
-The cost of calculating \(E(z,a)\) increases linearly with the number of
+The cost of calculating \(E_a(z)\) increases linearly with the number of
 cohorts in the system. But the same calculation must then be repeated
 many times (multiple heights for every cohort), so the overall CPU cost
 of stepping the system increases as to \(O(k^2)\), where \(k\) is the
@@ -505,7 +505,7 @@ total number of cohorts across all species. This disproportionate
 increase in CPU cost with the number of cohorts is highly undesirable.
 
 We reduced the computational cost of the continuous competitive feedback
-from \(O(k^2) \rightarrow O(k)\), by approximating the \(E(z,a)\) with a
+from \(O(k^2) \rightarrow O(k)\), by approximating the \(E_a(z)\) with a
 spline. Biologically, Eq. \ref{eq:light} is a simple monotonically
 increasing function of size. This function is easily
 approximated using a piece-wise continuous spline fitted to a limited
@@ -553,6 +553,8 @@ because there is no sure method for multi-dimensional root finding. We
 have implemented several different approaches (see 
 \texttt{equlibrium.R} for details).
 
+
+
 \section{Appendices}\label{appendices}
 
 \subsection{Derivation of PDE describing age-structured
@@ -574,16 +576,16 @@ The frequency of patches with \(a < x\) is given by
 \(\int_{0}^{x}p(a,t) \, {\rm d}a\), with
 \(\int_{0}^{\infty} p(a,t) \, {\rm d}a =1\). If
 \(\frac{\partial}{\partial t}\gamma(a,t)=0\), then \(p(a)\) will
-approach an equilibrium solution given by \[p(a) = p(0) \Pi(a),\] where
-\[\Pi(a) = \exp \left( \int_{0}^{a}-\gamma(\tau)\,{\rm d}\tau\right)\]
+approach an equilibrium solution given by \[p(a) = p(0) S_{\rm P}(0,a),\] where
+\[S_{\rm P}(0,a) = \exp \left( \int_{0}^{a}-\gamma(\tau)\,{\rm d}\tau\right)\]
 is the probability that a local population will remain undisturbed for
 at least \(a\) years (patch survival function), and
-\[p(0) = \frac1{ \int_{0}^{\infty}\Pi(a) \,{\rm d}a}\] is the
+\[p(0) = \frac1{ \int_{0}^{\infty}S_{\rm P}(0,a) \,{\rm d}a}\] is the
 frequency-density of patches age 0. The rate of disturbance for patches
 age \(a\) is given by
-\(\frac{\partial (1-\Pi(a))}{\partial a} = \frac{-\partial \Pi(a)}{\partial a}\),
+\(\frac{\partial (1-S_{\rm P}(0,a))}{\partial a} = \frac{-\partial S_{\rm P}(0,a)}{\partial a}\),
 while the expected lifetime for patches is
-\(\int_0^\infty - a \frac{\partial}{\partial a} \Pi(a) \, {\rm d} a = \int_0^\infty \Pi(a) \, {\rm d} a = \frac1{p(0)}\)
+\(\int_0^\infty - a \frac{\partial}{\partial a} S_{\rm P}(0,a) \, {\rm d} a = \int_0^\infty S_{\rm P}(0,a) \, {\rm d} a = \frac1{p(0)}\)
 (2\(^{nd}\) step made using integration by parts).
 
 An equilibrium patch age distribution may be achieved under a variety of
@@ -598,22 +600,22 @@ vegetation is also assumed to be at equilibrium.
 If the probability of patch disturbance is constant with respect to
 patch age (\(=\lambda\)), then rates at which patches age \(a\) are
 disturbed follow an exponential distribution:
-\(-\partial \Pi(a)/ \partial a = \lambda e^{-\lambda a}\). The patch age
+\(-\partial S_{\rm P}(0,a)/ \partial a = \lambda e^{-\lambda a}\). The patch age
 distribution is then given by:
-\[ \Pi(a) = \exp\left(-\lambda a\right), p(0) = \lambda.\]
+\[ S_{\rm P}(0,a) = \exp\left(-\lambda a\right), p(0) = \lambda.\]
 
 \subsubsection{Weibull distribution}\label{weibull-distribution}
 
 If the probability of patch disturbance changes as a function of time,
 with \(\gamma(a) = \lambda \psi a^{\psi-1}\), then rates at which
 patches age \(a\) are disturbed follow a Weibull distribution:
-\(-\partial \Pi(a)/ \partial a = \lambda \psi a^{\psi -1}e^{-\lambda a^\psi}\).
+\(-\partial S_{\rm P}(0,a)/ \partial a = \lambda \psi a^{\psi -1}e^{-\lambda a^\psi}\).
 Values of \(\psi>1\) imply probability of disturbance increases with
 patch age; \(\psi<1\) implies probability of disturbance decreases with
 age. When \(\psi=1\) we obtain the exponential distribution, a special
 case of the Weibull. The Weibull distribution results in following for
 the patch age distribution:
-\[\Pi(a) = e^{-\lambda a^\psi}, p(0) =  \frac{\psi \lambda^{\frac1{\psi}}}{\Gamma\left(\frac1{\psi}\right)},\]
+\[S_{\rm P}(0,a) = e^{-\lambda a^\psi}, p(0) =  \frac{\psi \lambda^{\frac1{\psi}}}{\Gamma\left(\frac1{\psi}\right)},\]
 where \(\Gamma(x)\) is the gamma function
 \(\left(\Gamma(x) = \int_{0}^{\infty}e^{-t}t^{x-1}\, dt\right)\). We can
 also specify the distribution by its mean return time
@@ -626,22 +628,22 @@ The probability of patch disturbance might also be vary with properties
 of the vegetation. In this case, we cannot prescribe a known
 distribution to \(p(a)\), it must be solved numerically. Patch survival
 can be calculated numerically as
-\[\Pi(a) = \exp \left( \int_{0}^{a}-\gamma(\tau)\,{\rm d}\tau\right).\]
+\[S_{\rm P}(0,a) = \exp \left( \int_{0}^{a}-\gamma(\tau)\,{\rm d}\tau\right).\]
 For calculations of fitness, we want to integrate over some fraction
 \(q\) of the patch age distribution (i.e.~ignoring the long tail of the
 distributions). Thus we want to find the point \(x\) which satisfies
 \(\int_{0}^{x} p(a)\,{\rm d}a =q\).Locating \(x\) requires knowledge of
 \(p(0)\), which in turn requires us to approximate the tail of the
-integral \(\int_{0}^{\infty} \Pi(a)\,{\rm d}a\). For \(a > x\), let
-\(\Pi(a)\) be approximated by
-\[\Pi(a) \approx \Pi(x) \exp\left( - (x-a) \gamma(x)\right).\] Then
-\[p(0)^{-1} =\int_{0}^{\infty} \Pi(a)\,{\rm d}a \approx \int_{0}^{x} \Pi(a)\,{\rm d}a + \int_{x}^{\infty } \Pi(a)\,{\rm d}a\]
-\[ = \int_{0}^{x} \Pi(a)\,{\rm d}a + \frac{\Pi(x)}{\gamma(x)}. \]
+integral \(\int_{0}^{\infty} S_{\rm P}(0,a)\,{\rm d}a\). For \(a > x\), let
+\(S_{\rm P}(0,a)\) be approximated by
+\[S_{\rm P}(0,a) \approx S_{\rm P}(0,x) \exp\left( - (x-a) \gamma(x)\right).\] Then
+\[p(0)^{-1} =\int_{0}^{\infty} S_{\rm P}(0,a)\,{\rm d}a \approx \int_{0}^{x} S_{\rm P}(0,a)\,{\rm d}a + \int_{x}^{\infty } S_{\rm P}(0,a)\,{\rm d}a\]
+\[ = \int_{0}^{x} S_{\rm P}(0,a)\,{\rm d}a + \frac{S_{\rm P}(0,x)}{\gamma(x)}. \]
 Substituting into \(\int_{0}^{x} p(a)\,{\rm d}a =q\), we obtain
-\[q=  p(0) \int_{0}^{x} \Pi(a) \, {\rm d}a = \frac{\int_{0}^{x} \Pi(a) \, {\rm d}a}{\int_{0}^{x} \Pi(a)\,{\rm d}a + \frac{\Pi(x)}{\gamma(x)}}\]
-\[\Rightarrow  \frac{\Pi(x)}{\gamma(x)} = \frac{1-q}{q} \int_{0}^{x} \Pi(a) \, {\rm d}a.\]
+\[q=  p(0) \int_{0}^{x} S_{\rm P}(0,a) \, {\rm d}a = \frac{\int_{0}^{x} S_{\rm P}(0,a) \, {\rm d}a}{\int_{0}^{x} S_{\rm P}(0,a)\,{\rm d}a + \frac{S_{\rm P}(0,x)}{\gamma(x)}}\]
+\[\Rightarrow  \frac{S_{\rm P}(0,x)}{\gamma(x)} = \frac{1-q}{q} \int_{0}^{x} S_{\rm P}(0,a) \, {\rm d}a.\]
 Thus by monitoring
-\(\Pi(x), \gamma(x), \int_{0}^{x} \Pi(a) \, {\rm d}a\) we can evaluate
+\(S_{\rm P}(0,x), \gamma(x), \int_{0}^{x} S_{\rm P}(0,a) \, {\rm d}a\) we can evaluate
 when a sufficient range of the patch age distribution has been
 incorporated.
 
@@ -649,32 +651,32 @@ incorporated.
 dynamics}\label{derivation-of-pde-describing-size-structured-dynamics}
 
 To model the population we use a PDE describing the dynamics for a thin
-slice \(\Delta m\). Assuming that all rates are constant within the
+slice \(\Delta h\). Assuming that all rates are constant within the
 interval \(\Delta h\), the total number of individuals within the
 interval spanned by \([h-0.5\Delta h,h+0.5\Delta h)\) is
 \(n(h,a)\Delta h\) . The flux of individuals in and out of the size
 class can be expressed as
-\begin{equation}\begin{array}{ll} J(h,a)=&g(h-0.5 \Delta h,a) \; n(h-0.5 \Delta h,a)-g(h+0.5 \Delta h,a) \; n(h+0.5 \Delta h,a) \\ &-d (h,a) \; n(h,a)\Delta h\\ \end{array}.
+\begin{equation}\begin{array}{ll} J(h,a)=&g(h-0.5 \Delta h,a) \, n(h-0.5 \Delta h,a)-g(h+0.5 \Delta h,a) \, n(h+0.5 \Delta h,a) \\ &-d (h,a) \, n(h,a)\Delta h\\ \end{array}.
 \end{equation}
 The first two terms describe the flux in and out of the size class
 through growth; the last term describes losses due through mortality.
 The change in number of individuals within the interval across a time
 step \textit{$\Delta $t} is thus:
 \begin{equation}
-  \begin{array}{ll} n(h,a+\Delta a)\Delta h-n(h,a)\Delta h= &g(h-0.5 \Delta h,a) \; n(h-0.5 \Delta h,a)\Delta a \\ &-g(h+0.5 \Delta h,a) \; n(h+0.5 \Delta h,a)\Delta a\\&-d (h,a) \; n(h,a)\Delta h\Delta a.
+  \begin{array}{ll} n(h,a+\Delta a)\Delta h-n(h,a)\Delta h= &g(h-0.5 \Delta h,a) \, n(h-0.5 \Delta h,a)\Delta a \\ &-g(h+0.5 \Delta h,a) \, n(h+0.5 \Delta h,a)\Delta a\\&-d (h,a) \, n(h,a)\Delta h\Delta a.
   \end{array}
 \end{equation}
 Rearranging,
 \begin{equation}
   \begin{array}{ll}
-  \frac{n(h,a+\Delta a)-n(h,a)}{\Delta a} = &-d (h,a) \; n(h,a) \\
-  &-\frac{g(h+0.5 \Delta h,a) \; n(h+0.5 \Delta h,a)-g(h-0.5 \Delta h,a) \; n(h-0.5 \Delta h,a)}{\Delta h}.
+  \frac{n(h,a+\Delta a)-n(h,a)}{\Delta a} = &-d (h,a) \, n(h,a) \\
+  &-\frac{g(h+0.5 \Delta h,a) \, n(h+0.5 \Delta h,a)-g(h-0.5 \Delta h,a) \, n(h-0.5 \Delta h,a)}{\Delta h}.
   \end{array}
 \end{equation}
 The LHS is corresponds to the derivative of \(n\) as \(\Delta a\to 0\).
 For thin slices, \(\Delta h \sim 0\), we obtain
 \begin{equation} \label{eq:PDE-app}
-  \frac{\partial }{\partial t} n(h,a)=-d (h,a) \; n(h,a)-\frac{\partial }{\partial h} (g(h,a) \; n(h,a)).
+  \frac{\partial }{\partial t} n(h,a)=-d (h,a) \, n(h,a)-\frac{\partial }{\partial h} (g(h,a) \, n(h,a)).
 \end{equation}
 
 To complete the model, the PDE must be supplemented with boundary
@@ -682,16 +684,16 @@ conditions that specify the density at the lower end of \(n(h_{0},a)\)
 for all \(t\) as well as the the initial distribution when \(t=0\),
 \(n(h,0)\). The former is derived by integrating the PDE with respect to
 \(h\) over the interval \((h_{0},h_{\infty })\), yielding
-\begin{equation}\frac{\partial }{\partial t} \int _{h_{0} }^{h_{\infty } }n(h,a) \partial h=g(h_{0} ,a) \; n(h_{0} ,a)-g(h_{\infty } ,a) \; n(h_{\infty } ,a)-\int _{h_{0} }^{h_{\infty } }d (h,a) \; n(h,a) \partial h.
+\begin{equation}\frac{\partial }{\partial t} \int _{h_{0} }^{h_{\infty } }n(h,a) \partial h=g(h_{0} ,a) \, n(h_{0} ,a)-g(h_{\infty } ,a) \, n(h_{\infty } ,a)-\int _{h_{0} }^{h_{\infty } }d (h,a) \, n(h,a) \partial h.
 \end{equation}
 
 The LHS of this relationship is evidently the rate of change of total
 numbers of individual in the population, while the right-hand-term is
 the total population death rate. Further, \(n(h_{\infty } ,a)=0\). Thus
-to balance total births and deaths, \(g(h_{0} ,a) \; n(h_{0} ,a)\) must
+to balance total births and deaths, \(g(h_{0} ,a) \, n(h_{0} ,a)\) must
 equal the birth rate \(B(x, a)\). Thus the boundary condition is given
 by
-\begin{equation}g(h_{0} ,a) \; n(h_{0} ,a)=B(x, a).
+\begin{equation}g(h_{0} ,a) \, n(h_{0} ,a)=B(x, a).
 \end{equation}
 
 \subsection{Converting density from one size unit to
@@ -705,17 +707,17 @@ must be equal. So let's say density is expressed in units of size \(m\),
 but we want density in units of size \(h\). First we require a
 one-to-one function which h for a given \(m\): \(h = \hat{h}(m)\). Then
 the following must hold
-\begin{equation} \label{eq:n_conversion} \int_{m_1}^{m_2} n(x,m,a) \; \textrm{d}m =  \int_{\hat{h}(m_1)}^{\hat{h}(m_2)} n^\prime(x,m,a) \; \textrm{d}h
+\begin{equation} \label{eq:n_conversion} \int_{m_1}^{m_2} n(x,m,a) \, \textrm{d}m =  \int_{\hat{h}(m_1)}^{\hat{h}(m_2)} n^\prime(x,m,a) \, \textrm{d}h
 \end{equation}
 For very small size intervals, this equation is equivalent to
-\begin{equation} \left(m_2- m_1 \right) \; n(x,m_1,a) = \left( \hat{h}(m_2) - \hat{h}(m_1)\right) \; n^\prime(x, \hat{h}(m_1),a).
+\begin{equation} \left(m_2- m_1 \right) \, n(x,m_1,a) = \left( \hat{h}(m_2) - \hat{h}(m_1)\right) \, n^\prime(x, \hat{h}(m_1),a).
 \end{equation}
 Rearranging gives
-\begin{equation}  n^\prime(x, \hat{h}(m_1),a) = n(x, m_1,a) \; \frac{m_2- m_1}{\hat{h}(m_2) - \hat{h}(m_1)}
+\begin{equation}  n^\prime(x, \hat{h}(m_1),a) = n(x, m_1,a) \, \frac{m_2- m_1}{\hat{h}(m_2) - \hat{h}(m_1)}
 \end{equation}
 Noting that the second term on the RHS is simply the definition of
 \(\frac{\delta m}{\delta h}\) evaluated at \(m_1\), we have
-\begin{equation} \label{eq:n_conversion2} n^\prime(x, h, a) = n(x, m,a) \; \frac{\delta m}{\delta h}.
+\begin{equation} \label{eq:n_conversion2} n^\prime(x, h, a) = n(x, m,a) \, \frac{\delta m}{\delta h}.
 \end{equation}
 
 \clearpage

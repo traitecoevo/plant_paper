@@ -32,11 +32,12 @@ and return it's growth, mortality and fecundity rates. In the default
 physiological model within \texttt{TREE}, these vital demographic rates are all
 derived from the rate at which living biomass is produced by the plant,
 which in turn is calculated based on well understood physiology (Fig.
-\ref{fig:schematic-phys}). Various physiological parameters (see Table
-\ref{tab:definitions}, \ref{tab:params} for units and definitions)
+\ref{fig:schematic-phys}). Various physiological parameters
 influence how demographic outcomes. Varying these parameters allows for
 species-differences to be included, potentially via traits (see last
-section).
+section). Tables
+\ref{tab:definitions} and \ref{tab:params} gives units and definitions of all variables
+and parameters. 
 
 \begin{figure}[h!]
 \centering
@@ -57,7 +58,6 @@ p(x,E(z))=\frac{c_\textrm{p1}}{E(z)+c_\textrm{p2}},
 for the average of \(p\) across the year. The parameters
 \(c_\textrm{p1}, c_\textrm{p2}\) alter the shape of curve and can be
 derived from a detailed leaf-level model.
-
 The average rate of leaf photosynthesis across the plant is then
 \begin{equation}\label{eq:photosynthesis_av}
 \bar{p}(x,h,E_a)=\int_0^h p(x,E(z)) \, q(z, h),
@@ -92,13 +92,16 @@ area. The total mass of living tissues
 
 \section{Height growth rate}\label{height-growth-rate}
 
-To model growth in height requires that account not just for mass
-production, but also for the costs of building new tissues, allocation
+The key measure of growth required by the demographic solver is 
+rate of height growth for the plant, $g(x,h, E_a)$. To model growth in 
+height requires that we translate mass
+production into height increment, accounting for the costs of 
+building new tissues, allocation
 to reproduction, and architectural layout. Mathematically, height growth
 can be decomposed into a product of physiologically relevant terms
 \citep{Falster-2011}:
 \begin{equation} \label{eq:dhdt}
-\frac{\textrm{d}h}{\textrm{d}t}= \frac{\textrm{d}h}{\textrm{d}a_\textrm{l}}
+g(x,h, E_a)= \frac{\textrm{d}h}{\textrm{d}t}= \frac{\textrm{d}h}{\textrm{d}a_\textrm{l}}
 \times \frac{\textrm{d}a_\textrm{l}}{\textrm{d}m_\textrm{a}}
 \times \frac{\textrm{d}m_\textrm{a}}{\textrm{d}b}
 \times \frac{\textrm{d}b}{\textrm{d}t}.
@@ -153,7 +156,6 @@ its height:
 \begin{equation}\label{eq:ha}
 a_\textrm{l}=\alpha_1 \, h^{\beta_1}.
 \end{equation}
-
 Note, scaling relationship reversed from \citep{Falster-2011}.
 
 \subsection{Vertical distribution of leaf
@@ -181,16 +183,15 @@ area of a plant relates to basal sapwood area \(a_\textrm{s}\):
 \begin{equation}\label{eq:crown2}
 \frac{m_\textrm{l}}{\phi}= \theta \, a_\textrm{s}.
 \end{equation}
-
 The pipe model is assumed to hold within individual plants, as well as
-across plants of different size. It directly follows that
+across plants of different size. It then follows that
 \begin{equation}\label{eq:crown1}
 Q(z,h)= \left(1-\left(\frac{z}{h}\right)^\eta\right)^2.
 \end{equation}
 Differentiating with respect to \(z\) then yields a solution for the
 probability density of leaf area as a function of height:
 \begin{equation}\label{eq:crown3}
-q(z,h)= 2\frac{\eta}{h}(1-\left(\frac{z}{h}\right)^{\eta}) \left(\frac{z}{h}\right)^{\eta-1}.
+q(z,h)= 2\frac{\eta}{h}\left(1-\left(\frac{z}{h}\right)^{\eta}\right) \left(\frac{z}{h}\right)^{\eta-1}.
 \end{equation}
 
 \subsection{Mass of sapwood}\label{mass-of-sapwood}
@@ -226,7 +227,6 @@ root mass per unit leaf area
 \begin{equation}\label{eq:mr}
 m_\textrm{r}=\alpha_3 \, a_\textrm{l}.
 \end{equation}
-
 Even though nitrogen and water uptake are not modelled explicitly,
 imposing a fixed ratio of root mass to leaf area ensures that
 approximate costs of root production are included in calculations of
@@ -242,9 +242,7 @@ f(x,h,E_a) = \frac{(1-\frac{\textrm{d}m_\textrm{a}}{\textrm{d}b}) \times \frac{\
 \end{equation}
 where \(s\) is the mass of the seed and \(c_{\textrm{acc}}\) is the cost
 per seed of accessories, such as fruits, flowers and dispersal
-structures.
-
-The function $\frac{\textrm{d}m_\textrm{a}}{\textrm{d}b}$ gives the fraction
+structures. The function $\frac{\textrm{d}m_\textrm{a}}{\textrm{d}b}$ gives the fraction
 of $\frac{\textrm{d}b}{\textrm{d}t}$ that is allocated to growth, while 
 $1-\frac{\textrm{d}m_\textrm{a}}{\textrm{d}b}$ gives the  fraction allocated
 to reproduction.
@@ -257,7 +255,6 @@ independent and growth dependent terms
 \begin{equation}\label{eq:mortality}
 d(x,h,E_a) = d_{\textrm{I}}(x,h) + d_{\textrm{D}}(x,h,E_a).
 \end{equation}
-
 The growth independent rate is taken to be a constant, independent of
 plant performance, but potentially varying with species traits. The
 growth dependent part is assumed to decline exponentially with the rate
@@ -270,20 +267,31 @@ relationship allows for plants to increase mortality as growth rate
 approaches zero, while also allowing for differences among species in
 the parameters \(c_{d2}\) and \(c_{d3}\).
 
+We also require a function \(\S_g(x^\prime,h_0, E_{a_0})\) for survival
+through germination. For the demographic model to behave smoothly, 
+\(S_G (x^\prime,h_0, E_{a_0}) / g(x,h_0, E_{a_0})\) should approach zero as
+\(g(x,h_0, E_{a_0}) \rightarrow 0\). Following \citep{Falster-2011},
+we use the function
+\begin{equation} \label{eq:pi1}
+  S_G (x^\prime,h_0, E_{a_0}) = \frac1{X^2 + 1.0}
+\end{equation}
+where $X = c_{s0} \frac{a_l}{\textrm{d}b / \textrm{d}t}$ and $c_{s0}$ is a
+constant. The behaviour of Eq. \ref{eq:pi1} is consistent with Eq. 
+\ref{eq:mortality_GD}, as both cause survival to decline with mass production.
+
 \section{Hyper-parameterisation of physiological model via
 traits}\label{traits}
 
 The plant physiological model includes default values for all parameters needed 
 (see Table \ref{tab:params}). Species are known to vary considerably
-in many of these parameters, such as $\phi,\rho,c_{p1},s$. By varying  parameters
-one can therefore account for different ecologies.
+in many of these parameters, such as $\phi,\rho,c_{p1},s$; so by varying  parameters
+one can account for different ecologies. When altering one parameter in the model, however,
+one must also consider whether there are trade-offs linking parameters. 
 
-When altering one parameter in the model, one must also consider whether there 
-are trade-offs linking parameters. \texttt{TREE} allows for 
+\texttt{TREE} allows for 
 hyper-parameterisation of the plant physiological model via plant functional traits, i.e. 
-simultaneous variation in multiple parameters because of assumed trade-off.
-
-In the default physiological model we implement the following relationships. For more 
+simultaneous variation in multiple parameters because of assumed trade-off. In the 
+default physiological model we implement the following relationships. For more 
 details see \texttt{make\_FFW16\_hyperpar.R}.
 
 \subsection{Leaf mass per area}
@@ -295,8 +303,7 @@ based on widely observed scaling relationship from \citet{Wright-2004}:
 $$k_l=k_{l0} \, \left(\frac{\phi}{\phi_0}\right)^{-B_4}.$$
 We normalise the relationship around a global mean LMA of $\phi_0$ -- this
 allows us to vary $k_{l0}$ and $B_4$ without displacing the relationship from the 
-observed mean.
-
+observed mean. 
 We also vary mass based leaf respiration rate so that it stays constant per unit leaf area and
 varies with LMA, as is empirically observed \citet{Wright-2004}:
 $$c_{Rl}= \frac{c_{Rl0}}{\phi}.$$
@@ -307,13 +314,11 @@ The trait wood density ($\rho$) directly influences growth by changing
 $\textrm{d}a_\textrm{l} / \textrm{d}m_\textrm{a}$.  In addition we  
 link $\rho$ to the rate of growth independent mortality:
 $$c_{d0}=d_{00} \, \left(\frac{\rho}{\rho_0}\right) ^ {-d1}.$$
-
 In addition, $\rho$ is assumed to influence the rate of sapwood turnover, 
 $$k_s=k_{s0} \, \left(\frac{\rho}{\rho_0}\right)^ {-B5},$$
 and the rate of sapwood respiration per unit mass:
-$$c_{Rs} <- \frac{4012.0}{\rho}.$$
-
-As we did with $\phi$, we normalise the mortality and turnover 
+$$c_{Rs} = \frac{4012.0}{\rho}.$$
+As with $\phi$, we normalise the mortality and turnover 
 relationships around a global mean value of $\rho_0$. 
 
 \subsection{Seed mass}
@@ -335,11 +340,11 @@ $$c_{Rl}=c_{RN}  \, \nu.$$
 
 \section{Tables}\label{tables}
 
-\begin{table}[ht]
+\begin{table}[h!]
  \caption{Key variables in physiological model. 
- Subscripts $i=l,s,b,r,a$ refer to leaves, sapwood, roots, total of these vegetative tissues. Similarly $a_i$ denotes \textbf{areas}, of leaves ($i=l$) and of cross-sections of total stem and sapwood ($i= st,ss$) respectively.}
+ Subscripts $i=l,s,b,r,a$ refer to leaves, sapwood, roots, total of these vegetative tissues. Similarly $a_i$ denotes areas, of leaves ($i=l$) and of cross-sections of total stem and sapwood ($i= st,ss$) respectively.}
 \centering
-  \begin{tabular}{p{2cm}p{2cm}p{7cm}}
+  \begin{tabular}{p{2cm}p{2cm}p{8cm}}
   \hline
   Symbol & Unit & Description \\
   \hline
@@ -358,11 +363,14 @@ $$c_{Rl}=c_{RN}  \, \nu.$$
 
 \newpage
 
-\begin{table}[ht]
-\caption{Equations for an allometric growth model, based on functional balance assumption. }
+\begin{table}[h!]
+\caption{Equations for an allometric growth model, based on functional balance assumptions. 
+The key assumptions of the physiological model are listed in a), under "function". From these
+assumptions we derive allocation functions for both tissue areas and masses (b). We can also 
+express growth rate for each tissue as a function of growth rate in leaf area. }
 \centering
   \begin{tabular}{p{2.5cm}p{3.5cm}p{5cm}p{4cm} }\\ \hline
-  Variable & Function & Marginal cost & Growth rate\\ \hline
+  Variable & Function & Allocation & Growth rate\\ \hline
   \multicolumn{4}{l}{\textbf{a) Assumed relationship to leaf area}} \\ \\
   height &
     $h = \alpha_1 \, a_\textrm{l}^{\beta_1}$ &
@@ -373,9 +381,9 @@ $$c_{Rl}=c_{RN}  \, \nu.$$
     $\frac{\textrm{d}a_\textrm{s}}{\textrm{d} a_\textrm{l}} = \theta$ &
     $\frac{\textrm{d}a_\textrm{s}}{\textrm{d}t}  =\frac{\textrm{d}a_\textrm{s}}{\textrm{d} a_\textrm{l}} \, \frac{\textrm{d}a_\textrm{l}}{\textrm{d}t}$ \\
   bark area &
-    $a_\textrm{sb} = b \, \theta \, a_\textrm{l}$ &
-    $\frac{\textrm{d}a_\textrm{sb}}{\textrm{d} a_\textrm{l}} = b \, \theta$ &
-    $\frac{\textrm{d}a_\textrm{sb}}{\textrm{d}t} = \frac{\textrm{d}a_\textrm{sb}}{\textrm{d} a_\textrm{l}} \, \frac{\textrm{d}a_\textrm{l}}{\textrm{d}t}$ \\  \\
+    $a_\textrm{b} = b \, \theta \, a_\textrm{l}$ &
+    $\frac{\textrm{d}a_\textrm{b}}{\textrm{d} a_\textrm{l}} = b \, \theta$ &
+    $\frac{\textrm{d}a_\textrm{b}}{\textrm{d}t} = \frac{\textrm{d}a_\textrm{b}}{\textrm{d} a_\textrm{l}} \, \frac{\textrm{d}a_\textrm{l}}{\textrm{d}t}$ \\  \\
   \multicolumn{4}{l}{\textbf{b) Derived equation for mass of tissue }} \\
   leaf mass &
     $m_\textrm{l} = \phi \, a_\textrm{l} $ &
@@ -386,9 +394,9 @@ $$c_{Rl}=c_{RN}  \, \nu.$$
     $\frac{\textrm{d}m_\textrm{s}}{\textrm{d}a_\textrm{l}} = \theta\, \rho\, \eta_c\, \big( h + a_\textrm{l}\, \frac{\textrm{d}h}{\textrm{d}a_\textrm{l}} \big)$ &
     $\frac{\textrm{d}m_\textrm{s}}{\textrm{d}t}  = \frac{\textrm{d}m_\textrm{s}}{\textrm{d}a_\textrm{l}} \, \frac{\textrm{d}a_\textrm{l}}{\textrm{d}t}$ \\
   bark mass &
-    $m_\textrm{sb} = b\, \theta \, \rho \, \eta_c \, a_\textrm{l} \, h $ &
-    $\frac{\textrm{d}m_\textrm{sb}}{\textrm{d}a_\textrm{l}} = b \, \theta \, \rho \, \eta_c\big( h + a_\textrm{l} \, \frac{\textrm{d}h}{\textrm{d}a_\textrm{l}} \big)$ &
-    $\frac{\textrm{d}m_\textrm{sb}}{\textrm{d}t}  = \frac{\textrm{d}m_\textrm{sb}}{\textrm{d}a_\textrm{l}} \, \frac{\textrm{d}a_\textrm{l}}{\textrm{d}t}$ \\
+    $m_\textrm{b} = b\, \theta \, \rho \, \eta_c \, a_\textrm{l} \, h $ &
+    $\frac{\textrm{d}m_\textrm{b}}{\textrm{d}a_\textrm{l}} = b \, \theta \, \rho \, \eta_c\big( h + a_\textrm{l} \, \frac{\textrm{d}h}{\textrm{d}a_\textrm{l}} \big)$ &
+    $\frac{\textrm{d}m_\textrm{b}}{\textrm{d}t}  = \frac{\textrm{d}m_\textrm{b}}{\textrm{d}a_\textrm{l}} \, \frac{\textrm{d}a_\textrm{l}}{\textrm{d}t}$ \\
   root mass &
     $m_\textrm{r} = \alpha_3 \, a_\textrm{l}$ &
     $\frac{\textrm{d}m_\textrm{r}}{\textrm{d}a_\textrm{l}} = \alpha_3$  &
