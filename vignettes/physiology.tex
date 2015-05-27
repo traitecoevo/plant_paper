@@ -26,10 +26,10 @@
 \maketitle
 
 
-The core job of the physiological model in TREE is to take a plant's
+The core job of the physiological model in \texttt{TREE} is to take a plant's
 current size, light environment and physiological parameters as inputs,
 and return it's growth, mortality and fecundity rates. In the default
-physiological model within TREE, these vital demographic rates are all
+physiological model within \texttt{TREE}, these vital demographic rates are all
 derived from the rate at which living biomass is produced by the plant,
 which in turn is calculated based on well understood physiology (Fig.
 \ref{fig:schematic-phys}). Various physiological parameters (see Table
@@ -41,7 +41,7 @@ section).
 \begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{../output/schematic-phys.pdf}
-\caption{Physiological model in TREE, giving 
+\caption{Physiological model in \texttt{TREE}, giving 
 demographic rates on the basis of its traits, size and light environment.}
 \label{fig:schematic-phys}
 \end{figure}
@@ -194,7 +194,7 @@ sapwood in the plant:
 m_\textrm{s}=\rho \, \int_0^h \, a_\textrm{s}(z) \, \textrm{d}z= \rho \, a_\textrm{s} \, h \, \eta_c, 
 \end{equation}
 where \(\eta_c=1-\frac{2}{1+\eta} + \frac{1}{1+2\eta}\)
-\citep{Yokozawa-1995}. Substituting from eq. \ref{eq:crown2} into eq.
+\citep{Yokozawa-1995}. Substituting from Eq. \ref{eq:crown2} into Eq.
 \ref{eq:ms1} then gives an expression for sapwood mass as a function
 leaf area and height:
 \begin{equation}\label{eq:ms2}
@@ -204,7 +204,7 @@ m_\textrm{s}=\rho \, \eta_c \, \theta \, a_\textrm{l} \, h.
 \subsection{Bark mass}\label{bark-mass}
 
 Bark and phloem tissue are modelled using an analogue of the pipe model,
-leading to a similar equation as that for sapwood mass (eq.
+leading to a similar equation as that for sapwood mass (Eq.
 \ref{eq:ms2}). Cross sectional-area of bark per unit leaf area is
 assumed to be a constant fraction \(b\) of sapwood area per unit leaf
 area such that
