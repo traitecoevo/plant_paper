@@ -34,7 +34,7 @@ physiological model within {\plant}, these vital demographic rates are all
 derived from the rate at which living biomass is produced by the plant,
 which in turn is calculated based on well understood physiology (Fig.
 \ref{fig:schematic-phys}). Various physiological parameters
-influence how demographic outcomes. Varying these parameters allows for
+influence demographic outcomes. Varying these parameters allows for
 species-differences to be included, potentially via traits (see last
 section). Tables
 \ref{tab:definitions} and \ref{tab:params} gives units and definitions of all variables
@@ -44,7 +44,9 @@ and parameters.
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{../figures/schematic-phys}
 \caption{Physiological model in {\plant}, giving
-demographic rates on the basis of its traits, size and light environment.}
+demographic rates on the basis of its traits, size and light environment. as functions of 
+net mass production. The dashed line to mortality indicates that although mortality rate is assumed to depend on mass production, no 
+mass is actually allocated there.}
 \label{fig:schematic-phys}
 \end{figure}
 
@@ -57,9 +59,10 @@ level \(E(z)\). We assume a relationship of the form
 p(x,E(z))=\frac{c_\textrm{p1}}{E(z)+c_\textrm{p2}},
 \end{equation}
 for the average of \(p\) across the year. The parameters
-\(c_\textrm{p1}, c_\textrm{p2}\) alter the shape of curve and can be
-derived from a detailed leaf-level model.
-The average rate of leaf photosynthesis across the plant is then
+\(c_\textrm{p1}, c_\textrm{p2}\) are derived from a detailed leaf-level 
+model and correspond to maximum annual photosynthesis and light-level
+where photosynthesis is 50\% of it's maximum value. The average rate of 
+leaf photosynthesis across the plant is then
 \begin{equation}\label{eq:photosynthesis_av}
 \bar{p}(x,h,E_a)=\int_0^h p(x,E(z)) \, q(z, h),
 \end{equation}
@@ -71,7 +74,7 @@ production}\label{standard-model-for-mass-production}
 
 The amount of biomass available for growth,
 \(\textrm{d}b / \textrm{d}t\), is given by the difference between income
-(total photosynthesis) and losses (respiration and turnover) within the
+(total photosynthetic rate) and losses (respiration and turnover) within the
 plant \citep{Makela-1997, Thornley-2000, Falster-2011}:
 \begin{equation}\label{eq:dbdt}
 \underbrace{\strut \frac{\textrm{d}b}{\textrm{d}t}}_\textrm{net biomass production}
@@ -80,13 +83,13 @@ plant \citep{Makela-1997, Thornley-2000, Falster-2011}:
      \underbrace{\strut \,\sum_\textrm{i=l,b,s,r}{m_\textrm{i} \, r_\textrm{i}}}_\textrm{respiration}\big)
     - \underbrace{\strut \sum_\textrm{i=l,b,s,r}{m_\textrm{i} \, k_\textrm{i}}}_\textrm{turnover}.
 \end{equation}
-Here, \(m,r\), and \(k\) refer to the mass, respiration rate, and
+Here, \(m,r\), and \(k\) refer to the mass, maintenance respiration rate, and
 turnover rate of different tissues, denoted by subscripts \(l\)=leaves,
 \(b\)=bark, \(s\)=sapwood and \(r\)=roots. \(A\) is the assimilation
 rate of CO\(_2\) per leaf area and \(y\) is yield: the fraction of
 assimilated carbon fixed in biomass (the remaining fraction being lost
-as growth respiration) (see Table \ref{tab:params} for units and
-definitions). Total photosynthesis is proportional to leaf area,
+as growth respiration). The growth respiration component comes in addition
+to any costs of maintenance respiration. Gross photosynthetic production is proportional to leaf area,
 \(a_\textrm{l} = m_\textrm{l} / \phi\), where \(\phi\) is leaf mass per
 area. The total mass of living tissues
 \(m_\textrm{a}=m_\textrm{l}+m_\textrm{b}+m_\textrm{s}+m_\textrm{r}.\)
@@ -169,7 +172,7 @@ parameter \(\eta\). Setting \(\eta=1\) results in a conical canopy, as
 seen in many conifers, while higher values, e.g. \(\eta=12\) , gives a
 top-weighted canopy profile similar to those seen among angiosperms. Let
 \(a_\textrm{s}(z)\) be the sapwood area at height \(z\) for a plant with
-top height \(h\), \(a_\textrm{s} =\)a\_\textrm{s}(0)\$ be the sapwood
+top height \(h\), \(a_\textrm{s}\) ($= a_\textrm{s}(0)$) be the sapwood
 area at the base of the plant, \(q(z,h)\) the probability density of
 leaf area at height \(z\) and \(Q(z,h)\) the cumulative fraction of a
 plant's leaf above height \(z\). Following \citet{Yokozawa-1995} we
