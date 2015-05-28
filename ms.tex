@@ -78,18 +78,19 @@ influencing dynamics over time-scales ranging from instantaneous physiological
 effects to long-term evolutionary outcomes \citep{Harper-1977, Westoby-2002}. As
 an individual increases its leaf area, its potential to generate
 photosynthate also rises. Yet as individuals get larger, an increasing
-fraction of photosynthate must be diverted towards
-building and maintaining support tissues rather than leaves
-\citep{Givnish-1988, Enquist-2007}, and reproduction \citep{Thomas-2011}. Consequently 
+fraction of that photosynthate is diverted towards
+building and maintaining support tissues
+\citep{Givnish-1988, Enquist-2007} and reproduction \citep{Thomas-2011}. Consequently 
 rates of growth and mortality change with individual size
 \citep{Muller-2006, Thomas-2011, Ruger-2011, Wright-2010}. The traits of
 a species also interact with size to shape its demography. Leaf
 construction costs and wood density affect growth rates
 \citep{Wright-2010}. Other traits such as seed size and height at
 maturation determine start and end points of ontogenetic trajectories
-\citep{Westoby-2002}. Over longer time-frames, natural selection favours
-traits that provide a competitive advantage, such as faster growth, larger
-seeds or taller height \citep{Falster-2003}. Consequently, selective forces may amplify size-related effects on demography. Accounting for the effects of size and traits in models is therefore fundamental to developing theory on the structure and dynamics of the biosphere
+\citep{Westoby-2002}. Over longer time-frames, natural selection generates
+traits that amplify size-related effects on demography,
+such as faster growth, larger seeds or taller height \citep{Falster-2003}. 
+Accounting for the effects of size and traits in models is therefore fundamental to developing theory on the structure and dynamics of the biosphere
 \citep{Purves-2008, Moorcroft-2001, Falster-2003}, in particular for notable
 phenomena such as successional dynamics, self thinning, trait evolution
 and species coexistence.
@@ -105,13 +106,14 @@ reason is the computational
 challenge of modelling size-structured dynamics. During the 1980s and
 early 1990s, size-structured ``gap'' models were widely used
 \citep[e.g.][]{Huston-1987, Shugart-1980}. These gap models were
-parameterised in terms of growth and demography, and consequently did a
-poor job of simulating carbon fluxes \todo{ref}. The next generation of models
-focussed more on physiology and, presumably for computational reasons,
+parameterised in terms of growth using statistical functions; this meant 
+that data had to be collected for each species, limiting widespread application. 
+The next generation of models focussed on establishing core physiology for 
+a limited number of functional types, and, presumably for computational reasons,
 sacrificed details of demography in order to achieve global coverage
-\citep{Haxeltine-1996}. This history has brought us to the
+\citep{Haxeltine-1996,Woodward-1995}. This history has brought us to the
 current perplexing situation where all but a couple
-\citep{Moorcroft-2001, Smith-2014} of the most popular vegetation
+\citep[e.g.][]{Moorcroft-2001, Smith-2014} of the most popular vegetation
 models lack size-structure. Instead, most models
 are focused on modelling fluxes carbon and water, but say little about
 demographic behaviour, and consequently are also unable to account for
@@ -125,8 +127,9 @@ size-related traits such as adult size and seed size, but detailed
 size-structured demography is rarely considered, at least for plant
 models \cite[for animal examples, see][]{Deroos-1988, Deroos-1992}. Consequently, it has
 been difficult to connect mechanisms described in these simplistic
-models with field data and real traits, which are almost always strongly
-size-structured.
+models with type of data often collected in the field, such as physiological
+leaf traits, and demographic data on growth and mortality in long-term monitoring 
+plots \citep{Adler-2013}.
 
 In this note, we describe the \texttt{TREE} package for R
 \citep{R-2015}, a mechanistic framework for studying the effects of size
@@ -134,26 +137,52 @@ structure and trait variation on the demography of individual plants, of
 patches of competing plants, and of meta-populations structured by a
 prevailing disturbance regime. The package came about as a way to extend
 previous work investigating the effect of traits on vegetation
-properties \citep{Falster-2011} and the mechanisms facilitating
-coexistence of trait mixtures \citep{Falster-2015}. These studies
-provided the foundation methods needed \todo{needed for what.. its hinted above... maybe rearrange the sentences} here we provide robust and
-extensible implementations. We describe the general approach of the
-package and then a series of use cases, focussing at different levels of
+properties and the mechanisms facilitating
+coexistence of trait mixtures \citep{Falster-2011,Falster-2015}. Building 
+on earlier studies \citep{Deroos-1997,Kohyama-1993,Moorcroft-2001}, these
+papers outlined methods for driving trait-, size- and patch-structured 
+dynamics from a core physiological model. Here we provide 
+a robust and extensible implementation of those methods. 
+We describe the general approach of the
+package and then sections with details at different levels of
 ecological organisation. Each section provides a short description of
-the required methods, design considerations, and then some worked
-examples illustrating potential use cases and design features. Detailed
-technical documents are provided as supplementary information, and updated
-versions of technical documents are also available within the \texttt{TREE}
-package itself. The use cases highlighted reflect our own interests in
-understanding trait-based demography and community assembly. Yet we
-expect the methods provided to be useful in other contexts. For example,
-prior to \texttt{TREE} there was no \texttt{R} package that allowed one to simply grow a
-plant over time, based on well-understood physiology. Surely this is one
-of the simplest demographic actions one might hope for, with diverse
-potential applications in ecology, evolution, forestry, agriculture, and
-vegetation modelling. We hope the mechanistic platform provided here
-will complement the increasingly sophisticated statistical methods now
-available to analyse size-structured data \citep[e.g.][]{Metcalf-2013}.
+the required methods, design considerations, and then 
+example applications. Detailed
+technical documents are provided as supplementary information (see Appendices),
+and updated versions of technical documents are also available within the \texttt{TREE}
+package itself. 
+
+While the applications highlighted reflect our own interests in understanding
+trait-based demography and community assembly, we expect the methods provided
+to be useful in variety of contexts. For example, prior to \texttt{TREE} there
+was no \texttt{R} package that allowed one to simply grow a plant over time,
+based on well-understood physiology. Surely this is one of the simplest
+demographic actions one might hope for, with diverse potential applications in
+ecology, evolution, forestry, agriculture, and vegetation modelling. More
+specifically, \texttt{TREE} provides a  platform for investigating how
+morphological and physiological traits influence  growth rate and shade
+tolerance, thus potentially giving a theoretical foundation  for observed
+empirical patterns \citep{Wright-2010,Baltzer-2007}. Being driven by traits,
+the model can be extended to potentially very many species. Users can also 
+add their own physiological models. Individual plants
+can then be  situated in a patch with competitors and the demography of a
+competing population  investigated, thereby capturing phenomena such as multi-
+species self-thinning,  successional transitions and age-related changes in
+vegetation productivity. \texttt{TREE}  models the emergent behaviour of
+patches deterministically, based on a continual  size-density distribution. As
+such, it is not required to specify a particular patch size.  Finally,
+\texttt{TREE} allows for emergent phenomena across a metapopulation of patches
+to  be investigated, and thus provides a tractable mechanism to scale from
+individual plant to  vegetation, incorporating the non-linear effects of size
+and traits on vegetation outcomes. In  this sense \texttt{TREE} is similar to
+the Ecosystem Demography \citep{Moorcroft-2001}  and LPJ-GUESS
+\citep{Smith-2014} models. However, whereas these other models were designed
+to primarily capture large-scale regional biogeocehcmisty driven by climatic
+variables,  \texttt{TREE} was designed so that the rules driving the
+demography of individual trees, patches and metapopulations could be
+manipulated and studied in detail. The three models are therefore highly 
+complimentary, and also connect with the increasingly sophisticated statistical 
+methods now available to analyse size-structured data \citep[e.g.][]{Metcalf-2013}.
 
 \section{The approach}
 
@@ -202,7 +231,9 @@ growth also to be estimated. To properly model trait variation,
 different parameters (such as rates of leaf turnover, respiration, photosynthesis 
 per leaf area) in the model are linked via assumed tradeoffs. For
 example, the trait LMA is used to estimate the rate of leaf turnover,
-based on widely observed scaling relationship from \citet{Wright-2004}.
+based on observed scaling relationship spanning across diverse vegetation and
+plant functional  global \citep{Wright-2004} (see 
+Appendix \ref{sec:FFW16} for details).
 
 \subsection{Design features}
 
@@ -212,7 +243,7 @@ physiologies can be used, and the parameters of each model can be
 altered. Trait differences are accounted for by altering relevant
 parameters (see Appendix \ref{sec:parameters}).
 
-\subsection{Use cases and examples}
+\subsection{Applications}
 
 With above functionality, \texttt{TREE} can be used to estimate essential
 physiological rates for individual plants (Fig. \ref{fig:plant}). The
@@ -260,20 +291,26 @@ empty patch and constant flow of seeds from a global seed rain (Fig.
 \subsection{Design features}
 
 When modelling a patch, we are interested in modelling changes in the
-size-density-distribution \(n(h,a)\) over time, i.e.~the density of
-individuals with height \(h\) within a patch of age \(a\). We assume
-that patches are large, and are vertically but not horizontally
-structured. Thus, shading in \texttt{TREE} is modelled as a mean field with
-respect to spatial layout. Similar assumptions are found in many models
+size-density-distribution \(n(x,h,a)\) with patch age \(a\), i.e. the density of
+individuals with traits \(x\) and height \(h\) within a patch of age \(a\). Density
+is measured as individuals per unit height and per unit ground area.
+
+We assume that patches are large, and are vertically but not horizontally
+structured. In other words, we account for size differences but not spatial 
+layout within the patch. Similar assumptions are found in many models
 simulating size-structured dynamics
-\citep{Moorcroft-2001, Huston-1987, Smith-2014}. Under these
-assumptions, the dynamics of \(n\) behave deterministically and can be
+\citep{Moorcroft-2001, Huston-1987, Smith-2014,Kohyama-1993}. The assumption of a large
+patch means the population of plants within the patch -- and thus the 
+dynamics of \(n\) -- behave deterministically \citep{Deroos-1997}, and can therefore be
 approximated via a Partial Differential Equation (PDE) (see Appendix
 \ref{sec:demography}). The same PDE has been shown to capture average behaviour
-across a large number of small patches \citep{Moorcroft-2001}. Ideally
-one would also consider spatial interactions within patches,
+across a large number of small patches \citep{Moorcroft-2001}. The model may 
+therefore capture average demographic behaviour across a range of patch sizes.
+
+Ideally one would also consider spatial interactions within patches,
 however such models are very computationally demanding, and also
-impossible to solve in a deterministic fashion \citep{Pacala-1996}.
+impossible to solve in a deterministic fashion \citep{Huston-1987, 
+Pacala-1996}.
 Moreover, it remains unclear whether resolving spatial details within a
 patch would provide further ecological detail, in part because the
 process of competitive thinning tends to break down spatial clusters
@@ -322,7 +359,7 @@ distribution of cohort introduction times across patch age (Fig.
 \ref{fig:patch}a), generally with tighter spacing of cohorts in 
 younger patches.
 
-\subsection{Use cases and examples}
+\subsection{Applications}
 
 Modelling of size-structured dynamics via solving of a deterministic PDE
 enables multiple complex non-linear demographic phenomena to be
@@ -385,7 +422,7 @@ requires finding a root of a multidimensional function, subject to the
 constraints that this root is stable (e.g., the trivial equilibrium of
 zero seed rain always exists, but is often not stable) (Appendix \ref{sec:fitness});
 
-\subsection{Use cases and examples}
+\subsection{Applications}
 
 As previously noted \citep{Kohyama-1993, Moorcroft-2001, Falster-2011} a
 feature of the size-structured metapopulation concept implemented here
@@ -412,9 +449,10 @@ to different plant parts also arise as emergent properties (Fig.
 \ref{fig:patch}c). Similarly, distributions of abundance, leaf area and
 growth rate with respect to size emerge at both patch scale and scale of
 metapopulation (Fig. \ref{fig:emergent}). Note in particular how a single
-physiological model produces a variety of relationships, dependent on patch
-age. These emergent phenomena might then be compared to the observed
-distributions in large forest tracts \citep{Muller-2006}.
+physiological model produces a variety of height-density relationships, 
+dependent on patch age, as well as an emergent average across all patches 
+(Fig. \ref{fig:emergent}). This emergent relationship might then be 
+compared to the observed distributions in large forest plots \citep{Muller-2006}.
 
 \section{Invasion fitness}
 
@@ -432,7 +470,7 @@ reproduction ratio \(R\) is simply the total seed output of the new
 type, averaged across the metapopulation. The new type can invade when
 \(R > 1\).
 
-\subsection{Use cases and examples}
+\subsection{Applications}
 
 With fitness defined, it becomes possible to model adaptive dynamics
 and community assembly \citep{Dieckmann-2007, Geritz-1998}. This is best
@@ -500,10 +538,9 @@ releases will also be available there.
 The current parametrisation of the physiological model is based on
 \citet{Falster-2011}. Parameter values were drawn from available literature (see
 Appendix \ref{sec:FFW16}); however for some parameters limited or no data were
-readily available. Providing updated parameter sets is trivial (see Appendix
-\ref{sec:parameters}). Ideally, parameters would be inferred through a combination of
-independent estimates and constraining outputs from \texttt{TREE} against diverse data sources
-\citep{Lebauer-2012, Keenan-2013}.
+readily available. Providing updated parameter sets is trivial; the challenge 
+is to infer suitable values by constraining  outputs from \texttt{TREE} against diverse data sources
+\citep{Lebauer-2012, Keenan-2013}. This is an area in which we are still actively working.
 
 \section{Closing comments}
 
