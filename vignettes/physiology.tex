@@ -3,6 +3,7 @@
 \usepackage{suppmat}
 \usepackage{listings}
 
+\newcommand{\plant}{\textsc{plant}}
 
 \usepackage{graphicx}
 % We will generate all images so they have a width \maxwidth. This means
@@ -14,7 +15,7 @@
 \makeatother
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 
-\title{tree: A package for modelling plant TRait Ecology \& Evolution:
+\title{plant: A package for modelling forest trait ecology \& evolution:
 \emph{Plant physiological model}}
 \date{}
 
@@ -26,10 +27,10 @@
 \maketitle
 
 
-The core job of the physiological model in \texttt{TREE} is to take a plant's
+The core job of the physiological model in {\plant} is to take a plant's
 current size, light environment and physiological parameters as inputs,
 and return it's growth, mortality and fecundity rates. In the default
-physiological model within \texttt{TREE}, these vital demographic rates are all
+physiological model within {\plant}, these vital demographic rates are all
 derived from the rate at which living biomass is produced by the plant,
 which in turn is calculated based on well understood physiology (Fig.
 \ref{fig:schematic-phys}). Various physiological parameters
@@ -42,7 +43,7 @@ and parameters.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{schematic-phys}
-\caption{Physiological model in \texttt{TREE}, giving 
+\caption{Physiological model in {\plant}, giving
 demographic rates on the basis of its traits, size and light environment.}
 \label{fig:schematic-phys}
 \end{figure}
@@ -288,7 +289,7 @@ in many of these parameters, such as $\phi,\rho,c_{p1},s$; so by varying  parame
 one can account for different ecologies. When altering one parameter in the model, however,
 one must also consider whether there are trade-offs linking parameters. 
 
-\texttt{TREE} allows for 
+{\plant} allows for
 hyper-parameterisation of the plant physiological model via plant functional traits, i.e. 
 simultaneous variation in multiple parameters because of assumed trade-off. In the 
 default physiological model we implement the following relationships. For more 

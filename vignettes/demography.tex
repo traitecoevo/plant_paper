@@ -3,6 +3,7 @@
 \usepackage{suppmat}
 \usepackage{listings}
 
+\newcommand{\plant}{\textsc{plant}}
 
 \usepackage{graphicx}
 % We will generate all images so they have a width \maxwidth. This means
@@ -14,7 +15,7 @@
 \makeatother
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 
-\title{\texttt{TREE}: A package for modelling plant TRait Ecology \& Evolution:
+\title{plant: A package for modelling forest trait ecology \& evolution:
 \emph{Modelling demography of plants, patches and metapopulations}}
 \date{}
 
@@ -27,7 +28,7 @@
 
 
 \section{Introduction}\label{introduction}
-This vignette outlines methods used to model demography in the \texttt{TREE}
+This vignette outlines methods used to model demography in the {\plant}
 package, using methods from \citet{Deroos-1997}; \citet{Kohyama-1993};
 \citet{Moorcroft-2001}, \citet{Falster-2011}; and \citet{Falster-2015}.
 We first outline the system dynamics and then describe the numerical
@@ -80,7 +81,7 @@ two other factors: i) plants interact, thereby altering \(E_a\) with
 age; and (ii) new individuals may establish, expanding the the system of
 equations.
 
-In the current version of \texttt{TREE} plants interact by shading one another.
+In the current version of {\plant} plants interact by shading one another.
 Following standards biophysical principles, we let canopy openness
 \(E_a(z)\) at height \(z\) in a patch of age \(a\) decline exponentially
 with the total amount of leaf area above \(z\), i.e.
@@ -159,7 +160,7 @@ where
 is the average lifespan of a patch and the frequency-density of patches
 age \(0\).
 
-The default approach in \texttt{TREE} is to assume  $\gamma(a)$ is an 
+The default approach in {\plant} is to assume  $\gamma(a)$ is an
 increasing function of patch age, which leads to a Weibull distribution
 (see section \ref{derivation-of-pde-describing-age-structured-dynamics}).
 
@@ -373,8 +374,8 @@ The density of individuals located on the boundary is obtained via Eq.
 \[ y(0) = -\ln\left(n(x,h_0 ,a_0) \, S_{\rm G} (x^\prime,h_0, E_{a_0}) \right).\]
 Density is then given by \[n(x,h_0 ,a_0) =\exp(-y(a)).\]
 
-\section{Controlling error in the \texttt{TREE}
-model}\label{controlling-error-in-the-tree-model}
+\section{Controlling error in the {\plant} model}
+\label{controlling-error-in-the-plant-model}
 
 In this section we outline how to control the error of the solution
 estimated to the system described in the previous two sections.
@@ -408,15 +409,15 @@ library's 1-D \texttt{bisect} routine
 \citep{Schaling-2014, Eddelbuettel-2015}. The accuracy of the solution
 is controlled by the parameter \texttt{plant\_seed\_tol}.
 
-\subsection{Approximation of size-density distribution via the
-EBT}\label{approximation-of-size-density-distribution-via-the-ebt}
+\subsection{Approximation of size-density distribution via the EBT}
+\label{approximation-of-size-density-distribution-via-the-ebt}
 
 Errors in the EBT approximation to \(n\) can arise from two sources: i)
 poor spacing of cohorts in the size dimension, and ii) when stepping
 cohorts through time.
 
 The first factor controlling the accuracy with which cohorts are stepped
-through time is the accuracy of the ODE stepper being used. \texttt{TREE} uses
+through time is the accuracy of the ODE stepper being used. {\plant} uses
 the embedded Runge-Kutta Cash-Karp 4-5 algorithm \citep{Cash-1990}, with
 code ported directivity from the
 \href{http://www.gnu.org/software/gsl/}{GNU Scientific Library}
