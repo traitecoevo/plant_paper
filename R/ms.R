@@ -50,8 +50,9 @@ latex_build <- function(filename, bibliography=NULL,
     res <- run_latex(filename, interaction, engine)
   }
 
-  pat <- c("Rerun to get cross-references right",
-           "Rerun to get citations correct")
+  pat <- c("Rerun to get cross-references right", # labels
+           "Rerun to get citations correct",      # bibtex
+           "Rerun to get outlines right")         # tikz
   isin <- function(p, x) {
     any(grepl(p, x))
   }
