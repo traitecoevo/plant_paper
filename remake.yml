@@ -40,11 +40,11 @@ targets:
 
   figures:
     depends:
-      - output/plant.pdf
-      - output/patch.pdf
-      - output/emergent.pdf
-      - output/fitness.pdf
-      - schematic.pdf
+      - figures/plant.pdf
+      - figures/patch.pdf
+      - figures/emergent.pdf
+      - figures/fitness.pdf
+      - figures/schematic.pdf
 
   downloads/style.csl:
     download: https://raw.githubusercontent.com/citation-style-language/styles/master/methods-in-ecology-and-evolution.csl
@@ -58,28 +58,28 @@ targets:
   emergent_data:
     command: make_emergent_data()
 
-  output/plant.pdf:
+  figures/plant.pdf:
     command: figure_plant()
     plot: true
 
-  output/patch.pdf:
+  figures/patch.pdf:
     command: figure_patch(patch_data)
     plot: true
 
-  output/fitness.pdf:
+  figures/fitness.pdf:
     command: figure_fitness_landscape(fitness_landscape_data)
     plot: true
 
-  output/emergent.pdf:
+  figures/emergent.pdf:
     command: figure_emergent(emergent_data)
     plot: true
 
-  schematic.pdf:
-    command: latex_build("schematic.tex", clean=TRUE)
+  figures/schematic.pdf:
+    command: latex_build("figures/schematic.tex", clean=TRUE)
     depends:
-      - vignettes/schematic-frame.pdf
-      - vignettes/schematic-phys.pdf
-      - output/middle.png
+      - figures/schematic-frame.pdf
+      - figures/schematic-phys.pdf
+      - figures/middle.png
 
   # Compile vignette sources into Rmd:
   vignette_sources:
@@ -166,4 +166,4 @@ targets:
       - vignettes/table-pars.tex
 
   vignettes/table-pars.tex:
-    command: table_tree_parameters("vignettes/growth_model_pars.csv", target_name)
+    command: table_plant_parameters("vignettes/growth_model_pars.csv", target_name)
