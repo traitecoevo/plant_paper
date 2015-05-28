@@ -73,5 +73,5 @@ figure_patch <- function(data) {
   for(i in seq_len(3)) {
     axis(4, at=y_av[i], tck=0.1, col.ticks=cols[i], lty = lty[i])
   }
-  axis(1, at=108, label="Av")
+  axis(1, at=108, labels="Av")
 }
