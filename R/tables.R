@@ -1,5 +1,4 @@
-
-table_tree_parameters <- function(filename, dest){
+table_plant_parameters <- function(filename, dest){
 
   xx <- read.csv(filename, stringsAsFactors=FALSE)
 

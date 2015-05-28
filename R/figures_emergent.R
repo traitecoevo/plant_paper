@@ -29,10 +29,10 @@ figure_emergent <- function(data) {
   ## have leaf areas for all the species.
   tmp <- lapply(seq_along(data$time), ebt_patch, data)
   xxx <- lapply(tmp, function(x) x$species[[1]]$area_leafs)
-  leaf_area <- do.call("cbind", tree:::pad_matrix(xxx))
+  leaf_area <- do.call("cbind", plant:::pad_matrix(xxx))
 
   xxx <- lapply(tmp, function(x) matrix(x$species[[1]]$ode_rates, 4)[1, ])
-  growth_rate <- do.call("cbind", tree:::pad_matrix(xxx))
+  growth_rate <- do.call("cbind", plant:::pad_matrix(xxx))
 
   op <- par(mfrow=c(3, 1), mar=c(2.1, 4.1, .5, .5), oma=c(2, 0, 0, 0))
   on.exit(par(op))

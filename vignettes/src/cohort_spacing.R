@@ -1,8 +1,12 @@
+## ---
+## title: "plant: A package for modelling forest trait ecology & evolution: _cohort spacing algorithm_"
+## ---
+
 ## This vignette shows some details of cohort splitting.  It's
 ## probably not very interesting to most people.  It also uses a lot
-## of non-exported, non-documented functions from tree so you'll see a
-## lot of `tree:::` prefixes.
-library(tree)
+## of non-exported, non-documented functions from plant so you'll see
+## a lot of `plant:::` prefixes.
+library(plant)
 library(parallel)
 
 p0 <- ebt_base_parameters()
@@ -68,7 +72,7 @@ run_with_insert <- function(i, p, t) {
   run_with_times(p, insert_time(i, t))
 }
 
-## The internal function `tree:::run_ebt_error` runs the EBT and
+## The internal function `plant:::run_ebt_error` runs the EBT and
 ## computes errors as the integration proceeds and helps shed some
 ## light.
 i <- seq_len(length(t1) - 1)
@@ -85,7 +89,7 @@ abline(h=0, col="grey")
 plot(tm, res - sr_1, xlab="Time (years)", ylab="Seed rain", las=1)
 abline(h=0, col="grey")
 
-ebt <- tree:::FFW16_EBT(p)
+ebt <- plant:::FFW16_EBT(p)
 ebt$run()
 
 ## This is the contribution of different cohorts to see rain (x axis
@@ -116,7 +120,7 @@ dat2 <- run_ebt_collect(p2)
 ## and red in regions where the the light environment is darker in the
 ## refined environment.
 f <- function(e, h) {
-  i <- tree:::Interpolator()
+  i <- plant:::Interpolator()
   i$init(e[, 1], e[, 2])
   y <- rep(1, length(h))
   j <- h < i$max
@@ -139,7 +143,7 @@ image(dat1$time, h, dy, xlab="Time (years)", ylab="Height (m)", las=1,
 ## Because the differences are mostly manifest in the leaf area, we
 ## monitor error in both the leaf area and in fitness for all cohorts:
 ## (black line indicates the cohort identified as problematic above)
-dat <- tree:::run_ebt_error(p)
+dat <- plant:::run_ebt_error(p)
 image(dat1$time, dat1$time, dat$err$lai[[1]],
       xlab="Patch age (years)", ylab="Introduction time (years)", las=1)
 abline(h=t1[j[[1]]])

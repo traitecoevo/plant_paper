@@ -1,8 +1,3 @@
-## Eventually, this will be part of a vignette showing how to drive
-## `tree` at the plant level.  Unfortunately, there's a lot of
-## book-keeping to keep track of, so it's not that nice at this
-## point.
-
 ## First, growth trajectories of plants
 default_parameters <- function() {
   p <- ebt_base_parameters()

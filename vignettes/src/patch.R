@@ -1,10 +1,10 @@
 ## ---
-## title: "tree: A package for modelling plant TRait Ecology & Evolution: _patch level dynamics_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _patch level dynamics_"
 ## ---
 
-## The aim here is to use tree to investigate dynamics of plants
+## The aim here is to use plant to investigate dynamics of plants
 ## within a single patch.
-library(tree)
+library(plant)
 
 p0 <- ebt_base_parameters()
 p0$control$equilibrium_nsteps <- 30

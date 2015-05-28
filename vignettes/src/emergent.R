@@ -1,13 +1,13 @@
 ## ---
-## title: "tree: A package for modelling plant TRait Ecology & Evolution: _patch level emergent properties_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _patch level emergent properties_"
 ## ---
 
-## The aim here is to use tree to investigate dynamics of plants
+## The aim here is to use plant to investigate dynamics of plants
 ## within a single patch, but to focus on patch level properties,
 ## rather than properties of plants within the patch (though I guess
 ## that the leaf area index calculations in vignette:patch are also
 ## patch level properties).
-library(tree)
+library(plant)
 
 p0 <- ebt_base_parameters()
 p0$control$equilibrium_nsteps <- 30
@@ -82,10 +82,10 @@ text(height[1, i] + strwidth("x"), density[1, i],
 ## It's also possible see where the leaf area in the patch is coming
 ## from; a profile of leaf area with respect to height.  Again, this
 ## requires reconstructing the patches, and using an unexported
-## function from `tree` to put this into a matrix:
+## function from `plant` to put this into a matrix:
 patch <- lapply(seq_along(data1$time), ebt_patch, data1)
 leaf_area <- lapply(patch, function(x) x$species[[1]]$area_leafs)
-leaf_area <- do.call("cbind", tree:::pad_matrix(leaf_area))
+leaf_area <- do.call("cbind", plant:::pad_matrix(leaf_area))
 
 matplot(height, leaf_area, type="l", lty=1, col="lightgrey",
         xlim=xlim, xlab="Height (m)",
@@ -98,7 +98,7 @@ text(height[1, i] + strwidth("x"), leaf_area[1, i],
 
 growth_rate <- lapply(patch, function(x)
                       matrix(x$species[[1]]$ode_rates, 4)[1, ])
-growth_rate <- do.call("cbind", tree:::pad_matrix(growth_rate))
+growth_rate <- do.call("cbind", plant:::pad_matrix(growth_rate))
 
 ## Finally, we can see where height growth rate is concentrated in the
 ## population.  This differs from the profile in vignette:plant

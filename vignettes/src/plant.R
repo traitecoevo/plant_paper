@@ -1,11 +1,11 @@
 ## ---
-## title: "tree: A package for modelling plant TRait Ecology & Evolution: _plant level traits_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _plant level properties_"
 ## ---
 
 ## This vignette covers the sort of analysis in the plant figure in
 ## the manuscript.  It also shows some of the features of working
 ## with plant components of the model.
-library(tree)
+library(plant)
 
 ## Plants are constructed with the `FFW16_Plant` function.  That
 ## function takes as its only argument a "strategy" object; the
@@ -70,7 +70,7 @@ zapsmall(unlist(pp$internals))
 
 ## This PlantPlus object also includes diameter and heartwood as two
 ## more variables for the ODE system (this might move into Plant
-## soon -- see [this issue](https://github.com/traitecoevo/tree/issues/139)).
+## soon -- see [this issue](https://github.com/traitecoevo/plant/issues/139)).
 pp$ode_names
 
 ## Plants are a type of *reference object*.  They are different to
@@ -131,7 +131,7 @@ plot(height ~ tt, res$state, type="l", las=1,
      xlab="Time (years)", ylab="Height (m)")
 points(height ~ time, yy, col="grey", cex=.5)
 
-## Completing the set, `tree` also provides a function for growing
+## Completing the set, `plant` also provides a function for growing
 ## plants to a particular size; `grow_plant_to_size`.  This takes
 ## *any* size measurement in the plant and can grow the plant to that
 ## size.  So, for height:
@@ -164,7 +164,7 @@ mass <- seq_log(pl$internals$mass_above_ground + 1e-8, 1000, length.out=21)
 res_mass <- grow_plant_to_size(pl, mass, "mass_above_ground", env,
                                time_max=100, warn=FALSE)
 ## (this seems on the low side - see [this
-## issue](https://github.com/traitecoevo/tree/issues/142)).
+## issue](https://github.com/traitecoevo/plant/issues/142)).
 plot(res_mass$time, mass, type="o", pch=19, las=1, xlab="Time (years)")
 
 ## With all these bits in place, let's look at growth trajectories of

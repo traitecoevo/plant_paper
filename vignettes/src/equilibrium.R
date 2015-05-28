@@ -1,8 +1,8 @@
 ## ---
-## title: "tree: A package for modelling plant TRait Ecology & Evolution: _finding demographic equilibrium_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _finding demographic equilibrium_"
 ## ---
 
-library(tree)
+library(plant)
 library(parallel)
 
 run <- function(seed_rain_in, p) {
@@ -111,7 +111,7 @@ abline(v=p2_eq$seed_rain, col=1:2, lty=3)
 ## multidimenensional root finding is difficult; even knowning that
 ## there are roots is not straightforward, much less proving that
 ## we've converged on the "correct" root (for example [0,0] is a root
-## in this case but that root is not stable).  tree uses some
+## in this case but that root is not stable).  plant uses some
 ## heuristics to try to ensure that the root returned is an attracting
 ## point but sequentially applying rounds of iteration and nonlinear
 ## root finding algorithms, as well as rescaling seed rains to repel

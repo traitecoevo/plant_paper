@@ -1,8 +1,8 @@
 ## ---
-## title: "tree: A package for modelling plant TRait Ecology & Evolution: _fitness_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _fitness_"
 ## ---
 
-library(tree)
+library(plant)
 
 ## Start by setting a few parameters; this is the base set of
 ## parameters we'll use.
