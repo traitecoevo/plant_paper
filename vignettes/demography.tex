@@ -205,7 +205,7 @@ metapopulation}\label{emergent-properties-of-metapopulation}
 
 Summary statistics of the metapopulation are obtained by integrating
 over the density distribution, weighting by patch abundance \(p(a)\).
-The total number of individuals in the metapopulation is given by
+The average density of individuals per unit ground area across the metapopulation is given by
 \begin{equation}
   \hat{n}(x) = \int_{0}^{\infty} \int_{0}^{\infty}p(a) \, n(x,h,a) \, {\rm d}a \, {\rm d}h;
 \end{equation}
@@ -214,22 +214,32 @@ and the average density of plants size \(h\) by
   \bar{n}(x,h) = \int_{0}^{\infty}p(a) \, n(x,h,a) \, {\rm d}a.
 \end{equation}
 
-Average values for other quantities can also be calculated. Let
-\(\phi(x, h, E_a)\) be a demographic quantity of interest, such as
-growth rate, mortality rate, light environment, or size. The average
-value of \(\phi\) across the metapopulation is
+Average values for other individual-level quantities can also be calculated. 
+Let
+\(w(x, h, E_a)\) be a quantity of interest, either a demographic rate 
+(growth, mortality) or state (plant height, leaf area, light environment). 
+The average value of \(w\) for plants of height $h$ and trait $x$ is
+\begin{equation}\bar{w}(x,h) = \frac1{\bar{n}(x,h)}\int_{0}^{\infty}p(a)  \, n(x,h,a) \, w(x,h,E_a)\, {\rm d}a.
+\end{equation}
+The average across all individuals of the species is then
 \begin{equation}
-  \hat{\phi}(x) = \frac1{\hat{n}(x) }\int_{0}^{\infty} \int_{0}^{\infty} p(a) \, n(x,h,a) \, \phi(x,h,E_a) \, {\rm d}a \, {\rm d}h,
+  \hat{w}(x) = \frac1{\hat{n}(x) }\int_{0}^{\infty} \int_{0}^{\infty}p(a)  \, n(x,h,a) \, w(x,h,E_a)\, {\rm d}a \, {\rm d}h.
 \end{equation}
-while the average value of \(\phi\) for plants size \(h\) is
-\begin{equation}\bar{\phi}(x,h) = \frac1{\bar{n}(x,h) }\int_{0}^{\infty}p(a)  \, n(x,h,a) \, \phi(x,h,E_a)\, {\rm d}a.
-\end{equation}
-
 When calculating average mortality rate, one must decide whether
 mortality due patch disturbance is included. Non-disturbance mortality
-is obtained by setting \(\phi(x,h, E_a) = d(x,h,E_a)\), while total
+is obtained by setting \(w(x,h, E_a) = d(x,h,E_a)\), while total
 mortality due to growth processes and disturbance is obtained by setting
-\(\phi(x,h, E_a) = d(x,h,E_a)+ \gamma(a) S_{\rm P}(0,a).\)
+\(w(x,h, E_a) = d(x,h,E_a)+ \gamma(a) S_{\rm P}(0,a).\)
+
+Similarly we can integrate over the size-distribution to extract aggregate 
+features of the vegetation within a patch,
+\begin{equation}
+  W(a) = \sum_{i=1}^{N} \int_{0}^{\infty} n(x_i,h,a) \, w(x_i,h,E_a) \, {\rm d}h,
+\end{equation}
+and across the metapopulation,
+\begin{equation}
+  \hat{W} = \int_{0}^{\infty} p(a) \, W(a) \, {\rm d}a.
+\end{equation}
 
 \subsection{Invasion fitness}\label{invasion-fitness}
 

@@ -60,9 +60,18 @@ figure_patch <- function(data) {
   axis(1, labels=FALSE)
 
   ## Then, the total leaf area.
+  cols <- c("black", cols)
+  lty <- c(3, 1, 1)
   y <- cbind(total=rowSums(data$area_leaf), data$area_leaf)
-  matplot(t, y, lty=c(3, 1, 1), col=c("black", cols), type="l",
+  matplot(t, y, lty=lty, col=cols, type="l",
           xlab="Time (years)", ylab="Leaf area index", las=1)
   label_panel(3)
   mtext("Time (years)", 1, 2.2, cex=.7)
+
+  # find average value over metapopulation
+  y_av <- apply(y, 2, function(x) tree:::trapezium(t, x*data$patch_density))
+  for(i in seq_len(3)) {
+    axis(4, at=y_av[i], tck=0.1, col.ticks=cols[i], lty = lty[i])
+  }
+  axis(1, at=108, label="Av")
 }
