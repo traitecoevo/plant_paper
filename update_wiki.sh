@@ -7,7 +7,7 @@ else
     git clone https://github.com/traitecoevo/plant_paper.wiki.git wiki
 fi
 
-cp vignettes/*.md wiki
+cp vignettes/*.md vignettes/*.pdf wiki
 cp -r vignettes/figure wiki
 git -C wiki add .
 SHA=$(git rev-parse --short HEAD)
