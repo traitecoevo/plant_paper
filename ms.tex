@@ -390,9 +390,7 @@ replacement. Whereas previous approaches for modelling self-thinning
 were limited to a single species
 \citep[e.g.][]{Barnes-2004, Coomes-2007}, {\plant} accommodates multiple
  species with different traits (Fig. \ref{fig:schematic}b; Fig.
-\ref{fig:patch}).
-
-Second, {\plant} allows for the effects of competition and succession on
+\ref{fig:patch}). Second, {\plant} allows for the effects of competition and succession on
 productivity and biomass accumulation within a patch to be investigated
 \citep{Falster-2011}. Leaf area cover and rates of biomass production
 tend to vary with patch age. Such changes might come about via a
@@ -407,22 +405,22 @@ contributions of different species to be mapped (Fig. \ref{fig:patch}c).
 Most vegetation is subject to a disturbance regime, such that patches of
 the landscape are cleared at some rate, by fire, cyclone, landslide, or
 disease outbreak
-\citep{White-1979, Bormann-1979, Chambers-2013}.
+\citep{White-1979, Bormann-1979, Coomes-2007, Chambers-2013}.
 The vegetation thus comprises a collection of patches differing in time
 since last disturbance and linked via seed dispersal (Fig.
 \ref{fig:schematic}b). Such a system is often refereed to as a
 structured metapopulation \citep{Gyllenberg-2001}.
 
-In {\plant} we assume an infinite number of patches all experiencing
-the same disturbance regime; we also assume that the disturbances remove
+In {\plant} we assume an infinite number of patches, all experiencing
+the same disturbance regime and linked via seed dispersal (Fig.
+\ref{fig:schematic}b). We also assume that the disturbances remove
 all established vegetation.  With this approach we can scale up from
 simulating a single patch to simulate an entire metapopulation.
 The frequency-density
 \(p(a)\) of patches aged \(a\) in the landscape is needed. Assuming there
 are a large number of patches means the dynamics of \(p\) behave
 deterministically and can be approximated via a second \textsc{pde}
-\citep{ Vonfoerster-1959} (see Appendix
-\ref{sec:demography} for
+(see Appendix \ref{sec:demography} for
 details). Scaling from patch to metapopulation is then achieved by
 weighting the temporal dynamics of a single patch by \(p(a)\), the
 relative abundance of patches aged \(a\) in the metapopulation.
@@ -439,10 +437,10 @@ constraints that this root is stable (e.g., the trivial equilibrium of
 zero seed rain always exists, but is often not stable) (Appendix
 \ref{sec:equilibrium}).
 
-As previously noted \citep{Kohyama-1993, Moorcroft-2001, Falster-2011} a
-feature of the size-structured metapopulation concept implemented here
+A feature of the size-structured metapopulation concept implemented here
 is that it balances equilibrium and non-equilibrium approaches to
-modelling ecological dynamics. An
+modelling ecological dynamics \citep{Kohyama-1993, Moorcroft-2001, 
+Falster-2011}. An
 equilibrium may be approached at the level of metapopulation, meaning
 the seed rain and size structure across the entire metapopulation is
 approximately stable. Yet the structure of vegetation within individual
@@ -450,36 +448,35 @@ patches is constantly in flux. Patches continue to age and their
 residents continue to grow until they are disturbed.
 
 \subsection{Applications}
-% TODO[RGF]:  But we need
-% something that indicates how this can be used.  I suggest a complete
-% overhaul of this paragraph as that gets closest to a way of
-% using the model.
 
-Beyond its conceptual appeal, this idea of a dynamic equilibrium
-allows us to close the demographic feedback loop and thereby create a
-self-regulating system. The equilibrium seed rain for multi-species
-communities is approached demographically, incorporating the combined
-effects of the model's physiological rules, species traits,
-competitive interactions and the prevailing disturbance regime on the
-size-distributions of plants within a metapopulation of
-patches. Unlike some vegetation models, there is no need to set the
-density of seeds or seedlings, these arise as outputs from the
-model. Characteristics of the vegetation such as total leaf area,
-biomass, productivity and allocation to different plant parts also
-arise as emergent properties (Fig.  \ref{fig:patch}c). Similarly,
-distributions of abundance, leaf area and growth rate with respect to
-size emerge at both patch scale and scale of metapopulation
-(Fig. \ref{fig:emergent}). Note in particular how a single
-physiological model produces a variety of height-density
-relationships, dependent on patch age, as well as an emergent average
-across all patches (Fig. \ref{fig:emergent}, see more detail in
-Appendix \ref{sec:emergent}). This emergent relationship might then be
-compared to the observed distributions in large forest plots
-\citep{Muller-2006}.
 
-\section{Invasion fitness}
+Beyond its conceptual appeal, the idea of a dynamic equilibrium captured by
+the trait-, size- and patch structured metapopulation model potentially
+resolves several challenges faced by unstructured models. First, by scaling up
+from patch to metapopulation, we close the demographic feedback loop to create
+a self-regulating system. Unlike some vegetation models, there is no need to
+set the density of seeds or seedlings, these arise as outputs from the model,
+based on the combined effects of the model's physiological rules, species
+traits, competitive interactions and the prevailing disturbance regime.
 
-With the extension to metapopulation, we are modelling demography across
+Second, the metapopulation concept allows for the effects of disturbance
+regimes on vegetation structure and dynamics to be properly incorporated. In
+{\plant} characteristics for the entire vegetation (metapopulation) -- such
+as total leaf area, biomass and productivity -- are obtained by averaging
+patch-level outcomes over the frequency-distribution of patch ages. Because
+young patches are more common in the landscape, metapopulation averages are
+strongly influenced by the structure of younger patches (e.g. 
+Fig. \ref{fig:patch}c). Moreover, predictions are for a frequency distribution 
+of states across the landscape. Similarly, the distributions of  abundance and growth rate
+observed in large forest  plots \citep[e.g.][]{Muller-2006, Coomes-2007} may
+can be modelled as  emergent phenomena, where variety of patch-level
+relationships combine to  produce  an emergent average across all patches
+(Fig. \ref{fig:emergent}, see more detail in Appendix \ref{sec:emergent}). As such,
+size-and patch- structured models may be more suitable for comparing with 
+satellite and survey data, than unstructured models representing the world as 
+homogeneous green slime \citep{Moorcroft-2001,Moorcroft-2001}.  
+
+Finally, with the extension to metapopulation, we are modelling demography across
 the entire life cycle and are thus in a position to estimate the fitness
 of different types. Invasion fitness quantifies the ability of a rare
 individual with particular traits to establish in a community of
@@ -492,8 +489,6 @@ basic reproduction ratio \citep{Gyllenberg-2001, Metz-2001}. The basic
 reproduction ratio \(R\) is simply the total seed output of the new
 type, averaged across the metapopulation. A new type can invade when
 \(R > 1\).
-
-\subsection{Applications}
 
 With fitness defined, it becomes possible to model adaptive dynamics
 and community assembly \citep{Geritz-1998,Dieckmann-2007}. This is best
