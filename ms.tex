@@ -124,11 +124,7 @@ It is common to assume competitive interactions are influenced by
 size-related traits such as adult size and seed size, but detailed
 size-structure is rarely considered, at least for plant models
 \cite[for animal examples, see][]{Deroos-1988, Deroos-1992}.
-% TODO: I don't have the background to write it, but (at the risk of
-% making a long paragraph even longer) is it worth adding something
-% saying something about how we'd expect size structure to be
-% particularly important for plants because they grow up through a
-% canopy?  Perhaps not useful?
+%
 Consequently, it has been difficult to connect and test the mechanisms
 described in these simplistic models with types of data collected in
 the field, such as physiological leaf traits or demographic data from
@@ -136,36 +132,31 @@ long-term monitoring plots \citep{Adler-2013}.
 %
 Similarly, most large-scale models of vegetation dynamics do not
 include size-structured demography \citep{Cramer-2001, Sitch-2003,
-  Kelley-2013,Dekauwe-2014}.  During the 1980s, size-structured
+  Purves-2008,Dekauwe-2014}.  During the 1980s, size-structured
 ``gap'' models were widely used
 \citep[e.g.][]{Shugart-1980,Huston-1987}. However, the next generation
 of models focused more heavily on biogeochemistry at the expense of
-demography \citep[e.g.][]{Woodward-1995,Haxeltine-1996}. While the
+demography \citep[e.g.][]{Woodward-1995,Haxeltine-1996,Cramer-2001, 
+Sitch-2003}. While the
 importance of size-structure is starting again to be recognised
-\citep{Moorcroft-2001, Falster-2011, Dekauwe-2014}, all but a couple
-\citep[e.g.][]{Moorcroft-2001, Smith-2014} of the most popular,
+\citep{Moorcroft-2001, Purves-2008, Falster-2011, Dekauwe-2014}, all but a couple
+of the most popular,
 large-scale vegetation models lack any real demography or
-size-structure.
+size-structure \citep[e.g.][]{Moorcroft-2001, Smith-2014}.
 
 In this note, we introduce the {\plant} package for R \citep{R-2015};
 a mechanistic framework for studying the effects of size structure and
 trait variation on the demography of individual plants, of patches of
 competing plants and of meta-populations structured by a prevailing
 disturbance regime.
-% TODO: the first sentence reads weirdly to me: the paragraph now says
-% "we introduce our model / other models are like X / our model is
-% also like X" I'm not sure what the key point that is being driven at
-% here, either.
-%
-% TODO: I've reordered it and changed the emphasis here.  Can you
-% check that you agree and if so add a reference.
+% 
 We developed {\plant} primarily to investigate if and how species
 differing in traits are able to coexist with one another
 \citep{Falster-2011,Falster-2015}.  In order to allow interactions to
 be driven by species traits and arise through competition for shared
 resources, we needed to model a community with a full range of sizes,
 as species may not be able to recruit under the canopy that they
-generate (REF).
+generate \citep{Moorcroft-2001,Huston-1987}.
 
 At the same time, we expect the {\plant} model to be useful for
 modelling other phenomena. The internal structure of the {\plant}
@@ -177,26 +168,19 @@ these models were designed to capture large-scale regional
 biogeochemistry driven by climatic variables and rely on simulations,
 {\plant} was designed so that the rules driving the dynamics of the
 system could be manipulated and emergent demographic behaviours
-studied in detail.  In {\plant} it is possible to grow plants in
+studied deterministically and in detail. In {\plant} it is possible to grow plants in
 isolation, in patches of competing plants and in disturbance-driven
-metapopulations. The package is thus designed to sit in the middle
+metapopulations. Moreover, we put considerable effort into resolving
+competitive hierarchies. 
+The package is thus designed to sit in the middle
 ground between a large-scale coupled simulation model and simple
 abstract theoretical device. 
-% TODO: Consider moving to the conclusion?
-As examples, we expect the package will prove useful for investigating
-how morphological and physiological traits influence growth rate and
-shade tolerance, and emergent phenomena such as multi-species
-self-thinning, successional transitions and age-related changes in
-vegetation productivity.
 
-% TODO: they aren't actually available within plant yet, and
-% realistically won't be by the updated.  I've added a placeholder
-% that contains appropriate links.
 Below we describe the general approach of the package, then provide
 sections with details at nested levels of ecological organisation.
 Detailed technical documents are provided as supplementary information
-(see Appendices), and updated versions of technical documents are also
-available within the {\plant} package itself.
+(see Appendices), updated versions of these technical documents will also
+be made available within the {\plant} package itself.
 
 \section{The approach}
 
@@ -466,19 +450,18 @@ as total leaf area, biomass and productivity -- are obtained by averaging
 patch-level outcomes over the frequency-distribution of patch ages. Because
 young patches are more common in the landscape, metapopulation averages are
 strongly influenced by the structure of younger patches (e.g. 
-Fig. \ref{fig:patch}c). Moreover, predictions are for a frequency distribution 
-of states across the landscape. Similarly, the distributions of  abundance and growth rate
-observed in large forest  plots \citep[e.g.][]{Muller-2006, Coomes-2007} may
-can be modelled as  emergent phenomena, where variety of patch-level
-relationships combine to  produce  an emergent average across all patches
+Fig. \ref{fig:patch}c).  Similarly, the distributions of  abundance and growth rate
+observed in large forest  plots \citep[e.g.][]{Muller-2006, Coomes-2007} arise
+as  emergent phenomena. Moreover, the predictions from {\plant} 
+are for a frequency distribution of patch states across the landscape 
 (Fig. \ref{fig:emergent}, see more detail in Appendix \ref{sec:emergent}). As such,
-size-and patch- structured models may be more suitable for comparing with 
-satellite and survey data, than unstructured models representing the world as 
-homogeneous green slime \citep{Moorcroft-2001,Moorcroft-2001}.  
+size-and patch- structured models may be more suitable for linking with 
+satellite and forest survey data, than unstructured models representing the 
+world as homogeneous green slime \citep{Moorcroft-2001, Purves-2008}.  
 
 Finally, with the extension to metapopulation, we are modelling demography across
-the entire life cycle and are thus in a position to estimate the fitness
-of different types. Invasion fitness quantifies the ability of a rare
+the entire life cycle and are thus in a position to estimate invasion fitness -- 
+the ability of a rare
 individual with particular traits to establish in a community of
 established residents at their equilibrium densities \citep{Metz-1992}.
 Invasion fitness
@@ -495,16 +478,8 @@ and community assembly \citep{Geritz-1998,Dieckmann-2007}. This is best
 thought of as occurring on a fitness landscape, a surface with fitness
 plotted against one or more species traits (Fig. \ref{fig:fitness}). The
 reproductive success of individuals possessing a particular trait value
-is measured in the size- and patch-structured metapopulation and
 depends on both the traits and densities of other species in the current
-resident community. The reason this is interesting is that under
-frequency- and density-dependence, evolution tends to favour different
-trait mixtures compared to those predicted by models that optimise some
-feature of the community, such as total biomass or carbon production or
-seed production in the absence of competition
-\citep{Falster-2003, Dieckmann-2007}.
-
-Fitness landscapes will be positive in regions that allow invasion,
+resident community. Fitness landscapes will be positive in regions that allow invasion,
 and zero for species that are at equilibrium. The slope of the fitness
 landscape at a resident indicates the direction of selection; a
 negative slope (dashed line in Fig. \ref{fig:fitness}a) indicates
@@ -520,7 +495,8 @@ invasion is possible both above and below it in trait space. It is
 often possible to find a configuration where fitness is negative
 everywhere (solid line in Fig. \ref{fig:fitness}b) except for the zero
 points where species are present. This community is immune to invasion
-from any other strategies \citep{Geritz-1998}.
+from any other strategies and represents a prediction for the 
+trait mixture that might might be favoured by natural selection \citep{Geritz-1998}.
 
 Identifying conditions promoting trait diversity is a valuable use-case
 for {\plant}. Coexisting plant species differ in a range of physiological
@@ -528,7 +504,7 @@ traits, yet the conditions allowing for these different types to coexist
 in face of competition for a common set of resources remain largely
 unknown. The simple example here can be extended to multiple dimensions
 and can be used to investigate how trade-offs facilitate coexistence
-\citep{Falster-2015}
+\citep{Falster-2015}.
 
 \section{Implementation details}
 
@@ -565,15 +541,18 @@ framework that we hope can be used to answer a number of questions at a
 variety of scales. The specific use-cases highlighted here arise from our
 interest in the assembly of trait mixtures in communities. However a variety
 of other uses would be possible and also extensions to address other aspects
-of community assembly. For example,  the physiology of growth could be
-modified to account for rising atmospheric CO2 or the effects of competition
+of community assembly. As examples, we expect the package will prove useful
+for investigating how morphological and physiological traits influence growth
+rate and shade tolerance, and emergent phenomena such as multi-species self-
+thinning, successional transitions and age-related changes in vegetation
+productivity. The effects of competition
 for multiple resources could likewise be investigated.
 
 It is hoped that the approach here can be used to inform both future empirical
 research and model development in neighbouring areas. As noted above, most
 large-scale mechanistic models of plant growth do not explicitly model size
 structure, so remain unable to investigate demographic phenomena
-\citep{Cramer-2001, Sitch-2003, Kelley-2013,Dekauwe-2014}. At the same time,
+\citep{Cramer-2001, Sitch-2003, Dekauwe-2014}. At the same time,
 much attention is paid to detailed leaf-level physiology. {\plant} aims to bridge
 this gap that emerged in the model landscape, where detailed physiology and
 size-structured dynamics combine to drive forest structure and function via
@@ -585,7 +564,8 @@ DS Falster was supported by an ARC discovery grant (DP110102086). RG
 FitzJohn was supported by the Science and Industry Endowment Fund
 (RP04-174). M Westoby was supported by a fellowship from Australian
 Research Council. We thank {\AA} Brn{\"a}nnstr{\"o}m, J Camac, 
-A De Roos, U Dieckmann, R Duursma, and J Johansson for helpful discussions. 
+A De Roos, U Dieckmann, R Duursma, J Johansson and C Prentice 
+for helpful discussions. 
 
 \clearpage
 \bibliography{refs}
