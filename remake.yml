@@ -120,6 +120,8 @@ targets:
 
   vignettes/plant.Rmd:
     command: sowsear("vignettes/src/plant.R", output=target_name)
+  vignettes/cohort_spacing.Rmd:
+    command: sowsear("vignettes/src/cohort_spacing.R", output=target_name)
   vignettes/equilibrium.Rmd:
     command: sowsear("vignettes/src/equilibrium.R", output=target_name)
   vignettes/patch.Rmd:
@@ -128,10 +130,10 @@ targets:
     command: sowsear("vignettes/src/emergent.R", output=target_name)
   vignettes/fitness.Rmd:
     command: sowsear("vignettes/src/fitness.R", output=target_name)
-  vignettes/cohort_spacing.Rmd:
-    command: sowsear("vignettes/src/cohort_spacing.R", output=target_name)
 
   vignettes/plant.md:
+    knitr: vignette
+  vignettes/cohort_spacing.md:
     knitr: vignette
   vignettes/equilibrium.md:
     knitr: vignette
@@ -141,11 +143,18 @@ targets:
     knitr: vignette
   vignettes/fitness.md:
     knitr: vignette
-  vignettes/cohort_spacing.md:
-    knitr: vignette
+
+  vignettes/demography.pdf:
+    command: latex_build("vignettes/demography.tex", "refs.bib", clean=TRUE)
+  vignettes/physiology.pdf:
+    command: latex_build("vignettes/physiology.tex", "refs.bib", clean=TRUE)
+    depends:
+      - vignettes/growth_model_pars.tex
 
   vignettes/plant.html:
     command: render("vignettes/plant.md", quiet=TRUE)
+  vignettes/cohort_spacing.html:
+    command: render("vignettes/cohort_spacing.md", quiet=TRUE)
   vignettes/equilibrium.html:
     command: render("vignettes/equilibrium.md", quiet=TRUE)
   vignettes/patch.html:
@@ -154,16 +163,6 @@ targets:
     command: render("vignettes/emergent.md", quiet=TRUE)
   vignettes/fitness.html:
     command: render("vignettes/fitness.md", quiet=TRUE)
-  vignettes/cohort_spacing.html:
-    command: render("vignettes/cohort_spacing.md", quiet=TRUE)
 
-  vignettes/demography.pdf:
-    command: latex_build("vignettes/demography.tex", "refs.bib", clean=TRUE)
-
-  vignettes/physiology.pdf:
-    command: latex_build("vignettes/physiology.tex", "refs.bib", clean=TRUE)
-    depends:
-      - vignettes/table-pars.tex
-
-  vignettes/table-pars.tex:
+  vignettes/growth_model_pars.tex:
     command: table_plant_parameters("vignettes/growth_model_pars.csv", target_name)
