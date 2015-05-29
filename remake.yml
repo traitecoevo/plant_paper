@@ -90,7 +90,7 @@ targets:
       - vignettes/emergent.Rmd
       - vignettes/fitness.Rmd
       - vignettes/cohort_spacing.Rmd
-  vignettes:
+  vignettes_md:
     depends:
       - vignettes/plant.md
       - vignettes/equilibrium.md

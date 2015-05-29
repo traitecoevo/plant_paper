@@ -16,3 +16,4 @@ vignettes/*.tex
 vignettes/*.pdf
 vignettes/figure*
 vignettes/cache/*
+wiki

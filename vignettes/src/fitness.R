@@ -1,5 +1,5 @@
 ## ---
-## title: "plant: A package for modelling forest trait ecology & evolution: _fitness_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _calculating fitness_"
 ## ---
 
 library(plant)
