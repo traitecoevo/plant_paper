@@ -68,7 +68,7 @@ figure_emergent <- function(data) {
   # find average across patches for each height, 
   # i.e. across rows, weighting by patch abundance 
   metapopulation_average <- function(x) {
-    tree:::trapezium(data$time, x*data$patch_density)
+    plant:::trapezium(data$time, x*data$patch_density)
   }  
   n_av <- apply(n_hh,      1, metapopulation_average) 
   l_av <- apply(l_hh*n_hh, 1, metapopulation_average) / n_av

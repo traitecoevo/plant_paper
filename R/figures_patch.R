@@ -69,7 +69,7 @@ figure_patch <- function(data) {
   mtext("Time (years)", 1, 2.2, cex=.7)
 
   # find average value over metapopulation
-  y_av <- apply(y, 2, function(x) tree:::trapezium(t, x*data$patch_density))
+  y_av <- apply(y, 2, function(x) plant:::trapezium(t, x*data$patch_density))
   for(i in seq_len(3)) {
     axis(4, at=y_av[i], tck=0.1, col.ticks=cols[i], lty = lty[i])
   }
