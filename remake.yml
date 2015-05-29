@@ -81,15 +81,6 @@ targets:
       - figures/schematic-phys.pdf
       - figures/middle.png
 
-  # Compile vignette sources into Rmd:
-  vignette_sources:
-    depends:
-      - vignettes/plant.Rmd
-      - vignettes/equilibrium.Rmd
-      - vignettes/patch.Rmd
-      - vignettes/emergent.Rmd
-      - vignettes/fitness.Rmd
-      - vignettes/cohort_spacing.Rmd
   vignettes_md:
     depends:
       - vignettes/plant.md
@@ -98,6 +89,7 @@ targets:
       - vignettes/emergent.md
       - vignettes/fitness.md
       - vignettes/cohort_spacing.md
+      - vignettes/parameters.md
 
   vignettes_html:
     depends:
@@ -107,6 +99,7 @@ targets:
       - vignettes/emergent.html
       - vignettes/fitness.html
       - vignettes/cohort_spacing.html
+      - vignettes/parameters.html
 
   vignettes_pdf:
     depends:
@@ -130,6 +123,8 @@ targets:
     command: sowsear("vignettes/src/emergent.R", output=target_name)
   vignettes/fitness.Rmd:
     command: sowsear("vignettes/src/fitness.R", output=target_name)
+  vignettes/parameters.Rmd:
+    command: sowsear("vignettes/src/parameters.R", output=target_name)
 
   vignettes/plant.md:
     knitr: vignette
@@ -142,6 +137,8 @@ targets:
   vignettes/emergent.md:
     knitr: vignette
   vignettes/fitness.md:
+    knitr: vignette
+  vignettes/parameters.md:
     knitr: vignette
 
   vignettes/demography.pdf:
@@ -163,6 +160,8 @@ targets:
     command: render("vignettes/emergent.md", quiet=TRUE)
   vignettes/fitness.html:
     command: render("vignettes/fitness.md", quiet=TRUE)
+  vignettes/parameters.html:
+    command: render("vignettes/parameters.md", quiet=TRUE)
 
   vignettes/growth_model_pars.tex:
     command: table_plant_parameters("vignettes/growth_model_pars.csv", target_name)
