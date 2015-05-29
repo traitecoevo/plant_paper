@@ -171,7 +171,10 @@ biogeochemistry driven by climatic variables and rely on simulations,
 system could be manipulated and emergent demographic behaviours
 studied deterministically and in detail. In {\plant} it is possible to grow plants in
 isolation, in patches of competing plants and in disturbance-driven
-metapopulations. Moreover, we put considerable effort into resolving
+metapopulations. 
+% TODO: can you change this?  the amount of effort we put in is
+% decoupled from how useful other people may find it.
+Moreover, we put considerable effort into resolving
 competitive hierarchies. 
 The package is thus designed to sit in the middle
 ground between a large-scale coupled simulation model and simple
@@ -180,8 +183,8 @@ abstract theoretical device.
 Below we describe the general approach of the package, then provide
 sections with details at nested levels of ecological organisation.
 Detailed technical documents are provided as supplementary information
-(see Appendices), updated versions of these technical documents will also
-be made available within the {\plant} package itself.
+(see Appendices), updated versions of these technical documents are
+available within the {\plant} package itself.
 
 \section{The approach}
 
@@ -204,7 +207,7 @@ We model the emergent behaviour of patches deterministically, based on a
 continual  size-density distribution. As such, it is not required to specify a
 particular patch size.
 
-\section{Effects of size, trait and environment on demography of individual plants}
+\section{Effects of size, trait and environment on demography of individual plants}Q
 
 The core of {\plant} is a model for an individual plant's
 physiological strategy as specified by its traits
@@ -435,14 +438,15 @@ residents continue to grow until they are disturbed.
 \subsection{Applications}
 
 
-Beyond its conceptual appeal, the idea of a dynamic equilibrium captured by
-the trait-, size- and patch structured metapopulation model potentially
-resolves several challenges faced by unstructured models. First, by scaling up
-from patch to metapopulation, we close the demographic feedback loop to create
-a self-regulating system. Unlike some vegetation models, there is no need to
-set the density of seeds or seedlings, these arise as outputs from the model,
-based on the combined effects of the model's physiological rules, species
-traits, competitive interactions and the prevailing disturbance regime.
+The dynamic equilibrium captured by the trait-, size- and patch
+structured metapopulation model potentially resolves several
+challenges faced by unstructured models. First, by scaling up from
+patch to metapopulation, we close the demographic feedback loop to
+create a self-regulating system. Unlike some vegetation models, there
+is no need to set the density of seeds or seedlings, these arise as
+outputs from the model, based on the combined effects of the model's
+physiological rules, species traits, competitive interactions and the
+prevailing disturbance regime.
 
 Second, the metapopulation concept allows for the effects of disturbance
 regimes on vegetation structure and dynamics to be properly incorporated. In
@@ -546,18 +550,20 @@ of community assembly. As examples, we expect the package will prove useful
 for investigating how morphological and physiological traits influence growth
 rate and shade tolerance, and emergent phenomena such as multi-species self-
 thinning, successional transitions and age-related changes in vegetation
-productivity. The effects of competition
-for multiple resources could likewise be investigated.
+productivity.  
 
-It is hoped that the approach here can be used to inform both future empirical
-research and model development in neighbouring areas. As noted above, most
-large-scale mechanistic models of plant growth do not explicitly model size
-structure, so remain unable to investigate demographic phenomena
-\citep{Cramer-2001, Sitch-2003, Dekauwe-2014}. At the same time,
-much attention is paid to detailed leaf-level physiology. {\plant} aims to bridge
-this gap that emerged in the model landscape, where detailed physiology and
-size-structured dynamics combine to drive forest structure and function via
-traits.
+% TODO: In favour of dropping this whole paragraph?
+It is hoped that the approach here can be used to inform both future
+empirical research and model development in neighbouring areas.
+{\plant} aims to bridge the gap between detailed physiological models
+and large-scale mechanistic models of plant growth \citep{Cramer-2001,
+  Sitch-2003, Dekauwe-2014}.  As noted above, most large-scale
+mechanistic models of plant growth do not explicitly model size
+structure, so remain unable to investigate demographic phenomena }. At
+the same time, much attention is paid to detailed leaf-level
+physiology. {\plant} aims to bridge this gap that emerged in the model
+landscape, where detailed physiology and size-structured dynamics
+combine to drive forest structure and function via traits.
 
 \section{Acknowledgements}
 
