@@ -94,7 +94,7 @@ this leaf area held above height \(z\) for plants size \(h\),
 of species.
 
 Assuming patches are large, the dynamics of \(n\) can be modelled
-deterministically via the following Partial Differential Equation (PDE)
+deterministically via the following Partial Differential Equation (\textsc{pde})
 \citep{Kohyama-1993, Deroos-1997, Moorcroft-2001}:
 \begin{equation} \label{eq:PDE} 
   \frac{\partial }{\partial a} n(x,h,a)= -d(x,h, E_a) \, n(x,h,a)-\frac{\partial }{\partial h} \left[g(x,h,E_a) \, n(x,h,a)\right].
@@ -133,7 +133,7 @@ frequency-density of patches age \(a\), and \(\gamma(a)\) be the
 age-dependent probability that a patch of age \(a\) is transformed into
 a patch of age 0 by a disturbance event. Here we focus on the situation
 where the age structure has reached an equilibrium state, which causes
-the PDE to reduce to an ordinary differential equation (ODE) with
+the \textsc{pde} to reduce to an Ordinary Differential Equation (\textsc{ode}) with
 respect to patch age. (See section
 \ref{derivation-of-pde-describing-age-structured-dynamics} for derivation and
 non-equilibrium case). The dynamics of \(p\) are given by
@@ -176,8 +176,8 @@ individuals in adjacent patches are negligible; and iii) there is high
 connectivity via dispersal between all patches in the habitat, allowing
 empty patches to be quickly re-colonised. Such a system can be modelled
 as a metapopulation (sometimes called metacommunity for multiple
-species). The dynamics of this metapopulation are described by PDES in
-Eqs. \ref{eq:agepde} and \ref{eq:PDE}.
+species). The dynamics of this metapopulation are described by the 
+\textsc{pde}s inEqs. \ref{eq:PDE} and  \ref{eq:agepde}.
 
 The seed rain of each species in the metapopulation is given by rate at
 which seeds are produced across all patches,
@@ -288,32 +288,32 @@ individual's probability of surviving, and its traits via the equation:
 \end{equation}
 
 \section{Approximating system dynamics using the escalator boxcar train
-(EBT)}\label{approximating-system-dynamics-using-the-escalator-boxcar-train-ebt}
+(\textsc{ebt})}\label{approximating-system-dynamics-using-the-escalator-boxcar-train-ebt}
 
 Our approach for solving the trait-, size- and patch-structured
 population dynamics described by Eqs. \ref{eq:size} - \ref{eq:tildeR} is
-based on the Escalator Boxcar Train technique (EBT)
-\citep{Deroos-1997, Deroos-1992, Deroos-1988}. The EBT solves the PDE
+based on the Escalator Boxcar Train technique (\textsc{ebt})
+\citep{Deroos-1997, Deroos-1992, Deroos-1988}. The \textsc{ebt} solves the \textsc{pde}
 describing development of \(n(x,h,a)\) (Eq. \(\ref{eq:PDE}\)) by
 approximating the density function with a collection of cohorts spanning
 the size spectrum. Following a disturbance, a series of cohorts are
 introduced into each patch. These cohorts are then transported along the
 characteristics of Eq. \(\ref{eq:PDE}\) according to the
 individual-level growth function. Characteristics are curves along which
-Eq. \(\ref{eq:PDE}\) becomes an ordinary differential equation (ODE);
+Eq. \(\ref{eq:PDE}\) becomes an \textsc{ode};
 biologically, these are the growth trajectories of individuals, provided
 they do not die.
 
-The original EBT \citep{Deroos-1997, Deroos-1992, Deroos-1988} proceeds
+The original \textsc{ebt} \citep{Deroos-1997, Deroos-1992, Deroos-1988} proceeds
 by approximating the first and second moments of the density
 distribution \(n \left( x,h,a \right)\) within a series of ``cohorts'',
 represented by \(\lambda_i\) and \(\mu_i\), these being the total number
 and mean size of individuals within the cohort respectively. Under this
 assumption, the rates of change \(\frac{\rm d} {{\rm d}a} \lambda_i\)
 and \(\frac{\rm d} {{\rm d}a} \mu_i\) can be approximated given by two
-ODEs, which can in turn be approximated by first-order closed-form
-solutions. Eq. \(\ref{eq:PDE}\) is thereby reduced to a family of ODEs,
-which can be stepped using an appropriate ODE solver with an adaptive
+\textsc{ode}s, which can in turn be approximated by first-order closed-form
+solutions. Eq. \(\ref{eq:PDE}\) is thereby reduced to a family of \textsc{ode}s,
+which can be stepped using an appropriate \textsc{ode} solver with an adaptive
 step size. The size distribution \(n(x,h,a)\) is then approximated by a
 series of point masses with position and amplitude given by
 \(\lambda_i\) and \(\mu_i\).
@@ -339,7 +339,7 @@ characteristics compress, or density increases if
 \(\partial g / \partial h > 0\).
 
 If \(\left[h_0, h_+ \right)\) represents the entire state-space
-attainable by any individual, the EBT algorithm proceeds by sub-dividing
+attainable by any individual, the \textsc{ebt} algorithm proceeds by sub-dividing
 this space into a series of cohorts with boundaries
 \(h_0 < h_1 < \ldots < h_k\). These cohorts are then transported along
 the characteristics of Eq. \(\ref{eq:PDE}\). The location of cohort
@@ -349,20 +349,20 @@ demography of a hypothetical individual located at each cohort boundary.
 
 The equations below outline how to solve for the size, survival, seed
 output and abundance of individuals located on the cohort boundaries.
-Each of these problems is formulated as an Initial-Value ODE Problem
-(IVP), which can then be solved using an ODE stepper.
+Each of these problems is formulated as an Initial-Value \textsc{ode} Problem
+(\textsc{ivp}), which can then be solved using an \textsc{ode} stepper.
 
 \subsection{Size}\label{size}
 
 The size of individual located on the boundary is obtained via Eq.
-\ref{eq:size}, which is solved via the IVP:
+\ref{eq:size}, which is solved via the \textsc{ivp}:
 \[\frac{dy}{dt} = g(x,y,t),\] \[ y(0) = h_0.\]
 
 \subsection{Survival}\label{survival}
 
 The probability of an individual located on the boundary surviving from
 \(a_0 \rightarrow a\) is obtained via Eq. \ref{eq:survivalIndividual},
-which is solved via the IVP:
+which is solved via the \textsc{ivp}:
 \[\frac{dy}{dt} = d(x,h_i(a^\prime), E_{a^\prime}),\]
 \[ y(0) = - \ln\left(S_{\rm G} (x^\prime,h_0, E_{a_0})\right) .\]
 Survival is then \[ S_{\rm I} (x, a_0, a) = \exp\left(- y(a) \right).\]
@@ -370,7 +370,7 @@ Survival is then \[ S_{\rm I} (x, a_0, a) = \exp\left(- y(a) \right).\]
 \subsection{Seed production}\label{seed-production}
 
 The lifetime seed production of individuals located on the boundary is
-obtained via Eq. \ref{eq:tildeR}, which is solved via the IVP:
+obtained via Eq. \ref{eq:tildeR}, which is solved via the \textsc{ivp}:
 \[\frac{dy}{dt} = S_D \,f(x, m_i(a^\prime), E_{a^\prime}) \, S_{\rm I} (x, a_0, a^\prime) \, S_{\rm P} (a_0,a^\prime),\]
 \[ y(0) = 0,\] where \(S_{\rm I}\) is individual survival (defined
 above) and \(S_{\rm P}\) is calculated as in Eq.
@@ -379,7 +379,7 @@ above) and \(S_{\rm P}\) is calculated as in Eq.
 \subsection{Density of individuals}\label{density-of-individuals}
 
 The density of individuals located on the boundary is obtained via Eq.
-\ref{eq:boundN}, which is solved via the IVP:
+\ref{eq:boundN}, which is solved via the \textsc{ivp}:
 \[\frac{dy}{dt} = \frac{\partial g(x,h_i(a^\prime), E_{a^\prime})}{\partial h} +d(x,h_i(a^\prime),E_{a^\prime}),\]
 \[ y(0) = -\ln\left(n(x,h_0 ,a_0) \, S_{\rm G} (x^\prime,h_0, E_{a_0}) \right).\]
 Density is then given by \[n(x,h_0 ,a_0) =\exp(-y(a)).\]
@@ -422,12 +422,12 @@ is controlled by the parameter \texttt{plant\_seed\_tol}.
 \subsection{Approximation of size-density distribution via the EBT}
 \label{approximation-of-size-density-distribution-via-the-ebt}
 
-Errors in the EBT approximation to \(n\) can arise from two sources: i)
+Errors in the \textsc{ebt} approximation to \(n\) can arise from two sources: i)
 poor spacing of cohorts in the size dimension, and ii) when stepping
 cohorts through time.
 
 The first factor controlling the accuracy with which cohorts are stepped
-through time is the accuracy of the ODE stepper being used. {\plant} uses
+through time is the accuracy of the \textsc{ode} stepper being used. {\plant} uses
 the embedded Runge-Kutta Cash-Karp 4-5 algorithm \citep{Cash-1990}, with
 code ported directivity from the
 \href{http://www.gnu.org/software/gsl/}{GNU Scientific Library}
@@ -439,7 +439,7 @@ A second factor controlling the accuracy with which cohorts are stepped
 through time is the accuracy of the derivative calculation in Eq.
 \ref{eq:boundN}, calculated via standard finite differencing
 \citep{Abramowitz-2012}. When the parameter
-\texttt{cohort\_gradient\_richardson} is TRUE a Richardson Extrapolation
+\texttt{cohort\_gradient\_richardson} is \texttt{TRUE} a Richardson Extrapolation
 \citep{Stoer-2002} is used to refine the estimate, up to depth
 \texttt{cohort\_gradient\_richardson}. The overall accuracy of the
 derivative is controlled by \texttt{cohort\_gradient\_eps}.
@@ -494,7 +494,7 @@ calculated using the \texttt{local\_error\_integration} function.
 \subsection{Calculation of light environment and influence on
 assimilation}\label{calculation-of-light-environment-and-influence-on-assimilation}
 
-To progress the system of ODE's requires that we calculate the amount of
+To progress the system of \textsc{ode}s requires that we calculate the amount of
 shading on each of the cohort boundaries, from all other plants in the
 patch.
 
@@ -511,10 +511,10 @@ adaptively via the \texttt{build\_schedule} function.
 
 The cost of calculating \(E_a(z)\) increases linearly with the number of
 cohorts in the system. But the same calculation must then be repeated
-many times (multiple heights for every cohort), so the overall CPU cost
+many times (multiple heights for every cohort), so the overall computational cost
 of stepping the system increases as to \(O(k^2)\), where \(k\) is the
 total number of cohorts across all species. This disproportionate
-increase in CPU cost with the number of cohorts is highly undesirable.
+increase in computational cost with the number of cohorts is highly undesirable.
 
 We reduced the computational cost of the continuous competitive feedback
 from \(O(k^2) \rightarrow O(k)\), by approximating the \(E_a(z)\) with a
@@ -548,7 +548,7 @@ leaf-level rates over the plant. The integration is performed using
 Gaussian quadrature, using the QUAD PACK routines \citep{Piessens-1983},
 adapted from the \href{http://www.gnu.org/software/gsl/}{GNU Scientific
 Library}\citep{Galassi-2009} (see \texttt{qag.h} for further details).
-If the control parameter \texttt{plant\_assimilation\_adaptive} is TRUE,
+If the control parameter \texttt{plant\_assimilation\_adaptive} is \texttt{TRUE},
 the integration is performed using adaptive refinement with accuracy
 controlled by the parameter \texttt{plant\_assimilation\_tol}.
 
@@ -623,7 +623,7 @@ have implemented several different approaches (see
 
 \section{Appendices}\label{appendices}
 
-\subsection{Derivation of PDE describing age-structured
+\subsection{Derivation of \textsc{pde} describing age-structured
 dynamics}\label{derivation-of-pde-describing-age-structured-dynamics}
 
 Consider patches of habitat which are subject to some intermittent
@@ -713,10 +713,10 @@ Thus by monitoring
 when a sufficient range of the patch age distribution has been
 incorporated.
 
-\subsection{Derivation of PDE describing size-structured
+\subsection{Derivation of \textsc{pde} describing size-structured
 dynamics}\label{derivation-of-pde-describing-size-structured-dynamics}
 
-To model the population we use a PDE describing the dynamics for a thin
+To model the population we use a \textsc{pde} describing the dynamics for a thin
 slice \(\Delta h\). Assuming that all rates are constant within the
 interval \(\Delta h\), the total number of individuals within the
 interval spanned by \([h-0.5\Delta h,h+0.5\Delta h)\) is
@@ -745,10 +745,10 @@ For thin slices, \(\Delta h \sim 0\), we obtain
   \frac{\partial }{\partial t} n(h,a)=-d (h,a) \, n(h,a)-\frac{\partial }{\partial h} (g(h,a) \, n(h,a)).
 \end{equation}
 
-To complete the model, the PDE must be supplemented with boundary
+To complete the model, the \textsc{pde} must be supplemented with boundary
 conditions that specify the density at the lower end of \(n(h_{0},a)\)
 for all \(t\) as well as the the initial distribution when \(t=0\),
-\(n(h,0)\). The former is derived by integrating the PDE with respect to
+\(n(h,0)\). The former is derived by integrating the \textsc{pde} with respect to
 \(h\) over the interval \((h_{0},h_{\infty })\), yielding
 \begin{equation}\frac{\partial }{\partial t} \int _{h_{0} }^{h_{\infty } }n(h,a) \partial h=g(h_{0} ,a) \, n(h_{0} ,a)-g(h_{\infty } ,a) \, n(h_{\infty } ,a)-\int _{h_{0} }^{h_{\infty } }d (h,a) \, n(h,a) \partial h.
 \end{equation}
