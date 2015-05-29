@@ -3,9 +3,11 @@
 ## ---
 
 ## This vignette shows some details of cohort splitting.  It's
-## probably not very interesting to most people.  It also uses a lot
+## probably not very interesting to most people, only those
+## interested in knowing how the EBT technique works in detail.  It also uses a lot
 ## of non-exported, non-documented functions from plant so you'll see
 ## a lot of `plant:::` prefixes.
+
 library(plant)
 library(parallel)
 
@@ -48,9 +50,9 @@ sr_1 <- run_with_times(p, t1)
 sr_2 <- run_with_times(p, t2)
 sr_3 <- run_with_times(p, t3)
 
-## Seed rain increases as time is cohorts are introduced more finely,
+## Seed rain increases as cohorts are introduced more finely,
 ## though at a potentially saturating rate.  We're doing lots more
-## work at the more refined end though!
+## work at the more refined end!
 sr <- c(sr_1, sr_2, sr_3)
 sr
 
@@ -73,13 +75,13 @@ run_with_insert <- function(i, p, t) {
 }
 
 ## The internal function `plant:::run_ebt_error` runs the EBT and
-## computes errors as the integration proceeds and helps shed some
+## computes errors as the integration proceeds; this helps shed some
 ## light.
 i <- seq_len(length(t1) - 1)
 res <- unlist(mclapply(i, run_with_insert, p, t1))
 tm <- (t1[-1L] + t1[-length(t1)]) / 2
 
-## The biggest deviations in output seed rain cpome about half way
+## The biggest deviations in output seed rain come about half way
 ## through the schedule:
 plot(i, res - sr_1, xlab="Index", ylab="Seed rain", las=1)
 abline(h=0, col="grey")
@@ -92,7 +94,7 @@ abline(h=0, col="grey")
 ebt <- plant:::FFW16_EBT(p)
 ebt$run()
 
-## This is the contribution of different cohorts to see rain (x axis
+## Now look at the contribution of different cohorts to see rain (x axis
 ## log scaled for clarity).  In this case almost all the contribution
 ## comes from early cohorts (this is essentially a single-age stand of
 ## pioneers).  Overlaid on this are the five cohorts with the largest

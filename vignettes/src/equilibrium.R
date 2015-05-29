@@ -106,14 +106,14 @@ abline(v=p2_eq$seed_rain, col=1:2, lty=3)
 
 ## Note that the first guess position of the red species is higher
 ## than the black species, but in the end the output seed rain is
-## lower.  This is the difficulty in computing multispecies equilibria
+## lower.  This is the difficulty in computing multi species equilibria
 ## - the different solutions affect each other.  In general
-## multidimenensional root finding is difficult; even knowning that
+## multi-dimensional root finding is difficult; even knowing that
 ## there are roots is not straightforward, much less proving that
 ## we've converged on the "correct" root (for example [0,0] is a root
 ## in this case but that root is not stable).  plant uses some
 ## heuristics to try to ensure that the root returned is an attracting
-## point but sequentially applying rounds of iteration and nonlinear
+## point but sequentially applying rounds of iteration and non-linear
 ## root finding algorithms, as well as rescaling seed rains to repel
 ## from known unstable roots.
 

@@ -5,7 +5,7 @@
 library(plant)
 
 ## There are a large number of parameters to the physiological model,
-## but all are changable.  The default strategy is detailed in the
+## but all are changeable.  The default strategy is detailed in the
 ## "physiology" vignette:
 s <- FFW16_Strategy()
 names(s)
@@ -35,15 +35,15 @@ pl$strategy$lma
 ## However, as a component of the leaf economic spectrum we imagine
 ## LMA as affecting a number of other components of the model.
 
-## We capture this through what we call a "hyperparameterisation";
+## We capture this through what we call a "hyper-parameterisation";
 ## additional parameters and functions that mean that changing one
 ## parameter might affect a number of other lower-level parameters.
-## Our default hyperparameterisation is via the
+## Our default hyper-parameterisation is via the
 ## `FFW16_hyperpar` function:
 FFW16_hyperpar
 
 ## You will rarely need to call this function directly (see below) but
-## setting lma affects parameters `k_l`, `c_p1` and `c_Rl`
+## note how setting of lma affects parameters `k_l`, `c_p1` and `c_Rl`
 FFW16_hyperpar(trait_matrix(0.1, "lma"), s)
 
 ## These are:
@@ -53,15 +53,15 @@ FFW16_hyperpar(trait_matrix(0.1, "lma"), s)
 
 ## This means that it is possible to implement different trade-offs
 ## between parameters relatively easily by modifying the
-## hyperparameterisation function in R, rather than having to modify
+## hyper-parameterisation function in R, rather than having to modify
 ## the underlying physiological model in C++.
 
-## `trait_matrix` function here is a simple wrapper that just makes
-## sure that a trait matrix is in the right format:
+## The `trait_matrix` function is a simple wrapper that just makes
+## sure the trait matrix has the right format:
 trait_matrix(0.1, "lma")
 trait_matrix(c(0.1, 500), "rho")
 
-## To make use of the hyperparameterisation, the preferred way of
+## To make use of the hyper-parameterisation, the preferred way of
 ## setting parameters is through the utility functions `strategy` and
 ## `strategy_list`.  These take a `Parameters` object:
 p <- FFW16_Parameters()
@@ -69,7 +69,7 @@ p <- FFW16_Parameters()
 ## The Parameters object mostly contains information about the patch:
 names(p)
 
-## and it comes preset with the hyperparameterisation function:
+## and it comes pre-set with the hyper-parameterisation function:
 identical(p$hyperpar, FFW16_hyperpar)
 
 ## `c_ext` is the light extinction coefficient,
@@ -91,6 +91,8 @@ FFW16_hyperpar(trait_matrix(lma, "lma"), s)
 
 ss <- strategy_list(lma, p)
 length(ss)
+
+## We can then use standard r command to extract variable from this list
 sapply(ss, function(x) x$lma)
 sapply(ss, function(x) x$k_l)
 sapply(ss, function(x) x$c_p1)
@@ -108,6 +110,9 @@ sapply(pp, function(p) p$area_leaf_above(0))
 ## physiological parameters these have a variety of types)
 p$control
 
-## The defaults are rather too slow to use productively, so
+## The defaults are rather too slow for many uses, so
 ## `ebt_base_parameters` provides a faster set by using `fast_control`
 ## to set many of these to less accurate values.
+
+p2 <- ebt_base_parameters()
+p2$control[unlist(p$control) != unlist(p2$control)]

@@ -2,15 +2,18 @@
 ## title: "plant: A package for modelling forest trait ecology & evolution: _plant level properties_"
 ## ---
 
-## This vignette covers the sort of analysis in the plant figure in
-## the manuscript.  It also shows some of the features of working
+## This vignette illustrates the sort of analysis used to generate 
+## the plant figure (Fig 2) in the manuscript, i.e. modelling the
+## dynamics of individual plants. It also shows some of the features of working
 ## with plant components of the model.
 library(plant)
 
 ## Plants are constructed with the `FFW16_Plant` function.  That
 ## function takes as its only argument a "strategy" object; the
 ## default is `FFW16_Strategy`, but alternative strategies can be
-## provided (see below)
+## provided (see below). The "strategy" object contains all 
+## the physiological underpinning the dynamics of individual plants
+## and entire metapopulations.
 pl <- FFW16_Plant()
 
 ## Plants are an [R6](https://github.com/wch/R6) class, and have a
@@ -27,17 +30,17 @@ pl$fecundity
 pl$mortality
 
 ## Height, fecundity and mortality are the three key variables
-## propagated by the system of differential equations:
+## propagated by the internal system of differential equations:
 pl$ode_state
 
 ## To compute rates of change for these variables we need a light
 ## environment.  The function `fixed_environment` creates an
-## environment that has the same light level (here 100%) at all
+## environment that has the same canopy openness (here 100%) at all
 ## heights.  The plant *does not affect* this light environment.
 env <- fixed_environment(1.0)
 
-## The `compute_vars_phys` method computes whole-plant assmilation for
-## the plant, and from that growth rates:
+## The `compute_vars_phys` method computes net mass production for
+## the plant, and from that demographic rates:
 pl$ode_rates
 pl$compute_vars_phys(env)
 pl$ode_rates
@@ -58,19 +61,21 @@ pl$internals$area_leaf
 ## most of the internal calculations.
 ##
 ## Because of this, we have a "PlantPlus" object that exposes more of
-## a strategy (NOTE: a little more than this because it also includes
-## stem diameter growth)
+## a strategy, and in addition stem diameter growth:
 pp <- FFW16_PlantPlus(pl$strategy)
 pp$compute_vars_phys(env)
 names(pp$internals)
 
-## Some of the internals require `compute_vars_internals` to be run:
+## Some of the internals require `compute_vars_internals` to be run 
+## (the zapsmall function rounds numbers close to zero to zero):
 pp$compute_vars_growth()
 zapsmall(unlist(pp$internals))
 
-## This PlantPlus object also includes diameter and heartwood as two
+
+## This PlantPlus object also includes heartwood area and mass as two
 ## more variables for the ODE system (this might move into Plant
 ## soon -- see [this issue](https://github.com/traitecoevo/plant/issues/139)).
+## Tracking of these variables is needed to estimate stem diameter growth 
 pp$ode_names
 
 ## Plants are a type of *reference object*.  They are different to
@@ -87,12 +92,12 @@ pl$height # also 1!
 ## Rather than setting plant physical sizes to given values, it will
 ## often be required to *grow* them to a size.  This is required to
 ## compute seed output (integrated over the plant's lifetime)
-## diameter, mortality risk, etc; basically everything except for
+## stem diameter, survival, etc; basically everything except for
 ## height.
 ##
 ## It's possible to directly integrate the equations exposed by the
 ## plant, using the `ode_state` field, `compute_vars_phys` method and
-## `ode_rates` field.  For example, for use with `deSolve`:
+## `ode_rates` field.  For example, we can use the R package `deSolve`:
 derivs <- function(t, y, plant, env) {
   plant$ode_state <- y
   plant$compute_vars_phys(env)
@@ -123,10 +128,13 @@ pl2$height
 ## And at this height, here is the total seed production:
 pl2$fecundity
 
+## To make this type of operation easier, we provide the function 
+## `grow_plant_to_time`
+
 res <- grow_plant_to_time(FFW16_PlantPlus(FFW16_Strategy()), tt, env)
 
-## Here is the results, plotted against the `deSolve` results from
-## before:
+## Here is the result, plotted against the result obtained
+## from using `deSolve` above:
 plot(height ~ tt, res$state, type="l", las=1,
      xlab="Time (years)", ylab="Height (m)")
 points(height ~ time, yy, col="grey", cex=.5)
@@ -155,7 +163,7 @@ heights[[10]]
 ## Also included is `trajectory`; the points that the ODE stepper used
 ## with the system state at those times.
 
-## There is a conveinence function `run_plant_to_heights` that
+## There is a convenience function `run_plant_to_heights` that
 ## achieves the same thing.  Alternatively, and variable within
 ## `plant$internals` can be used, so long as it increases
 ## monotonically with respect to time.
@@ -168,7 +176,8 @@ res_mass <- grow_plant_to_size(pl, mass, "mass_above_ground", env,
 plot(res_mass$time, mass, type="o", pch=19, las=1, xlab="Time (years)")
 
 ## With all these bits in place, let's look at growth trajectories of
-## two species that differ in their LMA values.
+## two species that differ in their LMA values. This what is presented
+## In Fig. 2a of the paper.
 
 p <- ebt_base_parameters()
 ## Low LMA ("fast growth") species
@@ -177,15 +186,17 @@ s1 <- strategy(trait_matrix(0.08,  "lma"), p)
 s2 <- strategy(trait_matrix(0.267, "lma"), p)
 
 ## Note that we're using an alternative way of specifying strategies
-## here, to trigger our "hyperparametrisation" approach.  This may be
-## simplified in future, but currently it resides on the `p` object.
+## here, to trigger our "hyper-parametrisation" approach.  This may be
+## simplified in future, but currently the "hyper-parametrisation" function
+## resides on the `p` object.
 
 ## Then, generate a sequence of heights to collect information at
 pl1 <- FFW16_PlantPlus(s1)
 pl2 <- FFW16_PlantPlus(s2)
 
 ## (they are different for the two plants because they have different
-## starting heights due to some allometric scalings)
+## starting heights, the lower LMA of s1 allows it to achieve a greater
+## initial height for given seed mass)
 heights1 <- seq(pl1$height, s1$hmat, length.out=100L)
 heights2 <- seq(pl2$height, s2$hmat, length.out=100L)
 
@@ -284,7 +295,7 @@ pl$internals$mass_sapwood
 
 ## (these numbers seem a bit off: one of the motivations here is to
 ## develop and use better models of plant allometry.  The
-## parameterisations used at present are derived from adults and
+## parameterisation used at present are derived from adults and
 ## perform poorly with small plants.  However, based on height / area
 ## relationships [Falster 2011, supporting information], for an 8m
 ## tall plant total leaf areas of 5-10 m are plausible and with an LMA

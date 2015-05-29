@@ -69,7 +69,7 @@ abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
 
 ## Holding the first species at 0.08 we can introduce additional
-## species (it's close enough to the optimium here, though in general
+## species (it's close enough to the optimum here, though in general
 ## this point might move substantially as new species are introduced).
 
 ## Consider introducing a new species at the point of maximum fitness:

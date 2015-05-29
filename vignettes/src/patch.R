@@ -61,7 +61,7 @@ h[, 60]
 matplot(t, h, lty=1, col=make_transparent("black", 0.25), type="l",
         las=1, xlab="Time (years)", ylab="Height (m)")
 
-## The light environment is stored over each timestep:
+## The light environment is stored over each time step:
 xlim <- c(0, 1.1)
 ylim <- range(data1$light_env[[length(data1$light_env)]][, "height"])
 plot(NA, xlim=xlim, ylim=ylim, las=1,
@@ -84,7 +84,7 @@ for (i in seq_along(times)) {
 }
 
 ## The amount of light at the ground level is perhaps the most
-## relevent metric:
+## relevant metric:
 y <- sapply(data1$light_env, function(x) x[1, "canopy_openness"])
 plot(data1$time, y, type="l", las=1,
      ylim=c(0, 1), xlab="Time (years)", ylab="Canopy openness")
@@ -176,3 +176,22 @@ plot(t2, lai2, type="l", las=1, lty=2,
      xlab="Time (years)", ylab="Leaf area index")
 lines(t2, lai2_1, col=cols[[1]])
 lines(t2, lai2_2, col=cols[[2]])
+
+## To find the average value over the metapopulation we weight by patch abundance:
+metapopulation <- function(x){
+  plant:::trapezium(t2, x*data2$patch_density)
+}
+
+lai2_av <- metapopulation(lai2)
+lai2_1_av <- metapopulation(lai2_1)
+lai2_2_av <- metapopulation(lai2_2)
+
+plot(t2, lai2, type="l", las=1, lty=2,
+     xlab="Time (years)", ylab="Leaf area index")
+lines(t2, lai2_1, col=cols[[1]])
+lines(t2, lai2_2, col=cols[[2]])
+
+axis(4, at=lai2_av,   tck=0.1, lty = 2, labels=NA)
+axis(4, at=lai2_1_av, tck=0.1, col.ticks=cols[[1]], labels=NA)
+axis(4, at=lai2_2_av, tck=0.1, col.ticks=cols[[1]], labels=NA)
+axis(1, at=108, labels="Av")

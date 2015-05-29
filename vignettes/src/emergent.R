@@ -2,11 +2,10 @@
 ## title: "plant: A package for modelling forest trait ecology & evolution: _patch level emergent properties_"
 ## ---
 
-## The aim here is to use plant to investigate dynamics of plants
-## within a single patch, but to focus on patch level properties,
-## rather than properties of plants within the patch (though I guess
-## that the leaf area index calculations in vignette:patch are also
-## patch level properties).
+## The aim here is to use the plant package to investigate dynamics 
+## within a patch of competing plants, focussing on emergent patch-level 
+## properties, rather than properties of plants within the patch.
+
 library(plant)
 
 p0 <- ebt_base_parameters()
@@ -14,7 +13,7 @@ p0$control$equilibrium_nsteps <- 30
 p0$control$equilibrium_solver_name <- "hybrid"
 p0$disturbance_mean_interval <- 30.0
 
-## Working with a single species at equilibrium
+## We'll work with a single species at equilibrium
 p1 <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
 p1_eq <- equilibrium_seed_rain(p1)
 data1 <- run_ebt_collect(p1_eq)
@@ -50,10 +49,10 @@ matplot(height, density, type="l", lty=1,
         log="y")
 
 ## Note that the densities here can be *extremely* low, and yet
-## cohorts continue to grow in size; this is the "atto-fox problem",
+## individuals within the cohorts continue to grow in size; this is the "[atto-fox problem](http://en.wikipedia.org/wiki/Lotka-Volterra_equation)",
 ## thou here we drop down as low as `r formatC(signif(min(density, na.rm=TRUE) / 1e-24, 1))`
 ## yocto plants / m / metre squared (a yocto-x being 1 millionth of an
-## atto-x).  *Anyway*:
+## atto-x).  *Anyway*....
 
 ## The trajectories are easier to understand if a few are
 ## highlighted.
@@ -112,3 +111,50 @@ points(height[1, i], growth_rate[1, i], pch=19, col=cols)
 text(height[1, i] + strwidth("x"), growth_rate[1, i],
      paste0(round(times), c(" years", rep("", length(times) - 1))),
      adj=c(0, 0))
+
+
+## The above plots show relationships with patches of a given age
+## What about the average relationship across the entire metapopulation? 
+## To get that, we  average (integrate) over the distribution over patch 
+## (for formula see demography vignette). To achieve this we first need 
+## the patch-level relationships to a series of fixed heights
+
+hh <- seq_log_range(range(height, na.rm=TRUE), 500)
+
+## We'll use a spline interpolation, on log-scaled data 
+splinefun_loglog
+
+## But we need to modify the function further, so that it 
+## returns zero for any point lying outside the observed range
+
+splinefun_loglog2 <- function(x,y,xx){
+    ret <- splinefun_loglog(x,y)(xx)
+    ii <- xx <= max(x, na.rm=TRUE) & xx >= min(x, na.rm=TRUE) 
+    ret[!ii] <-0 
+    ret
+}
+
+## Now interpolate the height-density relationship in each patch to 
+## the series of  specified heights
+xxx <- lapply(seq_along(data1$time), function(i) 
+          splinefun_loglog2(height[,i],density[,i], hh))
+n_hh <- do.call("cbind", plant:::pad_matrix(xxx))
+
+## For each of these heights, we can now integrate across patches
+## (i.e. across rows), weighting by patch abundance 
+n_av <- apply(n_hh,1, 
+                function(x) plant:::trapezium(data1$time, 
+                            x*data1$patch_density)) 
+
+## Add this average to the plot (red line):
+xlim <- c(0, max(height, na.rm=TRUE) * 1.05)
+matplot(height, density, type="l", lty=1,
+        col=make_transparent("black", 0.15),
+        xlab="Height (m)", ylab="Density (1 / m / m2)", las=1,
+        log="y", xlim=xlim)
+matlines(height[, i], density[, i], col=cols, lty=1, type="l")
+points(height[1, i], density[1, i], pch=19, col=cols)
+text(height[1, i] + strwidth("x"), density[1, i],
+     paste0(round(times), c(" years", rep("", length(times) - 1))),
+     adj=c(0, 0))
+points(hh, n_av, col="red", type='l')
