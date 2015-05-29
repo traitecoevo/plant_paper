@@ -142,6 +142,25 @@ we let the growth fraction decrease with height according to the function
 where $c_{r1}$ is the maximum possible allocation (0-1) and $c_{r2}$
 determines the sharpness of the transition.
 
+\section{Diameter growth rate}
+
+In a similar way, basal area ($a_\textrm{st}$) increment can be
+expressed as the sum of increments in sapwood, bark \& heartwood areas
+($a_\textrm{s}, a_\textrm{b}, a_\textrm{h}$ respectively):
+$$\frac{\textrm{d}a_\textrm{st}}{\textrm{d}t}= \frac{\textrm{d}a_\textrm{b}}{\textrm{d}t} + \frac{\textrm{d}a_\textrm{s}}{\textrm{d}t} + \frac{\textrm{d}a_\textrm{h}}{\textrm{d}t}.$$
+We now have an equation for basal area growth that contains many of the same
+elements as eq. \ref{eq:dhdt}:
+\begin{equation}\label{eq:dast}
+\frac{\textrm{d}a_\textrm{st}}{\textrm{d}t}=
+\left(\frac{\textrm{d}a_\textrm{s}}{\textrm{d}a_\textrm{l}} + \frac{\textrm{d}a_\textrm{b}}{\textrm{d}a_\textrm{l}}\right) \times
+\frac{\textrm{d}a_\textrm{l}}{\textrm{d}m_\textrm{a}} \times \frac{\textrm{d}m_\textrm{a}}{\textrm{d}b} \times \frac{\textrm{d}b}{\textrm{d}t} +\frac{\textrm{d}a_\textrm{h}}{\textrm{d}t} .
+\end{equation}
+Diameter growth is then given by the geometric relationship between stem
+diameter ($D$) and $a_\textrm{st}$:
+\begin{equation} \label{eq:dDdt}
+\frac{\textrm{d}D}{\textrm{d}t}= \sqrt{\frac{\pi}{a_\textrm{st}}} \frac{\textrm{d}a_\textrm{st}}{\textrm{d}t}.
+\end{equation}
+
 \section{A functional-balance model for
 allocation}\label{a-functional-balance-model-for-allocation}
 

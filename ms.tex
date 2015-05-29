@@ -16,7 +16,8 @@ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Austr
 \textasteriskcentered Email for correspondence: \texttt{daniel.falster@mq.edu.au}\\
 A manuscript in consideration as a research paper for
 publication in MEE as part of the Special Feature \emph{Demography
-  beyond the Population}.}
+  beyond the Population}.\\
+Word count: ~3900 words}
 \date{}
 
 \bibliographystyle{mee}
@@ -24,7 +25,7 @@ publication in MEE as part of the Special Feature \emph{Demography
 \usepackage[title,titletoc,toc]{appendix}
 
 \mstype{Applications Note}
-\runninghead{plant}
+\runninghead{The {\plant} package}
 \keywords{demography, emergent, fitness, growth,
 physiology, metapopulation, mortality, reproduction, size-structure,
 tradeoff}
@@ -68,16 +69,16 @@ tradeoff}
   hyper-parameterisation to capture trade-offs among parameters. A
   detailed test suite is provided to ensure correct behaviour of the code.
 \item
-% todo
-  We provide worked examples illustrating {\plant}'s use to study the
-  influence of functional traits on growth of individual plants, of
-  whole patches and on assembly of ecological communities.
+  {\plant} provides a transparent platform for investigating how  
+  physiological rules and functional trade-offs interact with competition and 
+  disturbance regimes to influence vegetation demography, structure and 
+  diversity.
 \end{enumerate}
 
 \section{Introduction}\label{introduction}
 
-Plant growth and demography are fundamentally size- and trait-
-structured, influencing dynamics over time-scales ranging from
+Plant growth and demography are fundamentally size- and 
+trait-structured, influencing dynamics over time-scales ranging from
 instantaneous physiological effects to long-term evolutionary outcomes
 \citep{Harper-1977, Westoby-2002}. 
 %
@@ -90,25 +91,24 @@ than new leaves; to maintaining support tissues \citep{Givnish-1988,
   Enquist-2007} and to reproduction \citep{Thomas-2011}.
 %
 Consequently rates of growth, mortality and reproduction change with
-individual size \citep{Muller-2006, Ruger-2011, Thomas-2011}.  The
-patterns of changing growth rate vary with plant traits; for example,
-leaf construction costs and wood density affect growth rates and rates
-of tissue replacement \citep{Wright-2010}, while seed size and height
-at maturation determine start and end points of ontogenetic
+individual size \citep{Muller-2006, Ruger-2011, Thomas-2011}.  
+Ontogenetic 
+patterns of growth also vary with traits; for example,
+leaf and wood construction costs influence growth rates 
+\citep{Wright-2010}, while seed size and height
+at maturation determine the start and end points of ontogenetic
 trajectories \citep{Westoby-2002}.
 %
-Strong feedbacks emerge between individuals within a forest due to
+Strong feedbacks emerge between individuals within a forest via
 competition for light and other resources, such that the growth rate
 of one individual depends on the size and traits of nearby
-individuals.
+individuals \cite{Pacala-1996}.
 %
-This makes it difficult to predict demographic processes without
-modelling both individual growth and the interactions between
-individuals.
-%
-It is therefore difficult to link observable species traits to
+Such feedbacks make it difficult to link observable species traits to
 phenomena such as self-thinning, successional transitions, trait
-evolution and species coexistence.
+evolution and species coexistence, without
+modelling both individual growth and the competitive interactions between
+individuals.
 
 Although the importance of size-structure for vegetation dynamics and
 diversity, has been long been recognised \citep[e.g.,][]{Harper-1977,
@@ -117,19 +117,14 @@ dominated by models and theory that either omit size-structure
 entirely, or only include coarse approximations. 
 %
 Theoretical investigations exploring questions about niche-based
-species coexistence and ecological drift (neutrality) both primarily
-rely on unstructured population models \citep[e.g.][]{MacArthur-1967,
+species coexistence and ecological drift (neutrality) both rely
+primarily on unstructured population models \citep[e.g.][]{MacArthur-1967,
   Tilman-1985, Geritz-1995, Hubbell-2001, Calcagno-2006}.
 %
-It is common to assume competitive interactions are influenced by
+It is common to assume competitive outcomes are influenced by
 size-related traits such as adult size and seed size, but detailed
-size-structure is rarely considered, at least for plant models
+size-structure is rarely considered, at least in plant models
 \cite[for animal examples, see][]{Deroos-1988, Deroos-1992}.
-%
-Consequently, it has been difficult to connect and test the mechanisms
-described in these simplistic models with types of data collected in
-the field, such as physiological leaf traits or demographic data from
-long-term monitoring plots \citep{Adler-2013}.
 %
 Similarly, most large-scale models of vegetation dynamics do not
 include size-structured demography \citep{Cramer-2001, Sitch-2003,
@@ -143,7 +138,7 @@ importance of size-structure is starting again to be recognised
 \citep{Moorcroft-2001, Purves-2008, Falster-2011, Dekauwe-2014}, all but a couple
 of the most popular,
 large-scale vegetation models lack any real demography or
-size-structure \citep[e.g.][]{Moorcroft-2001, Smith-2014}.
+size-structure \citep[see][]{Moorcroft-2001, Smith-2014}.
 
 In this note, we introduce the {\plant} package for R \citep{R-2015};
 a mechanistic framework for studying the effects of size structure and
@@ -151,33 +146,26 @@ trait variation on the demography of individual plants, of patches of
 competing plants and of meta-populations structured by a prevailing
 disturbance regime.
 % 
-We developed {\plant} primarily to investigate if and how species
+We developed {\plant} primarily to further investigate if and how species
 differing in traits are able to coexist with one another
-\citep{Falster-2011,Falster-2015}.  In order to allow interactions to
-be driven by species traits and arise through competition for shared
-resources, we needed to model a community with a full range of sizes,
-as species may not be able to recruit under the canopy that they
-generate \citep{Moorcroft-2001,Huston-1987}.
+\citep[following][]{Falster-2011,Falster-2015}.  Size-structured models
+provide unique opportunities for coexistence via differentiation in
+successional strategy \citep{Moorcroft-2001,Huston-1987}.
 
 At the same time, we expect the {\plant} model to be useful for
-modelling other phenomena. The internal structure of the {\plant}
+modelling other demographic phenomena. The internal structure of the {\plant}
 model is similar in approach to the ``Ecosystem Demography''
 \citep{Moorcroft-2001} and \textsc{lpj-guess} \citep{Smith-2014}
-models. Like {\plant}, these models include size- structured
+models. Like {\plant}, these models include size-structured
 competition within a metapopulation of ``patches''. However, whereas
-these models were designed to capture large-scale regional
-biogeochemistry driven by climatic variables and rely on simulations,
+these models rely on simulations and were designed to capture large-scale regional
+biogeochemistry driven by climatic variables,
 {\plant} was designed so that the rules driving the dynamics of the
 system could be manipulated and emergent demographic behaviours
 studied deterministically and in detail. In {\plant} it is possible to grow plants in
 isolation, in patches of competing plants and in disturbance-driven
-metapopulations. 
-% TODO: can you change this?  the amount of effort we put in is
-% decoupled from how useful other people may find it.
-Moreover, we put considerable effort into resolving
-competitive hierarchies. 
-The package is thus designed to sit in the middle
-ground between a large-scale coupled simulation model and simple
+metapopulations. The package is thus designed to bridge the gap between 
+a large-scale coupled simulation model and simple
 abstract theoretical device. 
 
 Below we describe the general approach of the package, then provide
@@ -207,37 +195,35 @@ We model the emergent behaviour of patches deterministically, based on a
 continual  size-density distribution. As such, it is not required to specify a
 particular patch size.
 
-\section{Effects of size, trait and environment on demography of individual plants}Q
+\section{Effects of size, trait and environment on demography of individual plants}
 
 The core of {\plant} is a model for an individual plant's
 physiological strategy as specified by its traits
 (Fig. \ref{fig:schematic}a). This model estimates rate of biomass
 production for a plant, given its size and a light environment. Gross
-photosynthetic income is estimated from total leaf area and the light
+photosynthetic income is calculated from total leaf area and the light
 distribution across the plant's canopy. Costs of tissue respiration
 and turnover are then subtracted. The remaining biomass is then
 allocated between growth and reproduction.  
-The key outputs needed by higher levels (see below) is growth rate,
+The key outputs needed by higher levels (see below) are height growth rate,
 mortality rate and rate of seed production.  However additional
 quantities are also computed, such as total assimilation and the
 respiration, turnover and allocation rates for different tissues (see
 Appendix \ref{sec:plant})
 
 The default physiological model used in {\plant} largely reflects that
-presented in \citet{Falster-2011}, but with extensions allowing for
+presented in \citet{Falster-2011,Falster-2015}, but with extensions allowing for
 diameter growth also to be estimated. To properly model trait
 variation, different parameters (such as rates of leaf turnover,
 respiration, photosynthesis per leaf area) in the model are linked via
-assumed trade-offs. For example, the trait \textsc{lma} is used to estimate the
-rate of leaf turnover, based on observed scaling relationship spanning
-across diverse vegetation and plant functional global
-\citep{Wright-2004} (see Appendix \ref{sec:FFW16} for details).
+assumed trade-offs. 
 
 The current parametrisation of the physiological model is based on
 \citet{Falster-2011}. Parameter values were drawn from available
-literature (see Appendix \ref{sec:FFW16}, table 3); however for some
+literature (see Table 3 in Appendix \ref{sec:FFW16}); however for some
 parameters limited or no data were readily available. Providing
-updated parameter sets is trivial; the challenge is to infer suitable
+updated parameter sets is trivial (see  Appendix \ref{sec:parameters}); 
+the challenge is to infer suitable
 values by constraining outputs from {\plant} against diverse data
 sources \citep{Lebauer-2012, Keenan-2013}. This is an area in which we
 are still actively working and one of the major use cases we envisage
@@ -246,14 +232,15 @@ for {\plant}.
 While we have implemented one physiological model (\texttt{FFW16}),
 the package is designed to allow arbitrary additional physiologies to
 be introduced.  That is, rather than varying the parameters of the
-equations, the equations themselves can be changed, additional
-resources could be competed for and the higher level functionality of
-the package can still be used.  As an intermediate level, we allow for
-parameters to imply relationships among arbitrary other parameters,
-allowing straightforward modelling of trade-offs.  For example,
-setting leaf mass per unit area (\textsc{lma}) affects leaf turnover rate,
-because it is known that leaves which are cheaper to build have shorter 
-lifespan \citep{Wright-2004}.
+equations, the equations themselves can be changed and the higher level 
+functionality of the package can still be used.  As an intermediate level, 
+we allow for changes in key parameters to trigger changes 
+in other parameters (i.e. hyper-parametrisation),
+allowing straightforward modelling of trade-offs.  
+For example, the trait \textsc{lma} is used to estimate the
+rate of leaf turnover, based on an observed scaling relationship spanning
+across diverse vegetation and plant functional types
+\citep{Wright-2004} (see Appendix \ref{sec:FFW16} for details).
 
 \subsection{Applications}
 
@@ -262,7 +249,7 @@ essential physiological rates for individual plants
 (Fig. \ref{fig:plant}). The function \texttt{grow\_plant\_to\_size}
 takes a given strategy and light environment and grows the plant,
 producing a trajectory of size over time (Fig. \ref{fig:plant}a). This
-is achieved by integrating an Ordinary Differential Equation of
+is achieved by integrating an ordinary differential equation of
 size-dependent growth rate (see Appendices \ref{sec:demography} and
 \ref{sec:plant} for more details). As the plant grows, allocation to
 different tissue types varies and the composition of the plant
@@ -278,7 +265,7 @@ By varying the light environment and measuring growth rate, the whole
 plant light compensation point (\textsc{wplcp}) can be computed (Fig.
 \ref{fig:plant}d). The \textsc{wplcp} is the light level at which the plant 
 stops growing and is increasingly regarded as the most useful
-measure of a strategy's shade tolerance
+measure of a species's shade tolerance
 \citep{Givnish-1988, Baltzer-2007, Lusk-2013}. As expected, \textsc{wplcp}
 increases with plant size, due to increased costs of building and
 maintaining stem and leaf tissues \citep{Givnish-1988}. Likewise, \textsc{wplcp}
@@ -292,8 +279,8 @@ Within patches of competing plants, competition for light generates
 strong non-linear feedbacks on growth, survival and reproduction. In the
 \texttt{FFW16} physiological model, we consider only the effect of
 shading on rates of biomass production, although competition for other
-resources such as nitrogen or water could also be considered with
-suitable extensions.
+resources such as nitrogen or water could also be considered by extending the 
+physiological model.
 
 We assume that patches are vertically but not horizontally
 structured. In other words, we account for size differences but not spatial 
@@ -304,18 +291,18 @@ we assume that patches are very large -- this means the population dynamics
 within the patch behave deterministically \citep{Deroos-1997} and can therefore 
 be approximated via a Partial Differential Equation (\textsc{pde}) (see Appendix
 \ref{sec:demography}). The same \textsc{pde} captures average behaviour
-across a large number of small patches \citep{Moorcroft-2001}. The model may 
+across a large number of small patches \citep{Moorcroft-2001}. {\plant} may 
 therefore capture average demographic behaviour across a range of patch sizes.
 
 Ideally one would also consider spatial interactions within patches,
 however such models are very computationally demanding and also
-impossible to solve in a deterministic fashion \citep{Huston-1987, 
+impossible to solve in a deterministic fashion \citep{Shugart-1980, 
 Pacala-1996}. Moreover, it remains unclear whether resolving spatial details within a
 patch would provide further useful ecological detail, in part because the
 process of competitive thinning tends to break down spatial clusters
 \citep{Strigul-2008}.
 
-When modelling a patch, we are interested in modelling changes in the size-
+When modelling a patch, the focus is on changes to the size-
 density-distribution \(n(x,h,a)\) with patch age \(a\), i.e. the density of
 individuals with traits \(x\) and height \(h\) within a patch of age \(a\).
 Density is measured as individuals per unit height and per unit ground area.
@@ -381,12 +368,11 @@ were limited to a single species
 \ref{fig:patch}). Second, {\plant} allows for the effects of competition and succession on
 productivity and biomass accumulation within a patch to be investigated
 \citep{Falster-2011}. Leaf area cover and rates of biomass production
-tend to vary with patch age. Such changes might come about via a
-combination of physiological and structural changes
+tend to vary with patch age 
 \citep{Binkley-2002, Smith-2001, Coomes-2007, Ogawa-2010}. {\plant} enables
 the effects of competitive feedbacks to be incorporated, in addition to
-any intrinsic physiological factors. Moreover, {\plant} allows for the
-contributions of different species to be mapped (Fig. \ref{fig:patch}c).
+any intrinsic physiological factors, yielding emergent non-linear outcomes
+ (Fig. \ref{fig:patch}c).
 
 \section{Trait, size and patch structured vegetation}
 
@@ -411,22 +397,23 @@ deterministically and can be approximated via a second \textsc{pde}
 (see Appendix \ref{sec:demography} for
 details). Scaling from patch to metapopulation is then achieved by
 weighting the temporal dynamics of a single patch by \(p(a)\), the
-relative abundance of patches aged \(a\) in the metapopulation.
+relative abundance of patches aged \(a\) in the metapopulation 
+ (Fig. \ref{fig:patch}c).
 
 The main numerical challenge in stepping from single patch to
 metapopulation is to identify the equilibrium seed rain of the
 metapopulation. An ``input'' seed rain is required to simulate 
 the demography of the metapopulation, this in turn produces an ``output'' 
-number of seeds. The equilibrium seed rain is the vector of seed 
-rain where input seed
-rain equals output seed rain. Finding this equilibrium requires
-finding a root of a multidimensional function, subject to the
+number of seeds. The equilibrium occurs when a given
+input seed
+rain produces an equivalent output seed rain. Finding this equilibrium requires
+finding the root of a multi-dimensional function, subject to the
 constraints that this root is stable (e.g., the trivial equilibrium of
 zero seed rain always exists, but is often not stable) (Appendix
 \ref{sec:equilibrium}).
 
-A feature of the size-structured metapopulation concept implemented here
-is that it balances equilibrium and non-equilibrium approaches to
+An attractive  feature of the metapopulation concept implemented here
+is that integrates equilibrium and non-equilibrium approaches to
 modelling ecological dynamics \citep{Kohyama-1993, Moorcroft-2001, 
 Falster-2011}. An
 equilibrium may be approached at the level of metapopulation, meaning
@@ -438,8 +425,8 @@ residents continue to grow until they are disturbed.
 \subsection{Applications}
 
 
-The dynamic equilibrium captured by the trait-, size- and patch
-structured metapopulation model potentially resolves several
+The dynamic equilibrium captured by the trait-, size- and 
+patch-structured metapopulation model potentially resolves several
 challenges faced by unstructured models. First, by scaling up from
 patch to metapopulation, we close the demographic feedback loop to
 create a self-regulating system. Unlike some vegetation models, there
@@ -460,26 +447,24 @@ observed in large forest  plots \citep[e.g.][]{Muller-2006, Coomes-2007} arise
 as  emergent phenomena. Moreover, the predictions from {\plant} 
 are for a frequency distribution of patch states across the landscape 
 (Fig. \ref{fig:emergent}, see more detail in Appendix \ref{sec:emergent}). As such,
-size-and patch- structured models may be more suitable for linking with 
-satellite and forest survey data, than unstructured models representing the 
-world as homogeneous green slime \citep{Moorcroft-2001, Purves-2008}.  
+size- and patch-structured models provide unique opportunities for linking with 
+satellite and forest survey data \citep{Moorcroft-2001, Purves-2008}.  
 
 Finally, with the extension to metapopulation, we are modelling demography across
 the entire life cycle and are thus in a position to estimate invasion fitness -- 
 the ability of a rare
 individual with particular traits to establish in a community of
-established residents at their equilibrium densities \citep{Metz-1992}.
-Invasion fitness
-is ideally calculated as the long-term per capita growth rate of the new
-type; however, in structured metapopulations, a more convenient
-indicator of per-capita growth rate is given by the logarithm of the
-basic reproduction ratio \citep{Gyllenberg-2001, Metz-2001}. The basic
-reproduction ratio \(R\) is simply the total seed output of the new
-type, averaged across the metapopulation. A new type can invade when
-\(R > 1\).
+established residents at their equilibrium densities \citep{Geritz-1998,Dieckmann-2007}.
+While ideally calculated as the long-term per capita growth rate, 
+a more convenient
+indicator of invasion fitness in structured metapopulations is given by the logarithm of the
+basic reproduction ratio, \(R\) \citep{Gyllenberg-2001, Metz-2001}. 
+\(R\) is simply the total seed output of the new
+type, averaged across the metapopulation. So a new type can invade when
+ \(\log R > 0\).
 
-With fitness defined, it becomes possible to model adaptive dynamics
-and community assembly \citep{Geritz-1998,Dieckmann-2007}. This is best
+With fitness defined, it becomes possible to model trait-based adaptive dynamics
+and community assembly \citep{Falster-2015}. This is best
 thought of as occurring on a fitness landscape, a surface with fitness
 plotted against one or more species traits (Fig. \ref{fig:fitness}). The
 reproductive success of individuals possessing a particular trait value
@@ -491,8 +476,9 @@ negative slope (dashed line in Fig. \ref{fig:fitness}a) indicates
 selection for smaller trait values (see Appendix \ref{sec:fitness} for
 details). Fitness landscapes are constantly reshaped as species are
 introduced and evolve, reflecting the non-linear demographic feedbacks
-that occur under frequency-dependent evolution
-\citep{Geritz-1998,Dieckmann-2007}. Following the fitness gradient,
+that occur under frequency-dependent evolution. Stale coexistence is possible when 
+species with different traits can mutually invade \citep{Geritz-1998}
+Following the fitness gradient,
 can lead to an evolutionary branching point
 \citep{Geritz-1998,Dieckmann-2007}; at this point there is no
 directional selection (solid line in Fig. \ref{fig:fitness}a) but
@@ -501,15 +487,15 @@ often possible to find a configuration where fitness is negative
 everywhere (solid line in Fig. \ref{fig:fitness}b) except for the zero
 points where species are present. This community is immune to invasion
 from any other strategies and represents a prediction for the 
-trait mixture that might might be favoured by natural selection \citep{Geritz-1998}.
+trait mixture that might might be favoured by natural selection 
+\citep{Geritz-1998,Falster-2015}.
 
 Identifying conditions promoting trait diversity is a valuable use-case
-for {\plant}. Coexisting plant species differ in a range of physiological
-traits, yet the conditions allowing for these different types to coexist
-in face of competition for a common set of resources remain largely
-unknown. The simple example here can be extended to multiple dimensions
+for {\plant}. The simple example here can be extended to multiple dimensions
 and can be used to investigate how trade-offs facilitate coexistence
-\citep{Falster-2015}.
+\citep{Falster-2015}. Co-occurring plant species differ in a range of physiological
+traits, yet the conditions allowing for stable coexistence remain largely
+unknown \citep{Adler-2013}. 
 
 \section{Implementation details}
 
@@ -547,23 +533,11 @@ variety of scales. The specific use-cases highlighted here arise from our
 interest in the assembly of trait mixtures in communities. However a variety
 of other uses would be possible and also extensions to address other aspects
 of community assembly. As examples, we expect the package will prove useful
-for investigating how morphological and physiological traits influence growth
-rate and shade tolerance, and emergent phenomena such as multi-species self-
+for i) investigating how morphological and physiological traits influence growth
+rate and shade tolerance, ii) emergent phenomena such as multi-species self-
 thinning, successional transitions and age-related changes in vegetation
-productivity.  
-
-% TODO: In favour of dropping this whole paragraph?
-It is hoped that the approach here can be used to inform both future
-empirical research and model development in neighbouring areas.
-{\plant} aims to bridge the gap between detailed physiological models
-and large-scale mechanistic models of plant growth \citep{Cramer-2001,
-  Sitch-2003, Dekauwe-2014}.  As noted above, most large-scale
-mechanistic models of plant growth do not explicitly model size
-structure, so remain unable to investigate demographic phenomena. At
-the same time, much attention is paid to detailed leaf-level
-physiology. {\plant} aims to bridge this gap that emerged in the model
-landscape, where detailed physiology and size-structured dynamics
-combine to drive forest structure and function via traits.
+productivity, and iii) as a bridge between empirical data, large-scale 
+simulators of global biogeochemical cycles and simple abstract theoretical models.
 
 \section{Acknowledgements}
 
@@ -591,14 +565,14 @@ Dynamics across all three levels are driven by the
 physiological sub model determining an individual's physiological and
 demographic rates on the basis of its traits, size and light environment (a).
 (b) Competitive hierarchies  are modelled by tracking the height distribution of
-individuals across within a ``patch'' after a disturbance. The intensity
+individuals within a ``patch''. The intensity
 of shading indicates the density of individuals at a given height for
 different species (distinguished by colours). A size- and patch-structured
 metapopulation consists of a distribution of patches linked by seed dispersal.
 Disturbances occasionally remove all vegetation within a patch, resetting the
 patch. (c) The traits of the resident species determine the shading environment
 across the metapopulation, which in turn determines the fitness landscape.
-Resident traits adjust through directional selection up the fitness landscape
+Resident traits adjust through directional selection
 and through the introduction of new species. Adapted from
 \citet{Falster-2011}, \citet{Falster-2015}. }
 
@@ -610,19 +584,20 @@ and through the introduction of new species. Adapted from
 \begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{figures/plant.pdf}
-\caption{Physiological dynamics for individual plants vary with size, trait
-and light environment. (a) Growth trajectories for plants differing in light
-environment and trait (\textsc{lma}, low = 0.1, solid line; high =  0.267, dashed
-line). Lower light environments slow trajectories and interact non-linearly
-with traits. (b) Over time, the fraction of living tissue switches from leaf
+\caption{Physiological dynamics for individual plants varying in size, trait
+and light environment. Solid lines are for high \textsc{lma} strategy, dashed
+lines are for low \textsc{lma} strategy. 
+(a) Growth trajectories are influenced by light environment and trait . 
+(b) Over time, the fraction of living tissue switches from leaf
 towards sapwood, with high \textsc{lma} species having relatively more mass in leaf
-than low \textsc{lma} species. (c) Growth rates peak around 5m high, but this position
-varies with both trait and light level (note that this is the derivative of
-panel (a)). (d) Growth rates vary with plant size (seedling and mature shown)
-and with traits; growth rate differences are more pronounced in high light.
-Whole plant light compensation points emerge from the model as the point where
+than low \textsc{lma} species. (c) Size-dependent growth rates (derivative of
+panel (a)) peak at around 5m high, but this position varies 
+with both trait and light level. 
+(d) Declines in growth rate with light vary with plant size 
+and traits.
+Whole plant light compensation points (indicated by filled dots) emerge as the point where
 growth rate is zero (x intercept).  The light level used in panels (a) and (c)
-is indicated with dots.  See Appendix \ref{sec:plant} for details and code.}
+is indicated with coloured ticks.  See Appendix \ref{sec:plant} for further details and code.}
 \label{fig:plant}
 \end{figure}
 
@@ -631,21 +606,20 @@ is indicated with dots.  See Appendix \ref{sec:plant} for details and code.}
 \begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{figures/patch.pdf}
-\caption{Population dynamics for two species competing within a patch. Lines
-in panels (a) same growth trajectories for individuals on the
+\caption{Population dynamics for two species competing within a patch. 
+Red and blue lines are low and high \textsc{lma} species from Fig. \ref{fig:plant}. 
+Lines in panels (a) show growth trajectories for individuals on the
 boundary of successive ``cohorts'' for each species, using a schedule of 
-introduction times generated by an adaptive refinement algorithm.
- Red lines are the low \textsc{lma}
-species from Fig. \ref{fig:plant}, blue lines are the high \textsc{lma} species.  The
-initial growth rate advantage of the low \textsc{lma} species (see Figure
+introduction times generated by {\plant}'s adaptive algorithm.
+The initial growth rate advantage of the low \textsc{lma} species (see Figure
 \ref{fig:plant} c) means it quickly over tops the high \textsc{lma} species,
-suppressing its growth.  Self-thinning leaves space for the high \textsc{lma} species
-to establish below the canopy of the fast species. Panel (b) shows the same
+suppressing its growth.  Self-thinning creates space for the high \textsc{lma} species
+to establish below the canopy of the faster species. Panel (b) shows the same
 trajectories as in panel (a), but with shading indicating the density $n$ of
 individuals at given size and patch age (light = low density, dark = high density).  
 (c) The leaf area index at ground
 level for each species.  The dotted line is the total leaf area index (sum
-across both species). See Appendix \ref{sec:patch} for details and code.}
+across both species). See Appendix \ref{sec:patch} for further details and code.}
 \label{fig:patch}
 \end{figure}
 
@@ -654,14 +628,15 @@ across both species). See Appendix \ref{sec:patch} for details and code.}
 \begin{figure}[h!]
 \centering
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{figures/emergent.pdf}
-\caption{Emergent size-distributions across a metapopulation.
+\caption{Emergent size-distributions and demography across a metapopulation.
 Grey lines show patterns within individual patches differing in time
 since disturbance (age), with blue lines indicating patches of a
 specific age. Red lines show average relationship across the metapopulation, 
 obtained by weighting the grey lines by patch and individual abundance. 
 Panels show (a) patterns of abundance, (b) leaf area and
-(c) height growth rate against size. Note that units of panels (a) and
-(b) are per unit height and per unit ground area, respectively.  See Appendix \ref{sec:emergent} for details and code.}
+(c) height growth rate against size. Units of panels (a) and
+(b) are amount per unit height per unit ground area.  
+See Appendix \ref{sec:emergent} for further details and code.}
 \label{fig:emergent}
 \end{figure}
 
@@ -672,17 +647,17 @@ Panels show (a) patterns of abundance, (b) leaf area and
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{figures/fitness.pdf}
 \caption{Example fitness landscape for \textsc{lma}, showing potential for stable
 coexistence of multiple types.  Fitness is the log of the population growth
-rate - at zero species are at equilibrium, above zero they will increase in
+rate -- at zero species are at equilibrium, above zero they will increase in
 density.  (a) Landscape generated by a single species.  At \textsc{lma} of 0.1 (the
 dashed line) there is directional selection for smaller \textsc{lma}.  At \textsc{lma} of 0.08
 (solid line) there is a branching point (see inset for more detail).  (b)
-Landscape generated by two species, holing the first at \textsc{lma} of 0.08.
+Landscape generated by two species, holding the first at \textsc{lma} of 0.08.
 Introducing a species at the maximum fitness value from panel (a) reduces the
 region of positive fitness considerably (dashed line).  Dotted lines show
 subsequent invasions and replacements of the second species, the solid
 line shows a stable fitness landscape where both species exist on a peak in
 the fitness landscape.  At this point no further invasion is
-possible.  See Appendix \ref{sec:fitness} for details and code.}
+possible.  See Appendix \ref{sec:fitness} for further details and code.}
 \label{fig:fitness}
 \end{figure}
 

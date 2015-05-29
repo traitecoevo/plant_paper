@@ -128,7 +128,7 @@ figure_plant <- function() {
   ylim_dhdt <- c(-0.05 * ymax_dhdt, ymax_dhdt)
 
   plot(dhdt_h[["1_1"]], ylim=ylim_dhdt, lty=1, col=cols_light[[1]],
-       type="l", las=1, xlab="Height (m)", ylab="Height growth rate (m/yr)")
+       type="l", las=1, xlab="Height (m)", ylab=expression("Height growth rate"~~(m~yr^-1)))
   lines(dhdt_h[["2_1"]], type="l", lty=2, col=cols_light[[1]])
   lines(dhdt_h[["1_2"]], type="l", lty=1, col=cols_light[[2]])
   lines(dhdt_h[["2_2"]], type="l", lty=2, col=cols_light[[2]])
@@ -139,7 +139,7 @@ figure_plant <- function() {
 
   ## Panel d: wplcp
   plot(NA, xlim=c(0, 1), ylim=ylim_dhdt, las=1,
-       xlab="Canopy openness (%)", ylab="Height growth rate (m/yr)")
+       xlab="Canopy openness (%)", ylab=expression("Height growth rate"~~(m~yr^-1)))
   abline(h=0)
   label_panel(4)
   for (i in seq_along(d1)) {

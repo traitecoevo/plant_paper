@@ -74,15 +74,18 @@ figure_emergent <- function(data) {
   l_av <- apply(l_hh*n_hh, 1, metapopulation_average) / n_av
   g_av <- apply(g_hh*n_hh, 1, metapopulation_average) / n_av
  
-  op <- par(mfrow=c(3, 1), mar=c(2.1, 4.1, .5, .5), oma=c(2, 0.5, 0, 0))
+  op <- par(mfrow=c(3, 1), mar=c(2.1, 6.1, .5, .5), oma=c(2, 0.5, 0, 0))
   on.exit(par(op))
 
   ## First panel: density vs height:
   xlim <- c(0, max(height, na.rm=TRUE) * 1.05)
   matplot(height[, j], density[, j], type="l", lty=1, col="lightgrey",
-          xlim=xlim, xlab="Height (m)", ylab="Density (1 / m / m2)", las=1,
-          xaxt="n", log="y")
+          xlim=xlim, xlab="Height (m)", ylab=expression("Density"~~("#"~m^-1~m^-2)), las=1,
+          xaxt="n", log="y", yaxt="n")
   axis(1, labels=FALSE)
+  aty <- zapsmall(log10(axTicks(2)))
+  labels <- sapply(aty,function(i) as.expression(bquote(10^ .(i))))
+  axis(2,at=10^aty,labels=labels, las=1)
   matlines(height[, i], density[, i], col=cols, lty=1, type="l")
   points(height[1, i], density[1, i], pch=19, col=cols)
   text(height[1, i] + strwidth("x"), density[1, i],
@@ -93,7 +96,7 @@ figure_emergent <- function(data) {
 
   matplot(height[, j], leaf_area[, j], type="l", lty=1, col="lightgrey",
           xlim=xlim, xlab="Height (m)",
-          ylab="Leaf area density (m2 / m2 / m)", las=1,
+          ylab=expression("Leaf area density"~~(m^2~m^-1~m^-2)), las=1,
           xaxt="n")
   axis(1, labels=FALSE)
   matlines(height[, i], leaf_area[, i], col=cols, lty=1, type="l")
@@ -106,7 +109,7 @@ figure_emergent <- function(data) {
 
   matplot(height[, j], growth_rate[, j], type="l", lty=1, col="lightgrey",
           xlim=xlim, xlab="Height (m)",
-          ylab="Height growth rate (m / year)", las=1)
+          ylab=expression("Height growth rate"~~(m~yr^-1)), las=1)
   matlines(height[, i], growth_rate[, i], col=cols, lty=1, type="l")
   points(height[1, i], growth_rate[1, i], pch=19, col=cols)
   text(height[1, i] + strwidth("x"), growth_rate[1, i],
