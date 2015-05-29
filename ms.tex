@@ -48,8 +48,8 @@ tradeoff}
   either omit it entirely, or include only coarse approximations.
 \item
   Here we introduce the {\plant} package, an
-  extensible framework for modelling trait-based demography, ecology and evolution 
-  in vegetation, via coupled differential equations.
+  extensible framework for modelling size- and trait-based demography, 
+  ecology and evolution in vegetations.
   At its core, {\plant} is an
   individual-based mechanistic model where plant physiology and demography is mediated by
   traits. Individuals from multiple species can be grown in isolation,
@@ -57,8 +57,8 @@ tradeoff}
   disturbance regime. Dynamics within patches of competing plants are
   resolved using novel extensions of the ``Escalator Boxcar Train''
   technique. Combined effects of trait-, size- and patch-structured
-  dynamics are integrated into population level estimates of
-  reproductive fitness.
+  dynamics are integrated into metapopulation level estimates of
+  reproductive fitness and vegetation structure.
 \item
   {\plant} is an open source R package and is available at
   \href{https://github.com/traitecoevo/plant}{github.com/traitecoevo/plant}.
@@ -67,6 +67,7 @@ tradeoff}
   hyper-parameterisation to capture trade-offs among parameters. A
   detailed test suite is provided to ensure correct behaviour of the code.
 \item
+% todo
   We provide worked examples illustrating {\plant}'s use to study the
   influence of functional traits on growth of individual plants, of
   whole patches and on assembly of ecological communities.
@@ -84,157 +85,107 @@ this photosynthetic income to building and maintaining support tissues
 rather than to new leaves \citep{Givnish-1988, Enquist-2007} and
 reproduction \citep{Thomas-2011}. Consequently rates of growth and
 mortality change with individual size \citep{Muller-2006, Ruger-2011, Thomas-2011}.
-%
 The patterns of changing growth rate vary by plant traits; leaf
 construction costs and wood density affect growth rates and rates of
 tissue replacement \citep{Wright-2010}, while seed size and height at
 maturation determine start and end points of ontogenetic trajectories
 \citep{Westoby-2002}
-%
 Strong feedbacks emerge between individuals within a forest due to
 competition for light and other resources, such that the growth rate
 of one individual depends on the size and traits of nearby
 individuals.  This makes it difficult to predict demographic processes
 without modelling both individual growth and the interactions between
-individuals.
-% TODO[RGF]: link back things about natural selection, successional
-% dynamics, self thinning, trait evolution and species coexistance.
+individuals. The non-linear feedbacks arising from competitive 
+interactions are thought to be crucial for understanding phenomena such 
+as self thinning, successional transitions, trait evolution and 
+species coexistence.
 
-Although the importance of size-structure for vegetation function and
-demography has been long been recognised
-\citep[e.g.,][]{Harper-1977, Shugart-1980, Huston-1987},
-most large-scale mechanistic models of plant growth either omit it
-entirely, or only include coarse approximations
-\citep{Cramer-2001, Sitch-2003, Kelley-2013,Dekauwe-2014}. The likely
-reason is the computational
-challenge of modelling size-structured dynamics. 
-% TODO[RGF]: I don't see the link with the above?  Can this be
-% shortened/tightened?  It's too long for a 3k word paper
-During the 1980s and
-early 1990s, size-structured ``gap'' models were widely used
-\citep[e.g.][]{Shugart-1980,Huston-1987}. These gap models were
-parameterised in terms of growth using statistical functions; this meant 
-that data had to be collected for each species, limiting widespread application. 
-The next generation of models focussed on establishing core physiology for 
-a limited number of functional types and
-sacrificed details of demography in order to achieve global coverage
-\citep{Woodward-1995,Haxeltine-1996}. This history has brought us to the
-current situation where all but a couple
-\citep[e.g.][]{Moorcroft-2001, Smith-2014} of the most popular vegetation
-models lack size-structure. Instead, most models
-are focused on modelling fluxes carbon and water, but say little about
-demographic behaviour; consequently they are also unable to account for
-any non-linear demographic feedbacks that may arise.
-% While many vegetation models still lack size structure, the importance of
-% size-structure for modelling phenomena such as allocation and production is
-% being increasingly noted \citep{Moorcroft-2001, Dekauwe-2014, Falster-2011}.
-
-Similarly, most models used in theoretical ecology to explore
-questions about species coexistence also lack size-structured dynamics
-\citep[e.g.][]{MacArthur-1967,Levin-1974,Tilman-1985,Geritz-1995, 
-Calcagno-2006, Leimar-2013}.  It is common to assume
+Although the importance of size-structure for vegetation dynamics and diversity, 
+has been long been recognised
+\citep[e.g.,][]{Harper-1977, Shugart-1980, Huston-1987}, current research in these
+areas is dominated by models and theory that either omit size-structure 
+entirely, or only include coarse approximations. Theoretical investigations 
+exploring questions about niche-based species coexistence and ecological drift 
+(neutrality) both primarily rely  on unstructured population models 
+\citep[e.g.][]{MacArthur-1967, Tilman-1985, Geritz-1995, Hubbell-2001,
+Calcagno-2006, Leimar-2013}. It is common to assume
 competitive interactions are influenced by size-related traits such as
 adult size and seed size, but detailed size-structured demography is
 rarely considered, at least for plant models \cite[for animal
 examples, see][]{Deroos-1988, Deroos-1992}. Consequently, it has been
-difficult to connect mechanisms described in these simplistic models
-with type of data often collected in the field, such as physiological
-leaf traits and demographic data on growth and mortality in long-term
-monitoring plots \citep{Adler-2013}.
+difficult to connect and test the mechanisms described in these simplistic models
+with types of data collected in the field, such as physiological
+leaf traits or demographic data from long-term monitoring plots \citep{Adler-2013}.
+Similarly, most large-scale models of vegetation dynamics do not include
+size-structured demography \citep{Cramer-2001, Sitch-2003, Kelley-2013,Dekauwe-2014}. 
+During the  1980s, size-structured ``gap'' models were widely used
+\citep[e.g.][]{Shugart-1980,Huston-1987}. However, the next generation of models 
+focussed more heavily on biogeochemistry at the expense of demography 
+\citep[e.g.][]{Woodward-1995,Haxeltine-1996}. While the importance
+of size-structure is starting again to be recognised \citep{Moorcroft-2001, 
+ Falster-2011, Dekauwe-2014}, all but a couple \citep[e.g.][]{Moorcroft-2001, Smith-2014} 
+of the most popular, large-scale vegetation models lack any real demography or 
+size-structure. 
 
 In this note, we introduce the {\plant} package for R \citep{R-2015};
 a mechanistic framework for studying the effects of size structure and
 trait variation on the demography of individual plants, of patches of
 competing plants and of meta-populations structured by a prevailing
-disturbance regime.
-%
-The {\plant} package builds on much existing work investigating the
-effect of traits on vegetation properties and the mechanisms
-facilitating coexistence of trait mixtures
-\citep{Kohyama-1993,Deroos-1997,Moorcroft-2001,Falster-2011,Falster-2015}.
+disturbance regime. In the theoretical ecology literature it is common to
+analyse the full behaviour of a model under its equilibrium conditions.
+{\plant} was developed with this style of analysis in mind, while also 
+allowing for a richer set of ecological dynamics than is possible in 
+population models lacking size structure. {\plant} is thus part
+of an extended thought experiment investigating how species differing
+in traits are able to coexist with one another \citep{Falster-2011,Falster-2015}.
+Understanding and incorporating the demographic outcomes of trait variation 
+is ultimately needed if we are to properly understand how trade-offs in plant function 
+enable species coexistence.
 
-% TODO[RGF]: restructure here - I'm getting lost
-{\plant} provides a platform for investigating how morphological and
-physiological traits influence growth rate and shade tolerance, thus
-potentially giving a theoretical foundation for observed empirical
-patterns \citep{Baltzer-2007,Wright-2010}.
+At the same time, we expect the {\plant} model to be useful for modelling
+other  phenomena, beyond questions about species coexistence. The internal
+structure  of the {\plant} model is superficially similar to the
+\textsc{Ecosystem Demography}  \citep{Moorcroft-2001}  and \textsc{LPJ-GUESS}
+\citep{Smith-2014} models. Like  {\plant}, these models include size-
+structured competition within a metapopulation of  "patches". However,
+whereas these models were designed to capture large-scale regional
+biogeochemistry driven by climatic variables and rely on simulations,
+{\plant} was designed so that the rules  driving the dynamics of the system
+could be manipulated and emergent demographic  behaviours studied in detail.
+In {\plant} it is possible to grow plants in isolation, in patches of
+competing plants and in disturbance-driven metapopulations. The package is
+thus designed to sit in the middle ground between a large-scale coupled
+simulation model and simple abstract theoretical device. As examples, we
+expect the package will prove  useful for investigating how morphological and
+physiological traits influence growth rate and shade tolerance, and emergent
+phenomena such as multi-species self-thinning,  successional transitions and
+age-related changes in vegetation productivity.
 
-% NOTE[RGF]: I dropped the appeal to novelty (growing an individual
-% plant) because I don't find them very convincing.
-While the applications highlighted reflect our own interests in understanding
-trait-based demography and community assembly, we expect the methods provided
-to be useful in variety of contexts. . Being driven by traits,
-the model can be extended to potentially very many species. Users can also 
-add their own physiological models. Individual plants
-can then be  situated in a patch with competitors and the demography of a
-competing population  investigated, thereby capturing phenomena such as multi-
-species self-thinning,  successional transitions and age-related changes in
-vegetation productivity. {\plant}  models the emergent behaviour of
-patches deterministically, based on a continual  size-density distribution. As
-such, it is not required to specify a particular patch size.  Finally,
-{\plant} allows for emergent phenomena across a metapopulation of patches
-to  be investigated, thereby providing a workable mechanism to scale from
-individual plant to  vegetation, incorporating the non-linear effects of size
-and traits on vegetation outcomes. 
-% To strigul?
-In  this sense {\plant} is similar to
-the \textsc{Ecosystem Demography} \citep{Moorcroft-2001}  and \textsc{LPJ-GUESS}
-\citep{Smith-2014} models. However, whereas these other models were designed
-to primarily capture large-scale regional biogeochemistry driven by climatic
-variables,  {\plant} was designed so that the rules driving the
-demography of individual trees, patches and metapopulations could be
-manipulated and studied in detail. The three models are therefore highly 
-complimentary, they also connect with the increasingly sophisticated statistical 
-methods now available to analyse size-structured data
-\citep[e.g.][]{Metcalf-2013}.
-
-We describe the general approach of the package and then sections with
-details at different levels of ecological organisation. Each section
-provides a short description of the required methods and then example 
-applications. Detailed technical
-documents are provided as supplementary information (see Appendices),
-and updated versions of technical documents are also available within
-the {\plant} package itself.
+Below we describe the general approach of the package, then provide  sections
+with details at different levels of ecological organisation.  Detailed
+technical documents are provided as supplementary information  (see
+Appendices), and updated versions of technical documents are also available
+within the {\plant} package itself.
 
 \section{The approach}
-
-% NOTE: Keep the repetition with above under control.
 
 {\plant} is a mechanistic model, meaning the dynamics of the system
 arise from rules specifying how individuals grow and interact.  The
 core rules in {\plant} are about the short-term physiological
 functioning of an individual plant and how these are influenced by its
-traits, size and light environment.
-%
+traits, size and light environment. Being driven by traits, the model can be extended to potentially 
+very many species. Users can also  add their own physiological models. 
+
 On top of this physiological model, the package implements methods for
-population and adaptive dynamics (Fig.  \ref{fig:schematic}) following
-methods described by \citet{Falster-2011} and
-\citet{Falster-2015}. 
-%
-The dynamics at higher levels of organisation arise as emergent
-properties, driven by growth physiology, competition for light and
-disturbance (Fig.  \ref{fig:schematic}). Demographic phenomena can be
-studied at the three levels: individual plants, stands of competing
-plants and entire metapopulations.
-%
-We developed {\plant} as an extended thought experiment for helping to
-understand competition and succession by having these driven by
-low-level processes rather than being explicitly implemented in the
-model.
-% NOTE: I think that foreshaddowing some of the competition kernels
-% idea here is sensible.
-%
-% TODO: Somewhere, perhaps above, perhaps highlight the issue of doing
-% coexistance modelling with explicit modelling - the models are so
-% well understood it's easy to drive the behaviour.  But we want to
-% have something where we just get coexistence to study how tradeoffs
-% generate it.
-%
-% TODO: perhaps salavageable?
-%
-%   {\plant} was developed with this style of analysis in mind, while
-%   also allowing for a richer set of ecological dynamics than is
-%   possible in population models lacking size structure.
+population and adaptive dynamics (Fig.  \ref{fig:schematic}) following methods
+described by \citet{Falster-2011} and \citet{Falster-2015}. Demographic
+phenomena can be studied at the three levels: individual plants, stands of
+competing plants and entire metapopulations. The dynamics at these higher
+levels of organisation arise as emergent properties, driven by growth
+physiology, competition for light and disturbance (Fig.  \ref{fig:schematic}).
+We model the emergent behaviour of patches deterministically, based on a
+continual  size-density distribution. As such, it is not required to specify a
+particular patch size.
 
 \section{Effects of size, trait and environment on demography of individual plants}
 
@@ -246,7 +197,6 @@ photosynthetic income is estimated from total leaf area and the light
 distribution across the plant's canopy. Costs of tissue respiration
 and turnover are then subtracted. The remaining biomass is then
 allocated between growth and reproduction.  
-%
 The key outputs needed by higher levels (see below) is growth rate,
 mortality rate and rate of seed production.  However additional
 quantities are also computed, such as total assimilation and the
@@ -272,7 +222,6 @@ values by constraining outputs from {\plant} against diverse data
 sources \citep{Lebauer-2012, Keenan-2013}. This is an area in which we
 are still actively working and one of the major use cases we envisage
 for {\plant}.
-
 
 While we have implemented one physiological model (\texttt{FFW16}),
 the package is designed to allow arbitrary additional physiologies to
@@ -330,7 +279,7 @@ We assume that patches are vertically but not horizontally
 structured. In other words, we account for size differences but not spatial 
 layout within the patch. Similar assumptions are found in many models
 simulating size-structured dynamics
-\citep{Kohyama-1993, Huston-1987, Moorcroft-2001, Smith-2014}. In addition, 
+\citep{Shugart-1980,Kohyama-1993, Huston-1987, Moorcroft-2001, Smith-2014}. In addition, 
 we assume that patches are very large -- this means the population dynamics 
 within the patch behave deterministically \citep{Deroos-1997} and can therefore 
 be approximated via a Partial Differential Equation (\textsc{pde}) (see Appendix
@@ -345,7 +294,6 @@ Pacala-1996}. Moreover, it remains unclear whether resolving spatial details wit
 patch would provide further useful ecological detail, in part because the
 process of competitive thinning tends to break down spatial clusters
 \citep{Strigul-2008}.
-
 
 When modelling a patch, we are interested in modelling changes in the size-
 density-distribution \(n(x,h,a)\) with patch age \(a\), i.e. the density of
