@@ -46,9 +46,6 @@ targets:
       - figures/fitness.pdf
       - figures/schematic.pdf
 
-  downloads/style.csl:
-    download: https://raw.githubusercontent.com/citation-style-language/styles/master/methods-in-ecology-and-evolution.csl
-
   fitness_landscape_data:
     command: make_fitness_data()
 
