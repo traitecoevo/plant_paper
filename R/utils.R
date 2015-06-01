@@ -59,3 +59,11 @@ mix_colours <- function(col1, col2, p) {
   ret[i] <- rgb(m3[1, i], m3[2, i], m3[3, i], maxColorValue=255)
   ret
 }
+
+## no-extrapolation version of splinefun_loglog
+splinefun_loglog2 <- function(x, y, xx){
+  ret <- splinefun_loglog(x, y)(xx)
+  ii <- xx <= max(x, na.rm=TRUE) & xx >= min(x, na.rm=TRUE)
+  ret[!ii] <- 0
+  ret
+}
