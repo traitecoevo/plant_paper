@@ -10,6 +10,7 @@ for file in $(find vignettes -name '*.html' | sed -e 's|.*/||'); do
     echo "Converting ${file}"
     (cd vignettes; pandoc "$file" -o ../supporting_material/"${file%.html}.pdf" --template template.tex)
 done
+cp vignettes/*.pdf supporting_material
 zip -r release/supporting_material.zip supporting_material
 rm -rf supporting_material
 
