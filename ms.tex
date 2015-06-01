@@ -215,7 +215,6 @@ additional quantities are also computed, such as total assimilation
 and the respiration, turnover and allocation rates for different
 tissues (see Appendix \ref{sec:plant})
 
-% TODO: Might need example/citation for trade-offs here?
 The default physiological model used in {\plant} largely reflects that
 presented in \citet{Falster-2011,Falster-2015}, but with extensions
 allowing for diameter growth also to be estimated. To properly model
@@ -223,7 +222,11 @@ trait variation, different parameters (such as rates of leaf turnover,
 respiration, photosynthesis per leaf area) in the model are linked via
 assumed trade-offs (see Appendix \ref{sec:parameters}).  We refer to
 this default model as \texttt{FFW16}, reflecting our initials in this
-paper.
+paper. For example, the trait
+\textsc{lma} (leaf mass per unit leaf area) is used to estimate the
+rate of leaf turnover, based on an observed scaling relationship
+spanning across diverse vegetation and plant functional types
+\citep{Wright-2004} (see Appendix \ref{sec:FFW16} for details).
 
 The current parametrisation of the physiological model is based on
 \citet{Falster-2011}. Parameter values were drawn from available
@@ -242,11 +245,7 @@ equations, the equations themselves can be changed and the higher
 level functionality of the package can still be used.  As an
 intermediate level, we allow for changes in key parameters to trigger
 changes in other parameters (i.e. hyper-parametrisation), allowing
-straightforward modelling of trade-offs.  For example, the trait
-\textsc{lma} (leaf mass per unit leaf area) is used to estimate the
-rate of leaf turnover, based on an observed scaling relationship
-spanning across diverse vegetation and plant functional types
-\citep{Wright-2004} (see Appendix \ref{sec:FFW16} for details).
+straightforward modelling of trade-offs.
 
 \subsection{Applications}
 
@@ -368,28 +367,26 @@ younger patches.
 
 Modelling of size-structured dynamics via solving of a deterministic
 \textsc{pde} enables multiple demographic phenomena to be
-investigated. First, {\plant} can simulate patterns of patch
-development after a disturbance, including self-thinning and
+investigated. First, {\plant} can simulate demographic 
+phenomena typically observed in patches
+recovering from a disturbance, including self-thinning and
 successional replacement. Whereas previous approaches for modelling
 self-thinning were limited to a single species
 \citep[e.g.][]{Barnes-2004, Coomes-2007}, {\plant} accommodates
 multiple species with different traits (Fig. \ref{fig:schematic}b;
-Fig.  \ref{fig:patch}). Second, {\plant} allows for the effects of
-competition and succession on productivity and biomass accumulation
-within a patch to be investigated \citep{Falster-2011}. Leaf area
-cover and rates of biomass production tend to vary with patch age
-\citep{Binkley-2002, Smith-2001, Coomes-2007, Ogawa-2010}. 
-% TODO: I really don't know what the last bit of this sentence is
-% meant to be saying.  Obviously it's something to do with the
-% "emergent" properties of the patch, but not clear to me.
-{\plant} enables the effects of competitive feedbacks to be
-incorporated, in addition to any intrinsic physiological factors,
-yielding emergent non-linear outcomes (Fig. \ref{fig:patch}c).
+Fig.  \ref{fig:patch}). Moreover, these features emerge from the 
+combined effects of physiology and competition for resources, rather 
+than being prescribed in the model. Second, {\plant} allows for
+the combined effects of physiology and succession on emergent 
+characteristics of the entire patch to be investigated
+\citep{Falster-2011}. Leaf area cover and rates of biomass 
+production tend to vary  non-linearly with patch 
+age \citep{Binkley-2002, Smith-2001, Ogawa-2010};
+in {\plant} such outcomes arise naturally as emergent properties, 
+driven by demography (Fig. \ref{fig:patch}c).
 
 \section{Trait, size and patch structured vegetation}
 
-% TODO: I removed the four(!) references here as I don't think this is
-% controversial.
 All vegetation is subject to a disturbance regime, such that patches
 of the landscape are cleared at some rate, by fire, cyclone od
 landslide.  The vegetation thus comprises a series of patches
@@ -473,9 +470,9 @@ long-term per capita growth rate, a more convenient indicator of
 fitness in structured metapopulations is given by the
 logarithm of the basic reproduction ratio, \(R\)
 \citep{Gyllenberg-2001, Metz-2001}.
-% TODO: Ideally, don't start a sentence with an abbreviation
-\(R\) is simply the total seed output of the new type, averaged across
-the metapopulation. So a new type can invade when \(\log R > 0\).
+The basic reproduction ratio is simply the total seed output of 
+the new type, averaged across the metapopulation. So a new type can 
+invade when \(\log R > 0\).
 
 With this measure of fitness, we can model trait-based adaptive
 dynamics and community assembly \citep{Falster-2015}. This is best
