@@ -2,6 +2,10 @@ language: c
 
 sudo: required
 
+env:
+  global:
+    - BOOTSTRAP_LATEX="1"
+
 script:
     - ./remake ms.pdf
 

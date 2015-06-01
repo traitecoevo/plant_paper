@@ -1,6 +1,8 @@
 packages:
   - rmarkdown
   - plant
+  - BB
+  - nleqslv
   - sowsear
   - xtable
   - callr
