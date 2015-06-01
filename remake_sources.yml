@@ -1,6 +1,6 @@
-tree:
+plant:
   source: github
-  repo: traitecoevo/tree
+  repo: traitecoevo/plant
 sowsear:
   source: github
   repo: richfitz/sowsear
