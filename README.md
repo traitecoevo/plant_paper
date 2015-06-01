@@ -19,8 +19,14 @@ remake::install_missing_packages()
 
 To compile everything, run
 
-```
+```r
 remake::make()
 ```
 
-Compilation takes a couple of hours.
+Compilation, including vignettes, takes about 1.5 hours on a 2012 iMac.  Compiling just the figures and manuscript can be done with:
+
+```r
+remake::make("ms.pdf")
+```
+
+and should only take 10 minutes or so.
