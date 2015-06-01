@@ -1,5 +1,7 @@
 # plant
 
+[![Build Status](https://travis-ci.org/traitecoevo/plant_paper.png?branch=master)](https://travis-ci.org/traitecoevo/plant_paper)
+
 To compile the paper, including figures and supplementary information (vignettes) we use [remake](https://github.com/traitecoevo/remake).  The easiest way to install is via [drat](https://github.com/eddelbuettel/drat):
 
 ```r
@@ -29,4 +31,4 @@ Compilation, including vignettes, takes about 1.5 hours on a 2012 iMac.  Compili
 remake::make("ms.pdf")
 ```
 
-and should only take 10 minutes or so.
+and should only take 20 minutes or so.
