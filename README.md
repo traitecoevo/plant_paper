@@ -1,7 +1,5 @@
 # plant
 
-[![Build Status](https://travis-ci.org/traitecoevo/plant_paper.png?branch=master)](https://travis-ci.org/traitecoevo/plant_paper)
-
 To compile the paper, including figures and supplementary information (vignettes) we use [remake](https://github.com/traitecoevo/remake).  The easiest way to install is via [drat](https://github.com/eddelbuettel/drat):
 
 ```r
