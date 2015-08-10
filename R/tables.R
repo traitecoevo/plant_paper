@@ -12,6 +12,8 @@ table_plant_parameters <- function(filename, dest){
   tab$Units[to_math] <-
     sprintf("$%s$",
             gsub("(kg|m|yr)", "\\\\mathrm{\\1}", tab$Units[to_math]))
+  tab$Units[to_math] <-
+            gsub(" ", "\\,", tab$Units[to_math], fixed =TRUE)
 
   to_code <- tab[["\\plant"]] != ""
   code <- tab[["\\plant"]][to_code]
