@@ -22,7 +22,7 @@ make_emergent_data <- function(hires=TRUE) {
   xxx <- lapply(tmp, function(x) x$species[[1]]$area_leafs)
   data$leaf_area <- do.call("cbind", plant:::pad_matrix(xxx))
 
-  xxx <- lapply(tmp, function(x) matrix(x$species[[1]]$ode_rates, 4)[1, ])
+  xxx <- lapply(tmp, function(x) matrix(x$species[[1]]$ode_rates, 6)[1, ])
   data$growth_rate <- do.call("cbind", plant:::pad_matrix(xxx))
 
   ## Interpolate density, leaf area and growth rate to a common set of

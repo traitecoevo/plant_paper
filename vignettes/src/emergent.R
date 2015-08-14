@@ -50,7 +50,7 @@ matplot(height, density, type="l", lty=1,
 
 ## Note that the densities here can be *extremely* low, and yet
 ## individuals within the cohorts continue to grow in size; this is the "[atto-fox problem](http://en.wikipedia.org/wiki/Lotka-Volterra_equation)",
-## thou here we drop down as low as `r formatC(signif(min(density, na.rm=TRUE) / 1e-24, 1))`
+## though here we drop down as low as `r formatC(signif(min(density, na.rm=TRUE) / 1e-24, 1))`
 ## yocto plants / m / metre squared (a yocto-x being 1 millionth of an
 ## atto-x).  *Anyway*....
 
@@ -95,8 +95,9 @@ text(height[1, i] + strwidth("x"), leaf_area[1, i],
      paste0(round(times), c(" years", rep("", length(times) - 1))),
      adj=c(0, 0))
 
+ode_size <- patch[[1]]$species[[1]]$seed$ode_size
 growth_rate <- lapply(patch, function(x)
-                      matrix(x$species[[1]]$ode_rates, 4)[1, ])
+                      matrix(x$species[[1]]$ode_rates, ode_size)[1, ])
 growth_rate <- do.call("cbind", plant:::pad_matrix(growth_rate))
 
 ## Finally, we can see where height growth rate is concentrated in the
@@ -112,39 +113,31 @@ text(height[1, i] + strwidth("x"), growth_rate[1, i],
      paste0(round(times), c(" years", rep("", length(times) - 1))),
      adj=c(0, 0))
 
-
 ## The above plots show relationships with patches of a given age
 ## What about the average relationship across the entire metapopulation? 
 ## To get that, we  average (integrate) over the distribution over patch 
 ## (for formula see demography vignette). To achieve this we first need 
 ## the patch-level relationships to a series of fixed heights
-
 hh <- seq_log_range(range(height, na.rm=TRUE), 500)
 
-## We'll use a spline interpolation, on log-scaled data 
-splinefun_loglog
-
-## But we need to modify the function further, so that it 
-## returns zero for any point lying outside the observed range
-
-splinefun_loglog2 <- function(x,y,xx){
-    ret <- splinefun_loglog(x,y)(xx)
-    ii <- xx <= max(x, na.rm=TRUE) & xx >= min(x, na.rm=TRUE) 
-    ret[!ii] <-0 
-    ret
+## We'll use a spline interpolation, on log-log-scaled data, clamped
+## so that for x values outside the observed range are set to zero.
+f <- function(height, density, hout) {
+  r <- range(height, na.rm=TRUE)
+  clamp_domain(splinefun_loglog(height, density), r, 0)(hout)
 }
 
 ## Now interpolate the height-density relationship in each patch to 
 ## the series of  specified heights
-xxx <- lapply(seq_along(data1$time), function(i) 
-          splinefun_loglog2(height[,i],density[,i], hh))
-n_hh <- do.call("cbind", plant:::pad_matrix(xxx))
+xx <- lapply(seq_along(data1$time),
+             function(i) f(height[, i], density[, i], hh))
+n_hh <- plant:::pad_list_to_array(xx)
 
 ## For each of these heights, we can now integrate across patches
-## (i.e. across rows), weighting by patch abundance 
-n_av <- apply(n_hh,1, 
-                function(x) plant:::trapezium(data1$time, 
-                            x*data1$patch_density)) 
+## (i.e. across rows), weighting by patch abundance
+trapezium <- plant:::trapezium
+n_av <- apply(n_hh, 1,
+              function(x) trapezium(data1$time, x * data1$patch_density))
 
 ## Add this average to the plot (red line):
 xlim <- c(0, max(height, na.rm=TRUE) * 1.05)
