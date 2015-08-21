@@ -79,7 +79,7 @@ The amount of biomass available for growth,
 plant \citep{Makela-1997, Thornley-2000, Falster-2011}:
 \begin{equation}\label{eq:dbdt}
 \underbrace{\strut \frac{\rm{d}B}{\rm{d}t}}_\textrm{net biomass production}
-  = \underbrace{\strut y}_\textrm{yield}
+  = \underbrace{\strut a_y}_\textrm{yield}
     \big( \underbrace{\strut A_\textrm{l} \, \bar{p}}_\textrm{photosynthesis} -
      \underbrace{\strut \, \sum_\textrm{i = l, b, s, r}{M_\textrm{i} \, r_\textrm{i}}}_\textrm{respiration}\big)
     - \underbrace{\strut \sum_\textrm{i = l, b, s, r}{M_\textrm{i} \, k_\textrm{i}}}_\textrm{turnover}.
@@ -297,7 +297,7 @@ we use the function
 \begin{equation} \label{eq:pi1}
   S_G (x^\prime, H_0, E_{A_0}) = \frac1{X^2 + 1.0}
 \end{equation}
-where $X = \alpha_{s0} \frac{A_l}{\rm{d}B / \rm{d}t}$ and $\alpha_{s0}$ is a
+where $X = \alpha_{d0} \frac{A_l}{\rm{d}B / \rm{d}t}$ and $\alpha_{d0}$ is a
 constant. The behaviour of Eq. \ref{eq:pi1} is consistent with Eq.
 \ref{eq:mortality_GD}, as both cause survival to decline with mass production.
 
@@ -337,7 +337,7 @@ $\rm{d}A_\textrm{l} / \rm{d}M_\textrm{a}$.  In addition we
 link $\rho$ to the rate of growth independent mortality:
 $$c_{d0} = d_{00} \, \left(\frac{\rho}{\rho_0}\right) ^ {-d1}.$$
 In addition, $\rho$ is assumed to influence the rate of sapwood turnover,
-$$k_s = k_{s0} \, \left(\frac{\rho}{\rho_0}\right)^ {-B5},$$
+$$k_s = k_{s0} \, \left(\frac{\rho}{\rho_0}\right)^ {-B_ks_slope},$$
 and the rate of sapwood respiration per unit mass:
 $$c_{Rs} = \frac{4012.0}{\rho}.$$
 As with $\phi$, we normalise the mortality and turnover

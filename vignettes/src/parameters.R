@@ -43,13 +43,13 @@ pl$strategy$lma
 FFW16_hyperpar
 
 ## You will rarely need to call this function directly (see below) but
-## note how setting of lma affects parameters `k_l`, `c_p1` and `c_Rl`
+## note how setting of lma affects parameters `k_l`, `a_p1` and `r_l`
 FFW16_hyperpar(trait_matrix(0.1, "lma"), s)
 
 ## These are:
 ##   * `k_l`: Turnover rate for leaves
-##   * `c_p1`: Leaf photosynthesis per area
-##   * `c_Rl`: Leaf respiration per mass
+##   * `a_p1`: Leaf photosynthesis per area
+##   * `r_l`: Leaf respiration per mass
 
 ## This means that it is possible to implement different trade-offs
 ## between parameters relatively easily by modifying the
@@ -95,8 +95,8 @@ length(ss)
 ## We can then use standard r command to extract variable from this list
 sapply(ss, function(x) x$lma)
 sapply(ss, function(x) x$k_l)
-sapply(ss, function(x) x$c_p1)
-sapply(ss, function(x) x$c_Rl)
+sapply(ss, function(x) x$a_p1)
+sapply(ss, function(x) x$r_l)
 
 ## There's a convenience function `plant_list` that returns a set of
 ## *plants* based on a vector of traits:
