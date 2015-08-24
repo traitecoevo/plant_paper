@@ -103,7 +103,7 @@ trajectories \citep{Westoby-2002}.
 Strong feedbacks emerge between individuals within a forest via
 competition for light and other resources, such that the growth rate
 of one individual depends on the size and traits of nearby
-individuals \citep{Pacala-1996}.
+individuals \citep{Shugart-1980, Pacala-1996}.
 %
 Such feedbacks make it difficult to link observable species traits to
 phenomena such as self-thinning, successional transitions, trait
@@ -146,12 +146,12 @@ In this note, we introduce the {\plant} package for R \citep{R-2015};
 a mechanistic framework for studying the effects of size structure and
 trait variation on the demography of individual plants, of patches of
 competing plants and of meta-populations structured by a prevailing
-disturbance regime.
-% 
+disturbance regime.ƒ
+%
 We developed {\plant} primarily to further investigate if and how species
 differing in traits are able to coexist with one another
 \citep[following][]{Falster-2011,Falster-2015}.  Size-structured models
-provide unique opportunities for coexistence via differentiation in
+provide unique opportunities for studying coexistence via differentiation in
 successional strategy \citep{Moorcroft-2001,Huston-1987}.
 
 At the same time, we expect the {\plant} model to be useful for
@@ -166,20 +166,19 @@ biogeochemistry driven by climatic variables, we designed
 system could be manipulated and emergent demographic behaviours
 studied deterministically and in detail. In {\plant}, it is possible to grow plants in
 isolation, in patches of competing plants and in disturbance-driven
-metapopulations. The package is thus designed to bridge the gap between 
+metapopulations. The package is thus designed to bridge the gap between
 a large-scale coupled simulation model and a simple
-abstract theoretical device. 
+abstract theoretical device.
 
 Below we describe the general approach of the package, then provide
 sections with details at nested levels of ecological organisation.
 Detailed technical documents are provided as supplementary information
-(see Appendices), updated versions of these technical documents are
+(see Appendices); updated versions of these technical documents are
 available within the {\plant} package itself.
 
 \section{The approach}
 
-{\plant} is a mechanistic model, meaning the dynamics of the system
-arise from rules specifying how individuals grow and interact.  The
+{\plant} is an individual-based model, meaning the dynamics of the population arise from rules specifying how individuals grow and interact. The
 core rules in {\plant} are about the short-term physiological
 functioning of an individual plant and how these are influenced by its
 traits, size and light environment. By being driven by traits, the
@@ -218,12 +217,12 @@ tissues (see Appendix \ref{sec:plant})
 
 The default physiological model used in {\plant} largely reflects that
 presented in \citet{Falster-2011,Falster-2015}, but with extensions
-allowing for diameter growth also to be estimated. To properly model
-trait variation, different parameters (such as rates of leaf turnover,
-respiration, photosynthesis per leaf area) in the model are linked via
-assumed trade-offs (see Appendix \ref{sec:parameters}).  We refer to
+allowing for diameter growth also to be estimated. We refer to
 this default model as \texttt{FFW16}, reflecting our initials in this
-paper. For example, the trait
+paper.  To model
+trait variation properly, different parameters (such as rates of leaf turnover,
+respiration, photosynthesis per leaf area) in the model are linked via
+assumed trade-offs (see Appendix \ref{sec:parameters}).  For example, the trait
 \textsc{lma} (leaf mass per unit leaf area) is used to estimate the
 rate of leaf turnover, based on an observed scaling relationship
 spanning across diverse vegetation and plant functional types
@@ -232,7 +231,8 @@ spanning across diverse vegetation and plant functional types
 The current parametrisation of the physiological model is based on
 \citet{Falster-2011}. Parameter values were drawn from available
 literature (see Table 3 in Appendix \ref{sec:FFW16}); however data for
-some parameters were limited. Providing updated parameter sets is
+some parameters were limited. Providing updated parameter sets to the
+algorithm is
 trivial (see Appendix \ref{sec:parameters}); the challenge is to infer
 suitable values by constraining outputs from {\plant} against diverse
 data sources \citep{Lebauer-2012, Keenan-2013}. This is an area in
@@ -264,7 +264,7 @@ changes to include more stem and less leaf
 costs and the growth rate of plants (Fig. \ref{fig:plant}c).  This
 shift in allocation alone generates a distinctive hump-shaped pattern
 of absolute growth with size \citep{King-2011} and equally the widely
-regarded decline in relative growth rate with size from birth onwards
+observed decline in relative growth rate with size from birth onwards
 \citep{Enquist-2007}.
 
 By varying the light environment and measuring growth rate, the whole
@@ -395,7 +395,8 @@ differing in time since last disturbance and linked via seed dispersal
 (Fig.  \ref{fig:schematic}b). Such a system is often referred to as a
 structured metapopulation \citep{Gyllenberg-2001}.
 
-In {\plant} we assume an infinite number of patches, all experiencing
+In {\plant} and following \citep{Kohyama-1993, Moorcroft-2001,
+  Falster-2011} we assume an infinite number of patches, all experiencing
 the same disturbance regime and sharing a common seed dispersal pool
 (i.e., the island model; Fig. \ref{fig:schematic}b). We also assume
 that the disturbances remove all established vegetation.  With this
@@ -413,7 +414,8 @@ The main numerical challenge in stepping from a single patch to a
 metapopulation is to identify the equilibrium seed rain of the
 metapopulation. An ``input'' seed rain is required to simulate the
 demography of the metapopulation, this in turn produces an ``output''
-number of seeds. The equilibrium occurs when a given input seed rain
+number of seeds. The equilibrium occurs when, for each species,
+a given input seed rain
 produces an equivalent output seed rain. Finding this equilibrium
 requires finding the root of a multi-dimensional function, subject to
 the constraint that this root is stable (e.g., the trivial equilibrium
@@ -452,31 +454,32 @@ regimes on vegetation structure and dynamics to be properly incorporated. In
 as total leaf area, biomass and productivity -- are obtained by averaging
 patch-level outcomes over the frequency-distribution of patch ages. Because
 young patches tend to be more common in the landscape, metapopulation averages are
-strongly influenced by the structure of younger patches (e.g. 
+strongly influenced by the structure of younger patches (e.g.
 Fig. \ref{fig:patch}c).  Similarly, the distributions of  abundance and growth rate
 observed in large forest  plots \citep[e.g.][]{Muller-2006, Coomes-2007} arise
-as  emergent phenomena. Moreover, the predictions from {\plant} 
-are for a frequency distribution of patch states across the landscape 
+as  emergent phenomena. Moreover, the predictions from {\plant}
+are for a frequency distribution of patch states across the landscape
 (Fig. \ref{fig:emergent}, see more detail in Appendix \ref{sec:emergent}). As such,
-size- and patch-structured models provide unique opportunities for linking with 
-satellite and forest survey data \citep{Moorcroft-2001, Purves-2008}.  
+size- and patch-structured models provide unique opportunities for linking with
+satellite and forest survey data \citep{Moorcroft-2001, Purves-2008}.
 
 Finally, with the extension to the metapopulation level, we are
 modelling demography across the entire life cycle and are thus in a
 position to estimate invasion fitness -- the ability of a rare
 individual with particular traits to establish in a community of
 established residents at their equilibrium densities
-\citep{Geritz-1998,Dieckmann-2007}.  While ideally calculated as the
+\citep{Metz-1992, Geritz-1998}.  While ideally calculated as the
 long-term per capita growth rate, a more convenient indicator of
 fitness in structured metapopulations is given by the
 logarithm of the basic reproduction ratio, \(R\)
 \citep{Gyllenberg-2001, Metz-2001}.
-The basic reproduction ratio is simply the total seed output of 
-the new type, averaged across the metapopulation. So a new type can 
+The basic reproduction ratio is simply the total seed output of
+the new type, averaged across the metapopulation. So a new type can
 invade when \(\log R > 0\).
 
 With this measure of fitness, we can model trait-based adaptive
-dynamics and community assembly \citep{Falster-2015}. This is best
+dynamics and community assembly of forest communities, following
+ \citep{Falster-2015}. This is best
 thought of as occurring on a fitness landscape, a surface with fitness
 plotted against one or more species traits
 (Fig. \ref{fig:fitness}). The reproductive success of individuals
@@ -491,8 +494,8 @@ details). Fitness landscapes are constantly reshaped as species are
 introduced and evolve, reflecting the non-linear demographic feedbacks
 that occur under frequency-dependent evolution. Stable coexistence is
 possible when species with different traits can mutually invade
-\citep{Geritz-1998} Following the fitness gradient may lead to an
-evolutionary branching point \citep{Geritz-1998,Dieckmann-2007}; at
+\citep{Geritz-1998, Chesson-2000}. Following the fitness gradient may lead to an
+evolutionary branching point \citep{Geritz-1998}; at
 this point there is no directional selection (solid line in
 Fig. \ref{fig:fitness}a) but invasion is possible both above and below
 it in trait space. It is often possible to find a configuration where
@@ -500,7 +503,7 @@ fitness is negative everywhere (solid line in Fig. \ref{fig:fitness}b)
 except for the zero points where species are present. This community
 is immune to invasion from any other strategies and represents a
 prediction for the trait mixture that might might be favoured by
-natural selection \citep{Geritz-1998,Falster-2015}.
+natural selection \citep{Geritz-1998}.
 
 Identifying conditions promoting trait diversity is a valuable use-case
 for {\plant}. The simple example here can be extended to multiple dimensions
