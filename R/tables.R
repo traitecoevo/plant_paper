@@ -15,22 +15,28 @@ table_plant_parameters <- function(filename, dest){
   tab$Units[to_math] <-
             gsub(" ", "\\,", tab$Units[to_math], fixed =TRUE)
 
-  to_code <- tab[["\\plant"]] != ""
+  s <- FFW16_Strategy()
+  tab$Value <- NA_real_
+
+  # Now extract actual values from plant
+  to_code <- tab[["\\plant"]] != "" & tab[["\\plant"]] %in% names(s)
   code <- tab[["\\plant"]][to_code]
 
-  s <- FFW16_Strategy()
   val <- s[code]
   err <- sapply(val, is.null)
   if (any(err)) {
-    stop("Missing parameters: ", paste(code[err], collapse=", "))
-  }
+    message("Missing parameters: ", paste(code[err], collapse=", "))
+  } 
 
   oo <- options(scipen=999)
   on.exit(options(oo))
-  tab$Value[to_code] <- prettyNum(unlist(val))
+  tab$Value[to_code] <- unlist(lapply(val, prettyNum))
+
+  # Display names in latex
+  to_code <- tab[["\\plant"]] != ""
 
   tab[["\\plant"]][to_code] <- sprintf("\\texttt{%s}",
-                                      gsub("_", "\\\\_", code))
+                                      gsub("_", "\\\\_", tab[["\\plant"]][to_code]))
 
   x <- xtable(tab,
               hline.after=c(1),
