@@ -1,0 +1,33 @@
+"Description","Symbol","Units","\plant"
+Plant construction,,,
+Crown-shape parameter,\eta,-,eta
+Leaf mass per area,\phi,kg m^{-2},lma
+Wood density,\rho,kg m^-3,rho
+Leaf area per sapwood area,\theta,-,theta
+"Height-leaf area scaling, intercept",\alpha_{l1},m^{-1},a_l1
+"Height-leaf area scaling, slope",\alpha_{l2},-,a_l2
+Root mass per leaf area,\alpha_{r1},kg m^{-2},a_r1
+Ratio of bark area to sapwood area,\alpha_{b1},-,a_b1
+Production,,,
+Leaf photosynthesis per area,\alpha_{p1},kg yr^{-1} m^{-2},a_p1
+Saturation of leaf photosynthesis per area,\alpha_{p2},0-1,a_p2
+"Yield, = fraction of carbon fixed converted into mass",a_y,0-1,a_y
+Leaf respiration per mass,r_l,kg yr^{-1} kg^{-1},r_l
+Fine-root respiration per mass,r_r,kg yr^{-1} kg^{-1},r_r
+Sapwood respiration per mass,r_s,kg yr^{-1} kg^{-1},r_s
+Turnover rate for leaves,k_l,yr^{-1},k_l
+Turnover rate for sapwood,k_s,yr^{-1},k_s
+Turnover rate for bark,k_b,yr^{-1},k_b
+Turnover rate for fine roots,k_r,yr^{-1},k_r
+Fecundity,,,
+Seed mass,\omega,kg,omega
+Height at maturation,H_{mat},m,hmat
+Maximum allocation to reproduction,\alpha_{f1},0-1,a_f1
+"Parameter determining rate of change in $r(x, m_\textrm{l})$ around $H_{mat}$",\alpha_{f2},-,a_f2
+Accessory cost per seed,\alpha_{f3},kg,a_f3
+Mortality,,,
+Survival probability during dispersal,S_D,0-1,S_D
+Parameter influencing survival through germination,\alpha_{d0},kg m^{-2} yr^{-1},a_d0
+Baseline rate for intrinsic mortality,d_I,yr^{-1},d_I
+Baseline rate for growth-related mortality,\alpha_{dG1},yr^{-1},a_dG1
+Risk coefficient for dry-mass production per unit leaf area in growth-related mortality,\alpha_{dG2},yr m^{-2} kg^{-1},a_dG2

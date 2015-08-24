@@ -38,7 +38,7 @@ which in turn is calculated based on well understood physiology (Fig.
 influence demographic outcomes. Varying these parameters allows for
 species-differences to be included, potentially via traits (see last
 section). Tables
-\ref{tab:definitions} and \ref{tab:params} gives units and definitions of all variables
+\ref{tab:definitions} and \ref{tab:params_core} gives units and definitions of all variables
 and parameters.
 
 \begin{figure}[h!]
@@ -136,7 +136,7 @@ growth rather than reproduction or storage. In the default physiological model
 we let the growth fraction decrease with height according to the function
 \begin{equation}\label{eq:allocation}
 \frac{\rm{d}M_\textrm{a}}{\rm{d}B}(H) = 1 -
- \frac{\alpha_{r1}} {1.0 + \exp\left(\alpha_{r2}  \left(1.0 - H / \mu\right)\right)},
+ \frac{\alpha_{r1}} {1.0 + \exp\left(\alpha_{r2}  \left(1.0 - H / H_{mat}\right)\right)},
 \end{equation}
 where $\alpha_{r1}$ is the maximum possible allocation (0-1) and $\alpha_{r2}$
 determines the sharpness of the transition.
@@ -305,7 +305,7 @@ constant. The behaviour of Eq. \ref{eq:pi1} is consistent with Eq.
 traits}\label{traits}
 
 The plant physiological model includes default values for all parameters needed
-(see Table \ref{tab:params}). Species are known to vary considerably
+(see Table \ref{tab:params_core}). Species are known to vary considerably
 in many of these parameters, such as $\phi,\rho, \alpha_{p1}, s$; so by varying  parameters
 one can account for different ecologies. When altering one parameter in the model, however,
 one must also consider whether there are trade-offs linking parameters.
@@ -322,9 +322,9 @@ The trait leaf mass per area ($\phi$) directly influences growth by changing
 $\rm{d}A_\textrm{l} / \rm{d}M_\textrm{a}$. In addition we
 link $\phi$ to the rate of leaf turnover,
 based on widely observed scaling relationship from \citet{Wright-2004}:
-$$k_l = k_{l0} \, \left(\frac{\phi}{\phi_0}\right)^{-B_4}.$$
+$$k_l = \beta_{kl1} \, \left(\frac{\phi}{\phi_0}\right)^{-\beta_{kl2}}.$$
 We normalise the relationship around a global mean \textsc{lma} of $\phi_0$ -- this
-allows us to vary $k_{l0}$ and $B_4$ without displacing the relationship from the
+allows us to vary $\beta_{kl1}$ and $\beta_{kl2}$ without displacing the relationship from the
 observed mean.
 We also vary mass based leaf respiration rate so that it stays constant per unit leaf area and
 varies with \textsc{lma}, as is empirically observed \citet{Wright-2004}:
@@ -335,11 +335,11 @@ $$r_\textrm{l} = \frac{c_{Rl0}}{\phi}.$$
 The trait wood density ($\rho$) directly influences growth by changing
 $\rm{d}A_\textrm{l} / \rm{d}M_\textrm{a}$.  In addition we
 link $\rho$ to the rate of growth independent mortality:
-$$c_{d0} = d_{00} \, \left(\frac{\rho}{\rho_0}\right) ^ {-d1}.$$
+$$d_I = \beta_{dI1} \, \left(\frac{\rho}{\rho_0}\right) ^ {-\beta_{dI2}}.$$
 In addition, $\rho$ is assumed to influence the rate of sapwood turnover,
-$$k_s = k_{s0} \, \left(\frac{\rho}{\rho_0}\right)^ {-B_ks_slope},$$
+$$k_s = \beta_{ks1} \, \left(\frac{\rho}{\rho_0}\right)^ {-\beta_{ks2}},$$
 and the rate of sapwood respiration per unit mass:
-$$c_{Rs} = \frac{4012.0}{\rho}.$$
+$$r_r = \frac{4012.0}{\rho}.$$
 As with $\phi$, we normalise the mortality and turnover
 relationships around a global mean value of $\rho_0$.
 
@@ -356,7 +356,7 @@ following observed relationships \citep{Henery-2001}.
 Photosynthesis per unit leaf area and respiration rates per unit leaf mass (or area)
 are assumed to vary with leaf nitrogen per unit area $\nu$:
 $$\alpha_{p1} = c_{PN} \, \nu,$$
-$$c_{Rl} = c_{RN} \, \nu.$$
+$$r_l = c_{RN} \, \nu.$$
 
 \clearpage
 
@@ -431,9 +431,15 @@ express growth rate for each tissue as a function of growth rate in leaf area. }
 \newpage
 
 \begin{table}[h!]
-\caption{Model parameters}
-\input{growth_model_pars}
-\label{tab:params}
+\caption{Core model parameters}
+\input{growth_model_pars_core}
+\label{tab:params_core}
+\end{table}
+
+\begin{table}[h!]
+\caption{Parameters for hyper-parameterisation}
+\input{growth_model_pars_hyper}
+\label{tab:params_hyper}
 \end{table}
 
 \clearpage

@@ -145,7 +145,8 @@ targets:
   vignettes/physiology.pdf:
     command: latex_build("vignettes/physiology.tex", "refs.bib", clean=TRUE)
     depends:
-      - vignettes/growth_model_pars.tex
+      - vignettes/growth_model_pars_core.tex
+      - vignettes/growth_model_pars_hyper.tex
 
   vignettes/plant.html:
     command: render("vignettes/plant.md", quiet=TRUE)
@@ -162,5 +163,7 @@ targets:
   vignettes/parameters.html:
     command: render("vignettes/parameters.md", quiet=TRUE)
 
-  vignettes/growth_model_pars.tex:
-    command: table_plant_parameters("vignettes/growth_model_pars.csv", target_name)
+  vignettes/growth_model_pars_core.tex:
+    command: table_plant_parameters("vignettes/growth_model_pars_core.csv", target_name)
+  vignettes/growth_model_pars_hyper.tex:
+    command: table_plant_parameters("vignettes/growth_model_pars_hyper.csv", target_name)

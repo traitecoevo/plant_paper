@@ -1,0 +1,8 @@
+"Description","Symbol","Units","\plant"
+"Baseline rate for leaf turnover","\beta_{kl1}","yr^{-1}","B_kl1"
+"Scaling slope for LMA in leaf turnover","\beta_{kl2}","","B_kl2"
+"Baseline rate for sapwood turnover","\beta_{ks1}","yr^{-1}","B_ks1"
+"Scaling slope for wood density in sapwood turnover","\beta_{ks2}","","B_ks2"
+"Leaf nitrogen per area","\nu","kg m^{-2}", "narea"
+"Baseline rate for intrinsic mortality","\beta_{dI1}","yr^{-1}","B_dI1"
+"Scaling slope for wood density in intrinsic mortality","\beta_{dI2}","","B_dI2"
