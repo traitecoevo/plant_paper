@@ -67,3 +67,43 @@ splinefun_loglog2 <- function(x, y, xx){
   ret[!ii] <- 0
   ret
 }
+
+combine_md <- function(..., output) {
+  find_metadata <- function(x) {
+    i <- grep("^---+\\s*$", x)
+    if (length(i) < 2L) {
+      stop("Metadata block not found")
+    }
+    if (i[[1]] != 1L) {
+      stop("Metadata block not the first line")
+    }
+    i
+  }
+  demote <- function(x) {
+    i <- which(grepl("^#+", x))
+    i[i == 1 | grepl("^\\s*$", x[i - 1])]
+    x[i] <- paste0("#", x[i])
+    x
+  }
+
+  files <- c(...)
+  dat <- lapply(files, readLines)
+  titles <- character(length(dat))
+
+  for (i in seq_along(dat)) {
+    x <- dat[[i]]
+    j <- find_metadata(x)
+    t <- yaml::yaml.load(x[(j[[1]] + 1L):(j[[2]] - 1L)])$title
+    t <- sub("plant:[^:]*: ", "", t)
+    t <- gsub("(^_|_$)", "", t)
+    titles[[i]] <- t
+    dat[[i]] <- c("", paste("#", t), demote(x[-(j[[1]]:j[[2]])]))
+  }
+
+  header <-
+    c("---",
+      'title: "plant: A package for modelling forest trait ecology & evolution"',
+      "---")
+  ret <- c(header, unlist(dat))
+  writeLines(ret, output)
+}

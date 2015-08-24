@@ -3,6 +3,10 @@
 \usepackage{suppmat}
 \usepackage{listings}
 
+\usepackage{titlesec}
+\titleclass{\section}{top}
+\newcommand\sectionbreak{\clearpage}
+
 $if(lhs)$
 \lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}
 $endif$
@@ -15,6 +19,9 @@ $endif$
 $if(tables)$
 \usepackage{longtable}
 $endif$
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \usepackage{graphicx}
 % We will generate all images so they have a width \maxwidth. This means
@@ -35,6 +42,10 @@ $endif$
 
 $if(title)$
 \maketitle
+$endif$
+
+$if(toc)$
+\tableofcontents
 $endif$
 
 $for(include-before)$

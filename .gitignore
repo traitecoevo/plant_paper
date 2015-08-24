@@ -17,3 +17,5 @@ vignettes/*.pdf
 vignettes/figure*
 vignettes/cache/*
 wiki
+
+supporting_material
