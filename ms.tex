@@ -156,6 +156,10 @@ successional strategy \citep[see also][]{Huston-1987, Moorcroft-2001}.
 At the same time, we expect {\plant} to be useful for
 modelling other demographic phenomena.
 
+% TODO[RGF]: Is this new acronym needed?  It's not really the place of
+% this contribution to define a new class of models, and given that
+% this all comes from a response to a reviewer, IMO it bends the paper
+% to be too much like a response to the reviewer.
 Broadly, the {\plant} model falls into a class we refer to Trait- Size- and
 Patch- structured Models (\textsc{TSPMs}). \textsc{TSPMs} are direct
 descendants of the ``gap'' models developed in 1980s
@@ -188,7 +192,7 @@ Being driven by traits, the model can be extended to potentially very many speci
 core rules in {\plant} are about the short-term physiological
 functioning of an individual plant and how these are influenced by its
 traits, size and light environment.  While {\plant}
-includes a core physiological model, we use it here only as an example to
+includes a core physiological model, we use it here primarily as an example to
 demonstrate the different ways in which any given physiological model
 could be analysed. To be clear, it is not the purpose
 of this paper to justify the particular physiological model used, to provide detailed
@@ -235,6 +239,9 @@ and the respiration, turnover and allocation rates for different
 tissues and these intermediates can also be accessed (see Appendix
 \ref{sec:plant}).
 
+%% TODO[RGF]: I think that this needs softening.  Users can't really
+%% add new models; that has to be done by *developers*, really
+%% (because of the design the models are compiled into the package.
 While we have implemented one physiological model (\texttt{FFW16}), the
 package is designed to allow arbitrary additional physiologies to be
 introduced. Users are able to modify the physiological model in three
@@ -255,9 +262,7 @@ parameters of the existing equations in the \texttt{FFW16} model, the
 equations themselves can be changed and the higher level functionality of the
 package can still be used.  The latter corresponds to defining a new
 physiological model. As an example, in the \texttt{FFW16b} physiology, we have modified
-the function determining allocation to reproduction. The specifications
-for writing a new physiological model are outlined further in Appendix 
-XXX.
+the function determining allocation to reproduction.
 
 With the basic physiological model, {\plant} can be used to estimate
 essential physiological rates for individual plants
@@ -307,7 +312,7 @@ patch would provide further useful ecological detail, in part because the
 process of competitive thinning tends to break down spatial clusters
 \citep{Strigul-2008}.
 
-When modelling a patch of competing, the focus is on changes to the size-
+When modelling a patch of competing plants, the focus is on changes to the size-
 density-distribution \(N(x, H, a)\) with patch age \(a\), i.e. the density of
 individuals with traits \(x\) and height \(H\) within a patch of age \(a\).
 Density is measured as individuals per unit height and per unit ground area.
@@ -551,6 +556,10 @@ upgrade the Windows C++ compiler).
 
 \section{Comparison to existing software}
 
+% TODO[RGF]: I think that this section should be reduced considerably,
+% ideally into a single paragraph.  The first three "paragraphs"
+% should be largely retained, shrinking the third.
+
 Increased interest in capturing the behaviour of size-structured  populations
 has prompted development of several tools, each with its own distinct
 strengths. 
@@ -570,7 +579,9 @@ structure across broad geographic areas; as such their architectures are
 optimised for these use-cases. By contrast, {\plant} was  designed so that the
 physiological rules driving the dynamics of the system could be easily
 manipulated and emergent demographic behaviours (including fitness) studied in
-detail. These different use-cases underpin important design differences among
+detail.
+% From here down can be largely dropped I think
+These different use-cases underpin important design differences among
 the models. Whereas the primary purpose of these other models is to scale a
 given physiology up to predict  broad-scale changes in the terrestrial
 biosphere, {\plant} allows users to  interact with the model at multiple
