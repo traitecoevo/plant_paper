@@ -231,6 +231,7 @@ and the respiration, turnover and allocation rates for different
 tissues, and these intermediates can also be accessed (for further details on the \texttt{FFW16} model see Appendix
 \ref{sec:code}).
 
+% TODO: Table XXX?
 While we have implemented a particular physiological model (\texttt{FFW16}), the
 package is designed to allow arbitrary additional physiologies to be
 introduced. Users are able to modify the physiological model in two
@@ -309,6 +310,7 @@ been interested in dynamics of a patch recovering from disturbance and have
 therefore started with an empty patch and constant flow of seeds from a global
 seed rain (Fig. \ref{fig:schematic}b). A non-trivial extension could be added to allow some plants to survive disturbance \citep[following][]{Kohyama-1993}.
 
+% TODO: Appendix XXX
 The {\plant} model offers two methods for modelling the dynamics of \(N(x,
 H, a)\) in a competing population. In the first ``stochastic'' mode, users
 specify an average seed rain and patch size, and {\plant} then generates a
@@ -535,7 +537,7 @@ upgrade the Windows C++ compiler).
 
 Increased interest in capturing the behaviour of size-structured  populations
 has prompted development of several tools, each with its own distinct
-strengths. The \textsc{EBT} software (see De Roos XXXX in this special feature) provides
+strengths. The \textsc{EBT} software (see De Roos 2016 in this special feature) provides
 a flexible framework that has been used to study a range of marine organisms.
 Compared to the \textsc{EBT}, {\plant} is more focussed on plants, and
 to that end offers refinements needed to handle modelling of the strong
@@ -627,19 +629,21 @@ and through the introduction of new species. Adapted from
 \includegraphics[width=15cm,height=15cm,keepaspectratio]{figures/plant.pdf}
 \caption{Physiological dynamics for individual plants varying in size,
   trait and light environment. Solid lines are for the high
-  \textsc{lma} (leaf mass per unit area) strategy, dashed lines are
-  for the low \textsc{lma} strategy.  (a) Growth trajectories are
-  influenced by both light environment and traits.  (b) Over time, the
-  fraction of living tissue switches from leaf towards sapwood, with
-  high \textsc{lma} species having relatively more mass in leaf than
-  low \textsc{lma} species, due to their longer leaf lifespan. (c) Size-dependent growth rates
-  (derivative of panel (a)) peak at around 5m high, but location of the peak
-  varies with both trait and light level.  (d) Declines in growth rate
-  with light vary with plant size and traits.  Whole plant light
-  compensation points (indicated by dots) emerge as the point where
-  growth rate is zero (x intercept).  The light level used in panels
-  (a) and (c) is indicated with coloured ticks.  See Appendix
-  \ref{sec:code} for further details and code.}
+  \textsc{lma} (leaf mass per unit area) strategy (\textsc{lma} =
+  0.267), dashed lines are for the low \textsc{lma} strategy
+  (\textsc{lma} = 0.08).  (a) Growth trajectories are influenced by
+  both light environment and traits.  (b) Over time, the fraction of
+  living tissue switches from leaf towards sapwood, with high
+  \textsc{lma} species having relatively more mass in leaf than low
+  \textsc{lma} species, due to their longer leaf lifespan. (c)
+  Size-dependent growth rates (derivative of panel (a)) peak at around
+  5m high, but location of the peak varies with both trait and light
+  level.  (d) Declines in growth rate with light vary with plant size
+  and traits.  Whole plant light compensation points (indicated by
+  dots) emerge as the point where growth rate is zero (x intercept).
+  The light level used in panels (a) and (c) is indicated with
+  coloured ticks.  See Appendix \ref{sec:code} for further details and
+  code.}
 \label{fig:plant}
 \end{figure}
 
