@@ -14,7 +14,7 @@
 Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia\\
 \textdagger These authors contributed equally.\\
 \textasteriskcentered Email for correspondence: \texttt{daniel.falster@mq.edu.au}\\
-A manuscript in consideration as a research paper for
+A manuscript in consideration as an Applications Note for
 publication in MEE as part of the Special Feature \emph{Demography
   beyond the Population}.\\
 Word count: ~3900 words}
@@ -49,8 +49,6 @@ tradeoff}
   structure for demography is widely recognised, many mechanistic models
   either omit it entirely, or include only coarse approximations.
 \item
-% TODO: Rework to downgrade physiological model. Stochastic plants
-
   Here we introduce the {\plant} package, an
   extensible framework for modelling size- and trait-based demography,
   ecology and evolution in simulated forests.
@@ -58,11 +56,14 @@ tradeoff}
   individual-based mechanistic model where plant physiology and demography are mediated by
   traits. Individuals from multiple species can be grown in isolation,
   in patches of competing plants, or in metapopulations under a
-  disturbance regime. Dynamics within patches of competing plants are
-  resolved using novel extensions of the ``Escalator Boxcar Train''
+  disturbance regime. Dynamics within patches of competing plants can be
+  resolved either in a stochastic, finite-sized patch; or deterministically, using
+  novel extensions of the ``Escalator Boxcar Train''
   technique. Combined effects of trait-, size- and patch-structured
   dynamics are integrated into metapopulation level estimates of
-  reproductive fitness and vegetation structure.
+  invasion fitness and vegetation structure. Since fitness emerges as a
+  function of traits and is integrated over a full metapopulation, plant
+  provides a novel arena for exploring eco-evolutionary dynamics.
 \item
   {\plant} is an open source R package and is available at
   \href{https://github.com/traitecoevo/plant}{github.com/traitecoevo/plant}.
@@ -87,9 +88,9 @@ instantaneous physiological effects to long-term evolutionary outcomes
 As an individual increases its leaf area, it increases its potential
 to generate photosynthate.
 %
-In opposition to this, as individuals grow they must use increasing
-fractions of their photosynthetic income to building tissues other
-than new leaves; for example, to maintaining support tissues
+On the other hand as individuals grow larger they must allocate increasing
+fractions of their photosynthetic income to activities other
+than building new leaves; for example, to maintaining support tissues
 \citep{Givnish-1988, Enquist-2007} or to reproduction
 \citep{Thomas-2011}.
 %
@@ -122,7 +123,7 @@ entirely, or only include coarse approximations.
 Theoretical investigations exploring questions about niche-based
 species coexistence and ecological drift (neutrality) both rely
 primarily on unstructured population models \citep[e.g.][]{MacArthur-1967,
-  Tilman-1985, Geritz-1995, Hubbell-2001, Calcagno-2006}.
+  Tilman-1985, Geritz-1998, Hubbell-2001, Calcagno-2006}.
 %
 It is common to assume competitive outcomes are influenced by
 size-related traits such as adult and seed size, but detailed
@@ -130,7 +131,7 @@ size-structure is rarely considered, at least in plant models
 \cite[for animal examples, see][]{Deroos-1988, Deroos-1992}.
 %
 Similarly, many of the models used to study global vegetation dynamics across
-the last 20 yrs have not included size-structured demography
+the last 20 years have not included size-structured demography
 \citep[for comparisons of some major models see][]{Sitch-2008,
 Dekauwe-2014}.
 %
@@ -138,7 +139,7 @@ While the importance of explicitly including size-structured dynamics is
 increasingly recognised in both areas of evolutionary ecology
 \citep[e.g.][]{Falster-2015} and vegetation dynamics
 \citep[e.g.][]{Moorcroft-2001, Purves-2008, Smith-2014,
-Weng-2015,Sakschewski-2015}, our understanding on how these features
+Weng-2015, Sakschewski-2015}, our understanding on how these features
 impact on the ecology and evolution of vegetation communities remains
 relatively limited.
 
@@ -148,34 +149,29 @@ trait variation on the demography of individual plants, of patches of
 competing plants and of meta-populations structured by a prevailing
 disturbance regime.
 %
-We developed {\plant} primarily to further investigate if and how species
-differing in traits are able to coexist with one another
+Our own purpose in developing {\plant} has been mainly to investigate how species
+differing in traits may be able to coexist with one another
 \citep[following ][]{Falster-2011, Falster-2015}; as size-structured models
 provide unique opportunities for studying coexistence via differentiation in
 successional strategy \citep[see also][]{Huston-1987, Moorcroft-2001}.
-At the same time, we expect {\plant} to be useful for
-modelling other demographic phenomena.
+At the same time, we expect {\plant} to be useful for modelling other demographic phenomena.
 
-% TODO[RGF]: Is this new acronym needed?  It's not really the place of
-% this contribution to define a new class of models, and given that
-% this all comes from a response to a reviewer, IMO it bends the paper
-% to be too much like a response to the reviewer.
-Broadly, the {\plant} model falls into a class we refer to Trait- Size- and
-Patch- structured Models (\textsc{TSPMs}). \textsc{TSPMs} are direct
-descendants of the ``gap'' models developed in 1980s
+Broadly, the {\plant} model falls into a class we refer to as Trait- Size- and
+Patch- structured Models \citep[\textsc{TSPMs}, following][]{Falster-2011}. \textsc{TSPMs} are direct
+descendants from the ``gap'' models developed in 1980s
 \citep[e.g.][]{Shugart-1980, Huston-1987, Kohyama-1993}; other modern examples
 include \textsc{ED} \citep{Moorcroft-2001}, \textsc{LPJ- GUESS}
 \citep{Smith-2014} and \textsc{LPJml-FIT} \citep{Sakschewski-2015}. Common to
-\textsc{TSPMs} are that they explicitly model size-structured competition
+\textsc{TSPMs} is that they explicitly model size-structured competition
 among individual plants within a metapopulation of ``patches'', where
 individuals can also differ in their traits and thus demographic behaviour.
-\textsc {TSPMs} also typically ignore the spatial structure of plants within
-patches and the spatial structure of patches relative to one another; instead
-focussing computational effort on resolving the dynamics of size-structured
+\textsc {TSPMs} typically ignore the spatial structure of plants within
+patches and the spatial structure of patches relative to one another. Instead
+they focus computational effort on resolving the dynamics of size-structured
 competition for light and successional turnover. Differences among
-\textsc{TSPMs} arise from both the core physiological models used (describing
+\textsc{TSPMs} arise from the core physiological models used (describing
 how the demography of individual plants responds to resource availability),
-and the numerical techniques applied to scaling the physiological model up to
+and also from the numerical techniques applied to scaling the physiological model up to
 estimate emergent behaviours of individuals, patches and vegetation.
 
 Below we describe the general approach of the package, then provide
@@ -184,23 +180,15 @@ Detailed technical documents are provided as supplementary information
 (see Appendices); updated versions of these technical documents are
 available within the {\plant} package itself.
 
-\section{The approach}
+\section{Overview of approach}
 
 {\plant} is an individual-based model, meaning the dynamics of the
-population arise from rules specifying how individuals grow and interact. 
+population arise from rules specifying how individuals grow and interact.
 Being driven by traits, the model can be extended to potentially very many species. The
 core rules in {\plant} are about the short-term physiological
-functioning of an individual plant and how these are influenced by its
-traits, size and light environment.  While {\plant}
-includes a core physiological model, we use it here primarily as an example to
-demonstrate the different ways in which any given physiological model
-could be analysed. To be clear, it is not the purpose
-of this paper to justify the particular physiological model used, to provide detailed
-comparisons to data, or necessarily promote this physiological model over
-those in other \textsc{TSPMs}. (These are all topics worthy of
-substantially more attention than can be afforded here.) Moreover, an important
-feature of {\plant} is that it allows for users to add their own
-physiological models.
+functioning of an individual plant and how this is influenced by its
+traits, size and light environment.  While {\plant} includes a core physiological model, the present paper does not aim to justify the particular physiological model used, to provide detailed
+comparisons to data, or to promote this physiological model over those in other \textsc{TSPMs}. (These are all topics deserving substantially more attention than can be afforded here.) An important feature of {\plant} considered as a software package is that it allows for users to substitute their own physiological models.
 
 On top of the physiological model, {\plant} implements methods for
 population and adaptive dynamics (Fig.  \ref{fig:schematic}) following methods
@@ -209,9 +197,11 @@ phenomena can be studied at the three levels: individual plants, stands of
 competing plants and entire metapopulations. The dynamics at these higher
 levels of organisation arise as emergent properties, driven by growth
 physiology, competition for light and disturbance (Fig.  \ref{fig:schematic}).
-We offer the ability to model the emergent behaviour of patches with
-specified size, as well as a deterministic size-independent approximation
-in which specifying a patch size is not required.
+{\plant} offers the capacity to model emergent behaviour of patches with
+specified size, and also a deterministic size-independent approximation
+where specifying a patch size is not required. Trait evolution and community
+assembly can then be modelled using the estimates of invasion fitness
+provided by {\plant}.
 
 \section{Effects of size, trait and environment on demography of individual plants}
 
@@ -224,47 +214,45 @@ physiological model, which in turn translate into different demographic outcomes
 The default physiological model used in {\plant} largely reflects
 that presented in \citet{Falster-2011,Falster-2015}, but with extensions
 allowing for diameter growth also to be estimated. We refer to this
-default model as \texttt{FFW16}, reflecting the author initials and
+default model as \texttt{FFW16}, reflecting the author's initials and
 publication year of this paper. The \texttt{FFW16} model estimates rate
 of biomass
 production for a plant, given its size and the current light
 environment. Gross photosynthetic income is calculated from the total
 leaf area and the light distribution across the plant's canopy. Costs
 of tissue respiration and turnover are then subtracted. The remaining
-biomass is then allocated between growth and reproduction. The key
-outputs needed by higher levels of the {\plant} are height
+biomass production is then allocated between growth and reproduction. The key
+outputs needed by higher levels of {\plant} are height
 growth rate, mortality rate and rate of seed production.  However
 additional quantities are also computed, such as total assimilation
 and the respiration, turnover and allocation rates for different
-tissues and these intermediates can also be accessed (see Appendix
+tissues, and these intermediates can also be accessed (for further details on the \texttt{FFW16} model see Appendix
 \ref{sec:plant}).
 
-%% TODO[RGF]: I think that this needs softening.  Users can't really
-%% add new models; that has to be done by *developers*, really
-%% (because of the design the models are compiled into the package.
-While we have implemented one physiological model (\texttt{FFW16}), the
+While we have implemented a particular physiological model (\texttt{FFW16}), the
 package is designed to allow arbitrary additional physiologies to be
-introduced. Users are able to modify the physiological model in three
+introduced. Users are able to modify the physiological model in two
 different ways. First, one can vary the parameters of the \texttt{FFW16} model
 directly (see Table XXX for list, for examples see Appendix
 \ref{sec:parameters}). Second, we allow for changes in key parameters to
-trigger changes in other parameters (i.e. a hyper-parametrisation), enabling
+bring about changes in other parameters (a hyper-parameterisation), enabling
 straightforward modelling of trade-offs. For example, the trait \textsc{lma}
 (leaf mass per unit leaf area) is used to estimate the rate of leaf turnover
 ($k_l$), based on an observed scaling relationship spanning across diverse
 vegetation and plant functional types \citep{Wright-2004}:
-$$k_l = \beta_{kl1} \, \left(\frac{\phi}{\phi_0}\right)^{-\beta_{kl2}},$$ 
+$$k_l = \beta_{kl1} \, \left(\frac{\phi}{\phi_0}\right)^{-\beta_{kl2}},$$
 where $k_l$ and $\phi$ (lma) are both parameters of the core physiological
 model, and $\beta_{kl1}, \beta_{kl2}, \phi_0$ are hyper-parameters. Such
 linkages are defined within a user-supplied hyper-parameterisation function
 (see Appendix \ref{sec:FFW16} for details). Finally, rather than varying the
 parameters of the existing equations in the \texttt{FFW16} model, the
 equations themselves can be changed and the higher level functionality of the
-package can still be used.  The latter corresponds to defining a new
-physiological model. As an example, in the \texttt{FFW16b} physiology, we have modified
-the function determining allocation to reproduction.
+package can still be used.  Changed equations would amount to defining a new
+physiological model in a new C++ file. As an example, in
+the \texttt{FFW16b} physiology, we have modified the function determining
+allocation to reproduction.
 
-With the basic physiological model, {\plant} can be used to estimate
+With a basic physiological model in place, {\plant} can be used to estimate
 essential physiological rates for individual plants
 (Fig. \ref{fig:plant}). The function \texttt{grow\_plant\_to\_size}
 takes a given strategy and light environment and grows the plant,
@@ -275,21 +263,18 @@ size-dependent growth rate (see Appendices \ref{sec:demography} and
 different tissue types varies and the composition of the plant
 changes to include more stem and less leaf
 (Fig. \ref{fig:plant}b). This in turn affects maintenance and turnover
-costs and the growth rate of plants (Fig. \ref{fig:plant}c).  This
-shift in allocation alone generates a distinctive hump-shaped pattern
-of absolute growth with size \citep{King-2011} and equally the widely
-observed decline in relative growth rate with size from birth onwards
-\citep{Enquist-2007}.
+costs and the growth rate of the plant (Fig. \ref{fig:plant}c).  This
+shift in allocation by itself can generate the widely-observed hump-shaped pattern
+of absolute height growth with size \citep{King-2011} and the decline in relative mass growth rate with size from birth onwards \citep{Enquist-2007}.
 
-By varying the light environment and measuring growth rate, the whole
-plant light compensation point (\textsc{wplcp}) can be computed (Fig.
+By varying the light environment and measuring growth rate, the whole-plant light compensation point (\textsc{wplcp}) can be computed (Fig.
 \ref{fig:plant}d). The \textsc{wplcp} is the light level at which the plant
 stops growing and is increasingly regarded as the most useful
 measure of a species' shade tolerance
 \citep{Givnish-1988, Baltzer-2007, Lusk-2013}. As expected, \textsc{wplcp}
 increases with plant size, due to increased costs of building and
 maintaining stem and leaf tissues \citep{Givnish-1988}. Likewise, \textsc{wplcp}
-decreases with \textsc{lma}, because high \textsc{lma} species have lower leaf turnover
+decreases with \textsc{lma}, because high \textsc{lma} species have slower leaf turnover
 \citep{Baltzer-2007, Lusk-2013} (Fig.
 \ref{fig:plant}d).
 
@@ -304,7 +289,7 @@ physiological model. We assume that patches are vertically but not horizontally
 structured; in other words, we account for size differences but not spatial
 layout within the patch. Similar assumptions are found in other \textsc{TSPMs}
 \citep{Shugart-1980, Kohyama-1993, Huston-1987, Moorcroft-2001, Smith-2014}.
-While ideally, one would also consider spatial interactions within patches,
+While ideally one would also consider spatial interactions within patches,
 such models are very computationally demanding and also
 impossible to solve in a deterministic fashion \citep{Shugart-1980,
 Pacala-1996}. Moreover, it remains unclear whether resolving spatial details within a
@@ -320,30 +305,30 @@ Modelling the development of  \(N(x, H, a)\) requires that both the initial size
 distribution and the inflow of new recruits be specified. We have primarily
 been interested in dynamics of a patch recovering from disturbance and have
 therefore started with an empty patch and constant flow of seeds from a global
-seed rain (Fig. \ref{fig:schematic}b).
+seed rain (Fig. \ref{fig:schematic}b). A non-trivial extension could be added to allow some plants to survive disturbance \citep[following][]{Kohyama-1993}.
 
 The {\plant} model offers two methods for modelling the dynamics of \(N(x,
 H, a)\) in a competing population. In the first ``stochastic'' mode, users
-specify an average seed rain and patch size, {\plant} then generates a
-vector of seed arrival events and simulates the stochastic
+specify an average seed rain and patch size, and {\plant} then generates a
+vector of seed arrival events and simulates stochastic
 development of the resulting finite-sized population (see Appendices XXX for an
 example).
 
-For most applications, however, a preferable alternative to modelling
-dynamics within a finite-sized stochastic patch, is to use {\plant}'s 
-``determinstic'' approximation. The ``determinstic'' mode assumes that
-patches are very large; at this point the population dynamics within the
-patch approach their deterministic limit and can therefore
+For most applications, however, rather than modelling
+dynamics within a finite-sized stochastic patch, it will be preferable to use {\plant}'s
+``deterministic'' approximation. The deterministic mode assumes that
+patches are very large, so that the population dynamics within the
+patch approach their deterministic limit and can
 be approximated via a Partial Differential Equation (\textsc{pde})
 \citep{Deroos-1997, Kohyama-1993}.  The same \textsc{pde} is also thought to
 capture the average behaviour across a large number of small patches
-\citep{Moorcroft-2001}. Importantly, the ``determinstic'' mode is
-also much faster than the stochastic model and without noise (more
+\citep{Moorcroft-2001}. Importantly, the ``deterministic'' mode is
+much faster than the stochastic model and without noise (more
 details in Appendix \ref{sec:demography}).
 
 Our approach for modelling deterministic size-structured population dynamics is
 based on the Escalator Boxcar Train (\textsc{ebt}) technique
-\citep{Deroos-1988, Deroos-1992, Deroos-1997}. The \textsc{ebt} solves
+\citep{Deroos-1988, Deroos-1992, Deroos-1997, Brannstrom-2013}. The \textsc{ebt} solves
 the \textsc{pde} describing development of \(N\) by approximating the
 density function with a collection of cohorts spanning the size
 spectrum. Following a disturbance, a series of cohorts are introduced
@@ -384,12 +369,12 @@ widely-spaced cohorts, causing low numerical accuracy. To maintain
 numerical accuracy, we use an iterative algorithm to adaptively refine
 the cohort spacing until the trajectories of adjacent cohorts remain
 adequately resolved throughout development of the patch (see Appendix
-\ref{sec:demography} for details). This refinement causes an uneven
+\ref{sec:demography} for details). This refinement gives rise to uneven
 distribution of cohort introduction times across patch age (Fig.
 \ref{fig:patch}a), with considerably tighter spacing of cohorts in
 younger patches.
 
-Modelling of size-structured dynamics via solving of a deterministic
+Modelling of size-structured dynamics via solving a deterministic
 \textsc{pde} enables multiple demographic phenomena to be
 investigated. First, {\plant} can simulate demographic
 phenomena typically observed in patches
@@ -398,10 +383,10 @@ successional replacement. Whereas other approaches for modelling
 self-thinning are limited to a single species
 \citep[e.g.][]{Barnes-2004, Coomes-2007}, \textsc{TSPMs} can accommodate
 multiple species with different traits (Fig. \ref{fig:schematic}b;
-Fig.  \ref{fig:patch}). Moreover, these features emerge from the
+Fig.  \ref{fig:patch}). Second, the self-thinning and
+successional replacement emerge from the
 combined effects of physiology and competition for resources, rather
-than being prescribed in the model. Second, \textsc{TSPMs} allows for
-the combined effects of physiology and succession on emergent
+than being prescribed in the model. As a consequence, it is possible to ask how alternative trait values would translate into demographic fitness (see further below). Third,  \textsc{TSPMs} allows for the combined effects of physiology and succession on emergent
 characteristics of the entire patch to be investigated
 \citep{Moorcroft-2001, Falster-2011}. Leaf area cover and rates of biomass
 production tend to vary  non-linearly with patch
@@ -411,7 +396,7 @@ driven by demography (Fig. \ref{fig:patch}c).
 
 \section{Trait, size and patch structured vegetation}
 
-All vegetation is subject to a disturbance regime, such that patches
+All vegetation in {\plant} is subject to a disturbance regime, such that patches
 of the landscape are cleared at some rate, by fire, cyclone or
 landslide.  The vegetation thus comprises a series of patches
 differing in time since last disturbance and linked via seed dispersal
@@ -437,16 +422,16 @@ a single patch by \(P(a)\), the relative abundance of patches aged
 The main numerical challenge in stepping from a single patch to a
 metapopulation is to identify the equilibrium seed rain of the
 metapopulation. An ``input'' seed rain is required to simulate the
-demography of the metapopulation, this in turn produces an ``output''
-number of seeds. The equilibrium occurs when, for each species,
-a given input seed rain
-produces an equivalent output seed rain. Finding this equilibrium
+demography of the metapopulation, and this in turn produces an ``output''
+number of seeds. Equilibrium occurs when, for each species,
+a given input seed rain produces an equivalent output seed rain. Finding this equilibrium
 requires finding the root of a multi-dimensional function, subject to
-the constraint that this root is stable (e.g., the trivial equilibrium
+the constraint that this root is stable (the trivial equilibrium
 of zero seed rain always exists, but is often not stable; Appendix
-\ref{sec:equilibrium}).
+\ref{sec:equilibrium}).  Real seed rains are of course quite noisy,
+but this approach still allows for the mean tendencies to be estimated.
 
-An attractive feature of the metapopulation concept implemented here
+An attractive feature of the metapopulation concept implemented in \textsc{TSPMs}
 is that integrates both equilibrium and non-equilibrium approaches to
 modelling ecological dynamics \citep{Kohyama-1993, Moorcroft-2001,
   Falster-2011}. An equilibrium may be approached at the level of
@@ -460,9 +445,7 @@ The dynamic equilibrium captured by the trait-, size- and
 patch-structured metapopulation model potentially resolves several
 challenges faced by unstructured models. First, by scaling up from
 patch to metapopulation, we close the demographic feedback loop to
-create a self-regulating system. These densities
-arise as outputs from the model, based on the combined effects of the
-model's physiological rules, species traits, competitive interactions
+create a self-regulating system. The equilibrium seed rains and size-density distributions  arise for each species present as outputs from the model, based on the combined effects of the model's physiological rules, species traits, competitive interactions
 and the prevailing disturbance regime.
 
 Second, the metapopulation concept allows for the effects of disturbance
@@ -486,43 +469,36 @@ established residents at their equilibrium densities
 \citep{Metz-1992, Chesson-2000}.  While ideally calculated as the
 long-term per capita growth rate, a more convenient indicator of
 fitness in structured metapopulations is given by the
-logarithm of the basic reproduction ratio, \(R\)
-\citep{Gyllenberg-2001, Metz-2001}.
-The basic reproduction ratio is simply the total seed output of
-the new type, averaged across the metapopulation. So a new type can
+logarithm of the basic reproduction ratio, \(R\) \citep{Gyllenberg-2001, Metz-2001}. The basic reproduction ratio is simply the average number of seeds produced from one seed of a new type over its lifetime, averaged across the metapopulation. So a new type can
 invade when \(\log R > 0\).
 
 With this measure of fitness, we can model trait-based adaptive
 dynamics and community assembly of forest communities, following
- \citep{Falster-2015}. This is best
-thought of as occurring on a fitness landscape, a surface with fitness
-plotted against one or more species traits
+ \citep{Falster-2015}. This is best thought of as occurring on a fitness landscape, a surface with fitness plotted against one or more species traits
 (Fig. \ref{fig:fitness}). The reproductive success of individuals
-possessing a particular trait value depends on both the traits and
-densities of other species in the current resident community. Fitness
-landscapes will be positive in regions that allow invasion, and zero
+depends both on their own traits and on densities of other occupants in the current resident community. Fitness landscapes will be positive in regions that allow invasion, and zero
 for species that are at equilibrium. The slope of the fitness
 landscape with respect to traits indicates the direction of selection
 (dashed line in Fig. \ref{fig:fitness}a) indicates selection for
 smaller trait values (see Appendix \ref{sec:fitness} for
-details). Fitness landscapes are constantly reshaped as species are
-introduced and evolve, reflecting the non-linear demographic feedbacks
+details)). Fitness landscapes are continually reshaped as species are
+introduced and their trait values evolve, reflecting the non-linear demographic feedbacks
 that occur under frequency-dependent evolution. Stable coexistence is
 possible when species with different traits can mutually invade
 \citep{Geritz-1998, Chesson-2000}. Following the fitness gradient may lead to an
 evolutionary branching point \citep{Geritz-1998}; at
-this point there is no directional selection (solid line in
+such a point there is no directional selection (solid line in
 Fig. \ref{fig:fitness}a) but invasion is possible both above and below
 it in trait space. It is often possible to find a configuration where
 fitness is negative everywhere (solid line in Fig. \ref{fig:fitness}b)
 except for the zero points where species are present. This community
 is immune to invasion from any other strategies and represents a
-prediction for the trait mixture that might might be favoured by
+prediction for the trait mixture that might be favoured by
 natural selection \citep{Geritz-1998}.
 
-Something hear about adaptive dynamics and fitness
+In general,  a variety of algorithms from the area of adaptive dynamics could be applied for modelling community assembly \citep[e.g.][]{Geritz-1998, Falster-2015}, using the estimate of invasion fitness provided by {\plant}.
 
-Identifying conditions promoting trait diversity is a valuable use-case
+Identifying conditions promoting trait diversity is a valuable role
 for {\plant}. The simple example here can be extended to multiple dimensions
 and can be used to investigate how trade-offs facilitate coexistence
 \citep{Falster-2015}. Co-occurring plant species differ in a range of physiological
@@ -550,84 +526,28 @@ computational environment \citep{R-2015}, the R packages \texttt{Rcpp}
 \citep{Eddelbuettel-2015}. Source code is hosted at
 \href{https://github.com/traitecoevo/plant}{github.com/traitecoevo/plant}.
 Installation instructions are available at this webpage, binary
-releases will also be available there.  (Note that {\plant} does not
-currently compile on Windows, but this will change soon as R core
+releases will also be available there.  {\plant} does not
+currently compile on Windows, but this will change as soon as R core
 upgrade the Windows C++ compiler).
 
 \section{Comparison to existing software}
 
-% TODO[RGF]: I think that this section should be reduced considerably,
-% ideally into a single paragraph.  The first three "paragraphs"
-% should be largely retained, shrinking the third.
-
 Increased interest in capturing the behaviour of size-structured  populations
 has prompted development of several tools, each with its own distinct
-strengths. 
-
-The \textsc{EBT} software (see De Roos XXXX in this special feature) provides 
+strengths. The \textsc{EBT} software (see De Roos XXXX in this special feature) provides
 a flexible framework that has been used to study a range of marine organisms.
-Compared to the \textsc{EBT}, {\plant} is more focussed on plants, and 
-to that end offers refinements needed to handle modelling of the strong 
-size-asymmetric feedbacks that occur in plant communities, as well as the 
-extension to structured metapopulation.
-
-Other \textsc{TSPMs} also exist for modelling of vegetation, like \textsc{ED}
+Compared to the \textsc{EBT}, {\plant} is more focussed on plants, and
+to that end offers refinements needed to handle modelling of the strong
+size-asymmetric feedbacks that occur in plant communities, as well as the
+extension to structured metapopulation. Other \textsc{TSPMs} also exist for modelling of vegetation, like \textsc{ED}
 \citep[ver 1 and 2][]{Moorcroft-2001, Medvigy-2009}, \textsc {LPJ-GUESS}
 \citep{Smith-2014} and a\textsc{LPJml-FIT}  \citep{Sakschewski-2015}. These
 models were designed for simulation of bio-geochemical cycles and vegetation
-structure across broad geographic areas; as such their architectures are
-optimised for these use-cases. By contrast, {\plant} was  designed so that the
+structure across broad geographic areas, and their architectures are
+optimised for such use. By contrast, {\plant} was  designed so that the
 physiological rules driving the dynamics of the system could be easily
-manipulated and emergent demographic behaviours (including fitness) studied in
-detail.
-% From here down can be largely dropped I think
-These different use-cases underpin important design differences among
-the models. Whereas the primary purpose of these other models is to scale a
-given physiology up to predict  broad-scale changes in the terrestrial
-biosphere, {\plant} allows users to  interact with the model at multiple
-levels of ecological organisation and  study the dynamics in detail. With any
-given physiology, it is possible to  grow plants in isolation, in patches of
-competing plants and in disturbance- driven metapopulations. {\plant} also
-allows for greater focus on population dynamics, reporting not only vegetation
-properties but also individual level densities, growth rates and fitness.
-{\plant} thus aims to bridge the gap between existing large-scale coupled
-simulation models like \textsc{ED} and the extremely simple models that are
-still widely  used in theoretical ecology. 
-
-As the only other mdoel with open source code, we also note some more specific 
-differences between \textsc{ED} and {\plant}.
-\begin{itemize}
-  \item More effort is devoted in {\plant} to resolving competitive
-  hierarchies within developing patches. To that end we use a finer-scale 
-  adaptive time-step; allow for vertical overlap in the canopies of different 
-  plants and expend more effort on resolving the temporal spacing of cohorts
-  within a single patch. These details are essential to retrieving stable
-  estimates of fitness but possibly make little different to patch-scale
-  outcomes like total biomass or leaf area cover. 
-  
-  \item  \textsc{ED} includes sub-models for handling water, nutrient and 
-  temperature effects, and is thus better at capturing water, carbon and 
-  nutrient fluxes.
-
-  \item In order to approximate a single archetypal patch and thus study 
-  metapopulations at equilibrium, {\plant} requires a function giving the 
-  average photosynthesis per year as a function of canopy depth. While we
-  derive this function from a more-detailed sub-model, it is currently not
-  possible to explicitly simulate intra-annual cycles in environmental
-  drivers.
-
-  \item The physiological model in  \textsc{ED} has undergone more rigorous
-  comparisons with data \citep[see][]{Medvigy-2009}.  Providing updated 
-  parameter sets to the \texttt{FFW16} model is trivial (see Appendix 
-  \ref{sec:parameters}); the challenge is to infer
-  suitable values by constraining outputs from {\plant} against diverse
-  data sources \citep[e.g.][]{Medvigy-2009, Lebauer-2012}. 
-
-  \item {\plant} is distributed as an R package an as such offers greater
-  possibilities for interactive use. 
-\end{itemize}
-
-Finally, like {\plant} the \textsc{LM3-PPA} \cite{Weng-2015} model also aims
+manipulated and emergent demographic behaviours (including properties of individual plants, patches , metapopulations of patches and evolutionary fitness) studied in
+detail. Finally, like {\plant} the \textsc{LM3-PPA} \cite{Weng-2015} model also aims
 to scale from individual-level behaviours to emergent properties of
 vegetation, including estimating invasion fitness. Yet the approaches taken
 for solving the dynamics are very different. The \textsc{LM3-PPA} relies on
@@ -635,12 +555,12 @@ complex analytical solutions to the size- structured interactions, whose
 derivation required simplifying elements of the physiology and ecology in the
 model. By contrast in {\plant} we have retained the full range of
 physiological and ecological feedbacks, and instead relied on using robust
-numerical methods to solve the system dynamics (see Appendix 
+numerical methods to solve the system dynamics (see Appendix
 \ref{sec:demography} for further details).
 
 \section{Closing comments}
 
-The {\plant} package makes it easier for researchers and forest
+The {\plant} package can make it easier for researchers and forest
 practitioners alike to investigate a variety of non-linear demographic
 phenomena.  Rather than provide a model with a few entry points, we
 have developed an extensible framework that we hope can be used to
@@ -658,14 +578,14 @@ abstract theoretical models.
 
 \section{Acknowledgements}
 
-DS Falster was supported by an Australian Research Council (ARC)
-discovery grant (DP110102086). RG FitzJohn was supported by the
-Science and Industry Endowment Fund (RP04-174). M Westoby was
+Falster was supported by an Australian Research Council (ARC)
+discovery grant (DP110102086). FitzJohn was supported by the
+Science and Industry Endowment Fund (RP04-174). Westoby was
 supported by a fellowship from the ARC. DSF thanks {\AA}
 Br{\"a}nnstr{\"o}m and U Dieckmann for introducing him to the \textsc{ebt}
 framework and the eco-evolutionary framework implemented in {\plant}, and
 for discussions around prior software. We also thank J Camac, A De Roos,
-R Duursma, J Johansson and C Prentice for helpful discussions. The authors 
+R Duursma, J Johansson and C Prentice for helpful discussions. The authors
 have no conflicts of interest to declare.
 
 \clearpage
@@ -711,8 +631,8 @@ and through the introduction of new species. Adapted from
   influenced by both light environment and traits.  (b) Over time, the
   fraction of living tissue switches from leaf towards sapwood, with
   high \textsc{lma} species having relatively more mass in leaf than
-  low \textsc{lma} species. (c) Size-dependent growth rates
-  (derivative of panel (a)) peak at around 5m high, but this position
+  low \textsc{lma} species, due to their longer leaf lifespan. (c) Size-dependent growth rates
+  (derivative of panel (a)) peak at around 5m high, but location of the peak
   varies with both trait and light level.  (d) Declines in growth rate
   with light vary with plant size and traits.  Whole plant light
   compensation points (indicated by dots) emerge as the point where
@@ -734,7 +654,7 @@ and through the introduction of new species. Adapted from
   species, using a schedule of introduction times generated by
   {\plant}'s adaptive algorithm.  The initial growth rate advantage of
   the low \textsc{lma} species (see Figure \ref{fig:plant}c) means it
-  quickly over tops the high \textsc{lma} species, suppressing its
+  quickly overtops the high \textsc{lma} species, suppressing its
   growth.  Self-thinning creates space for the high \textsc{lma}
   species to establish below the canopy of the faster species. Panel
   (b) shows the same trajectories as in panel (a), but with shading
@@ -742,7 +662,7 @@ and through the introduction of new species. Adapted from
   age (light = low density, dark = high density).  (c) The leaf area
   index at ground level for each species.  The dotted line is the
   total leaf area index (summed across both species), and the lines on
-  the right side are average when integrated over the whole
+  the right side are averages when integrated over the whole
   metapopulation structure.  See Appendix \ref{sec:patch} for further
   details and code.}
 \label{fig:patch}
@@ -756,11 +676,11 @@ and through the introduction of new species. Adapted from
 \caption{Emergent size-distributions and demography across a metapopulation.
 Grey lines show patterns within individual patches differing in time
 since disturbance (age), with blue lines indicating patches of a
-specific age. Red lines show average relationship across the metapopulation, 
-obtained by weighting the grey lines by patch and individual abundance. 
+specific age. Red lines show average relationship across the metapopulation,
+obtained by weighting the grey lines by patch and individual abundance.
 Panels show (a) patterns of abundance, (b) leaf area and
 (c) height growth rate against size. Units of panels (a) and
-(b) are amount per unit height per unit ground area.  
+(b) are amount per unit height per unit ground area.
 See Appendix \ref{sec:emergent} for further details and code.}
 \label{fig:emergent}
 \end{figure}
@@ -812,7 +732,7 @@ https://github.com/traitecoevo/plant\_paper/wiki --- the \textsc{html}
 versions have less pixelated graphics and are easier to copy and
 paste out of.
 
-See attached file \url{vignettes/plant.pdf}, 
+See attached file \url{vignettes/plant.pdf},
 source:
 \smurl{https://github.com/traitecoevo/plant\_paper/blob/master/vignettes/src/plant.R}
 html: \smurl{https://github.com/traitecoevo/plant\_paper/wiki/plant}

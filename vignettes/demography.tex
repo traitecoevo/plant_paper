@@ -15,7 +15,7 @@
 \makeatother
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 
-\title{plant: A package for modelling forest trait ecology \& evolution:
+\title{plant: A package for modelling forest trait ecology \& evolution --
 \emph{Modelling demography of plants, patches and metapopulations}}
 \date{}
 
@@ -26,12 +26,18 @@
 
 \maketitle
 
-\section{Introduction}\label{introduction}
+\tableofcontents
+
+\section{Introduction}
+
 This vignette outlines methods used to model demography in the {\plant}
-package, using methods from \citet{Deroos-1997}; \citet{Kohyama-1993};
-\citet{Moorcroft-2001}, \citet{Falster-2011}; and \citet{Falster-2015}.
-We first outline the system dynamics and then describe the numerical
-techniques used to solve the equations. Variable definitions and units are
+package. We first outline the system of equations being solved. These equations were primarily
+developed elsewhere, in particular in
+\citet{Deroos-1997}; \citet{Kohyama-1993}; \citet{Moorcroft-2001}, \citet{Falster-2011}; and
+\citet{Falster-2015}. They are presented here not as original findings, but rather so that
+users can understand the full system of equations being solve within {\plant}.
+We then then describe the numerical techniques used to solve the equations.
+Variable definitions and units are
 summarised in Table \ref{tab:definitions}.
 
 \section{System dynamics}\label{system-dynamics}
@@ -85,7 +91,7 @@ Following standards biophysical principles, we let canopy openness
 \(E_a(z)\) at height \(z\) in a patch of age \(a\) decline exponentially
 with the total amount of leaf area above \(z\), i.e.
 \begin{equation} \label{eq:light}
-  E_a(z) = \exp \left(-\alpha_{E1}  \sum_{i = 1}^{K} \int_{0}^{\infty} A_l(H) \, Q(z, H) \, N(x_i, h, a) \, {\rm d}H \right),
+  E_a(z) = \exp \left(-k_I  \sum_{i = 1}^{K} \int_{0}^{\infty} A_l(H) \, Q(z, H) \, N(x_i, h, a) \, {\rm d}H \right),
 \end{equation}
 where \(A_l(H)\) is total leaf area and \(Q(z, H)\) is fraction of
 this leaf area held above height \(z\) for plants size \(H\),
@@ -176,7 +182,7 @@ connectivity via dispersal between all patches in the habitat, allowing
 empty patches to be quickly re-colonised. Such a system can be modelled
 as a metapopulation (sometimes called metacommunity for multiple
 species). The dynamics of this metapopulation are described by the
-\textsc{pde}s inEqs. \ref{eq:PDE} and  \ref{eq:agepde}.
+\textsc{pde}s in Eqs. \ref{eq:PDE} and  \ref{eq:agepde}.
 
 The seed rain of each species in the metapopulation is given by rate at
 which seeds are produced across all patches,
@@ -244,13 +250,14 @@ and across the metapopulation,
 
 Let us now consider how we can estimate the fitness of a rare individual
 with traits \(x^\prime\) growing in the environment of a resident
-community with traits \(x\). We will focus on the phenotypic components
-of fitness -- i.e.~the consequences of a given set of traits for growth,
+community with traits \(x\). We focus on the phenotypic components
+of fitness -- i.e. the consequences of a given set of traits for growth,
 fecundity and mortality -- taking into account the non-linear effects of
 competition on individual success, but ignoring the underlying genetic
 basis for the trait determination. We also adhere to the standard
 conventions in such analyses in assuming that the mutant is sufficiently
 rare to have a negligible effect on the environment where it is growing.
+The approach taken here was first described by \citep{Falster-2015}.
 
 Invasion fitness is most correctly defined as the long-term per capita
 growth rate of a rare mutant population growing in the environment
@@ -460,10 +467,8 @@ performed within the desired accuracy at every time point. At the same
 time, we want as few cohorts as possible to maintain for computational
 efficiency.
 
-A suitable schedule is found using the function
-\texttt{build\_schedule}. As there was no prior existing method for
-estimating a suitable schedule of introduction times, we implemented the
-following new technique. The \texttt{build\_schedule} function takes an
+A suitable schedule is found using the function \texttt{build\_schedule}.
+The \texttt{build\_schedule} function takes an
 initial vector of introduction times, then looks at each cohort and asks
 whether removing that cohort would cause the error introduced when
 integrating two specified functions over the size distribution to jump
@@ -479,7 +484,9 @@ introduced. Note we are asking whether removing an existing cohort would
 cause error to jump above the threshold limit, and using this to decide
 whether an extra cohort -- in addition to the one used in the test --
 should be introduced. Thus the actual error is likely to
-be lower than but at most equal to \texttt{schedule\_eps}.
+be lower than but at most equal to \texttt{schedule\_eps}. The general idea
+of adaptively refining the vector of introduction times was idea first applied
+in \citet{Falster-2011} and described further in \citet{Falster-2015}.
 
 To determine the error associated with a specified cohort, we integrate
 two different functions over the size distribution, within the function
@@ -618,7 +625,7 @@ have implemented several different approaches (see
   $R\left(x^\prime, x\right)$ & & basic reproduction ratio for mutant growing in environment of residents \\
 
   \multicolumn{3}{l}{\textbf{Miscellaneous constants}} \\
-  $\alpha_{E1}$ & 0-1  & light extinction coefficient\\
+  $k_I$ & 0-1  & light extinction coefficient\\
   \hline
   \end{tabular}
 \label{tab:definitions}

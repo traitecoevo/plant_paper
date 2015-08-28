@@ -16,8 +16,8 @@
 \makeatother
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 
-\title{plant: A package for modelling forest trait ecology \& evolution:
-\emph{Plant physiological model}}
+\title{{\plant}: A package for modelling forest trait ecology \& evolution --
+\emph{Description of the \texttt{FFW16} physiological model}}
 \date{}
 
 \usepackage[]{natbib}
@@ -27,6 +27,9 @@
 
 \maketitle
 
+\tableofcontents
+
+\section{Introduction}
 
 The core job of the physiological model in {\plant} is to take a plant's
 current size, light environment and physiological parameters as inputs,
@@ -38,8 +41,9 @@ which in turn is calculated based on well understood physiology (Fig.
 influence demographic outcomes. Varying these parameters allows for
 species-differences to be included, potentially via traits (see last
 section). Tables
-\ref{tab:definitions} and \ref{tab:params_core} gives units and definitions of all variables
-and parameters.
+\ref{tab:definitions}, \ref{tab:params_core},  \ref{tab:params_hyper} give
+ units and definitions of all variables, parameters and hyper-parameters used in
+ the material below.
 
 \begin{figure}[h!]
 \centering
