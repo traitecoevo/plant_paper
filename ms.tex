@@ -53,7 +53,7 @@ tradeoff}
   extensible framework for modelling size- and trait-based demography,
   ecology and evolution in simulated forests.
   At its core, {\plant} is an
-  individual-based mechanistic model where plant physiology and demography are mediated by
+  individual-based model where plant physiology and demography are mediated by
   traits. Individuals from multiple species can be grown in isolation,
   in patches of competing plants, or in metapopulations under a
   disturbance regime. Dynamics within patches of competing plants can be
@@ -144,9 +144,9 @@ impact on the ecology and evolution of vegetation communities remains
 relatively limited.
 
 In this note, we introduce the {\plant} package for R \citep{R-2015};
-a mechanistic framework for studying the effects of size structure and
+a framework for studying the effects of size structure and
 trait variation on the demography of individual plants, of patches of
-competing plants and of meta-populations structured by a prevailing
+competing plants and of metapopulations structured by a prevailing
 disturbance regime.
 %
 Our own purpose in developing {\plant} has been mainly to investigate how species
@@ -225,13 +225,13 @@ leaf area and the light distribution across the plant's canopy. Costs
 of tissue respiration and turnover are then subtracted. The remaining
 biomass production is then allocated between growth and reproduction. The key
 outputs needed by higher levels of {\plant} are height
-growth rate, mortality rate and rate of seed production.  However
-additional quantities are also computed, such as total assimilation
+growth rate, mortality rate and rate of seed production (Fig. \ref{fig:schematic}).  Additional quantities are also computed, such as total assimilation
 and the respiration, turnover and allocation rates for different
 tissues, and these intermediates can also be accessed (for further details on the \texttt{FFW16} model see Appendix
-\ref{sec:code}).
+\ref{sec:FFW16} and \ref{sec:code}).
 
 % TODO: Table XXX?
+% NOTE: I've moved FFW16b to FFdev for now so that it matches the implementation.
 While we have implemented a particular physiological model (\texttt{FFW16}), the
 package is designed to allow arbitrary additional physiologies to be
 introduced. Users are able to modify the physiological model in two
@@ -250,9 +250,9 @@ linkages are defined within a user-supplied hyper-parameterisation function
 (see Appendix \ref{sec:FFW16} for details). Finally, rather than varying the
 parameters of the existing equations in the \texttt{FFW16} model, the
 equations themselves can be changed and the higher level functionality of the
-package can still be used.  Changed equations would amount to defining a new
-physiological model in a new C++ file. As an example, in
-the \texttt{FFW16b} physiology, we have modified the function determining
+package can still be used.  Changed equations would require defining a new
+physiological model in a new C++ file, and compiling that into the package.
+As an example, in the \texttt{FFWdev} physiology, we have modified the function determining
 allocation to reproduction.
 
 With a basic physiological model in place, {\plant} can be used to estimate
@@ -432,7 +432,7 @@ requires finding the root of a multi-dimensional function, subject to
 the constraint that this root is stable (the trivial equilibrium
 of zero seed rain always exists, but is often not stable; Appendix
 \ref{sec:code}).  Real seed rains are of course quite noisy,
-but this approach still allows for the mean tendencies to be estimated.
+but this approach still allows for the mean tendencies to be estimated (which is required for computing fitness; see below).
 
 An attractive feature of the metapopulation concept implemented in \textsc{TSPMs}
 is that integrates both equilibrium and non-equilibrium approaches to
@@ -484,7 +484,7 @@ for species that are at equilibrium. The slope of the fitness
 landscape with respect to traits indicates the direction of selection
 (dashed line in Fig. \ref{fig:fitness}a) indicates selection for
 smaller trait values (see Appendix \ref{sec:code} for
-details)). Fitness landscapes are continually reshaped as species are
+details). Fitness landscapes are continually reshaped as species are
 introduced and their trait values evolve, reflecting the non-linear demographic feedbacks
 that occur under frequency-dependent evolution. Stable coexistence is
 possible when species with different traits can mutually invade
@@ -499,14 +499,14 @@ is immune to invasion from any other strategies and represents a
 prediction for the trait mixture that might be favoured by
 natural selection \citep{Geritz-1998}.
 
-In general,  a variety of algorithms from the area of adaptive dynamics could be applied for modelling community assembly \citep[e.g.][]{Geritz-1998, Falster-2015}, using the estimate of invasion fitness provided by {\plant}.
-
 Identifying conditions promoting trait diversity is a valuable role
 for {\plant}. The simple example here can be extended to multiple dimensions
 and can be used to investigate how trade-offs facilitate coexistence
 \citep{Falster-2015}. Co-occurring plant species differ in a range of physiological
 traits, yet the conditions allowing for stable coexistence remain largely
 unknown \citep{Adler-2013}.
+% NOTE: is this OK as a merge (was an orphan sentence in previous version).
+A variety of algorithms from the area of adaptive dynamics could be applied for modelling community assembly \citep[e.g.][]{Geritz-1998, Falster-2015}, using the estimate of invasion fitness provided by {\plant}.
 
 \section{Implementation details}
 
@@ -568,7 +568,7 @@ practitioners alike to investigate a variety of non-linear demographic
 phenomena.  Rather than provide a model with a few entry points, we
 have developed an extensible framework that we hope can be used to
 answer a number of questions at a variety of scales. The specific
-use-cases highlighted here arise from our interest in the assembly of
+applications highlighted here arise from our interest in the assembly of
 trait mixtures in communities. However a variety of other uses would
 be possible to address other aspects of community assembly. For
 example, we expect the package will prove useful for i) investigating
