@@ -176,9 +176,11 @@ estimate emergent behaviours of individuals, patches and vegetation.
 
 Below we describe the general approach of the package, then provide
 sections outlining potential applications at nested levels of ecological organisation.
-Detailed technical documents are provided as supplementary information
-(see Appendices); updated versions of these technical documents are
-available within the {\plant} package itself.
+More detailed technical documents are provided as supplementary information
+(see Appendices; updated versions of these technical documents are
+available within the {\plant} package itself). These outline \ref{sec:demography}) the system of
+equations being solved when modelling demography of plants, patches and metapopulations; \ref{sec:FFW16}) a description of the \texttt{FFW16}
+physiological model, and \ref{sec:code}) a compendium of worked code examples.
 
 \section{Overview of approach}
 
@@ -227,14 +229,14 @@ growth rate, mortality rate and rate of seed production.  However
 additional quantities are also computed, such as total assimilation
 and the respiration, turnover and allocation rates for different
 tissues, and these intermediates can also be accessed (for further details on the \texttt{FFW16} model see Appendix
-\ref{sec:plant}).
+\ref{sec:code}).
 
 While we have implemented a particular physiological model (\texttt{FFW16}), the
 package is designed to allow arbitrary additional physiologies to be
 introduced. Users are able to modify the physiological model in two
 different ways. First, one can vary the parameters of the \texttt{FFW16} model
 directly (see Table XXX for list, for examples see Appendix
-\ref{sec:parameters}). Second, we allow for changes in key parameters to
+\ref{sec:code}). Second, we allow for changes in key parameters to
 bring about changes in other parameters (a hyper-parameterisation), enabling
 straightforward modelling of trade-offs. For example, the trait \textsc{lma}
 (leaf mass per unit leaf area) is used to estimate the rate of leaf turnover
@@ -259,7 +261,7 @@ takes a given strategy and light environment and grows the plant,
 producing a trajectory of size over time (Fig. \ref{fig:plant}a). This
 is achieved by integrating an ordinary differential equation of
 size-dependent growth rate (see Appendices \ref{sec:demography} and
-\ref{sec:plant} for more details). As the plant grows, allocation to
+\ref{sec:code} for more details). As the plant grows, allocation to
 different tissue types varies and the composition of the plant
 changes to include more stem and less leaf
 (Fig. \ref{fig:plant}b). This in turn affects maintenance and turnover
@@ -362,8 +364,7 @@ In the original \textsc{ebt}, cohorts were introduced at a fixed time
 interval. Under competition, however, the growth
 trajectories of individuals born at similar times can diverge
 substantially over time (Fig. \ref{fig:patch}a; Appendix
-\ref{sec:demography}, \ref{sec:cohort-spacing} and
-\ref{sec:patch}). This can become a problem later during patch
+\ref{sec:demography}, and \ref{sec:code}). This can become a problem later during patch
 development because much of the population can be located between
 widely-spaced cohorts, causing low numerical accuracy. To maintain
 numerical accuracy, we use an iterative algorithm to adaptively refine
@@ -428,7 +429,7 @@ a given input seed rain produces an equivalent output seed rain. Finding this eq
 requires finding the root of a multi-dimensional function, subject to
 the constraint that this root is stable (the trivial equilibrium
 of zero seed rain always exists, but is often not stable; Appendix
-\ref{sec:equilibrium}).  Real seed rains are of course quite noisy,
+\ref{sec:code}).  Real seed rains are of course quite noisy,
 but this approach still allows for the mean tendencies to be estimated.
 
 An attractive feature of the metapopulation concept implemented in \textsc{TSPMs}
@@ -457,7 +458,7 @@ Fig. \ref{fig:patch}c).  Similarly, the distributions of  abundance and growth r
 observed in large forest  plots \citep[e.g.][]{Muller-2006, Coomes-2007} arise
 as  emergent phenomena. Moreover, the predictions from {\plant}
 are for a frequency distribution of patch states across the landscape
-(Fig. \ref{fig:emergent}, see more detail in Appendix \ref{sec:emergent}). As such,
+(Fig. \ref{fig:emergent}, see more detail in Appendix \ref{sec:code}). As such,
 size- and patch-structured models provide unique opportunities for linking with
 satellite and forest survey data \citep{Moorcroft-2001, Purves-2008}.
 
@@ -480,7 +481,7 @@ depends both on their own traits and on densities of other occupants in the curr
 for species that are at equilibrium. The slope of the fitness
 landscape with respect to traits indicates the direction of selection
 (dashed line in Fig. \ref{fig:fitness}a) indicates selection for
-smaller trait values (see Appendix \ref{sec:fitness} for
+smaller trait values (see Appendix \ref{sec:code} for
 details)). Fitness landscapes are continually reshaped as species are
 introduced and their trait values evolve, reflecting the non-linear demographic feedbacks
 that occur under frequency-dependent evolution. Stable coexistence is
@@ -638,7 +639,7 @@ and through the introduction of new species. Adapted from
   compensation points (indicated by dots) emerge as the point where
   growth rate is zero (x intercept).  The light level used in panels
   (a) and (c) is indicated with coloured ticks.  See Appendix
-  \ref{sec:plant} for further details and code.}
+  \ref{sec:code} for further details and code.}
 \label{fig:plant}
 \end{figure}
 
@@ -663,7 +664,7 @@ and through the introduction of new species. Adapted from
   index at ground level for each species.  The dotted line is the
   total leaf area index (summed across both species), and the lines on
   the right side are averages when integrated over the whole
-  metapopulation structure.  See Appendix \ref{sec:patch} for further
+  metapopulation structure.  See Appendix \ref{sec:code} for further
   details and code.}
 \label{fig:patch}
 \end{figure}
@@ -681,7 +682,7 @@ obtained by weighting the grey lines by patch and individual abundance.
 Panels show (a) patterns of abundance, (b) leaf area and
 (c) height growth rate against size. Units of panels (a) and
 (b) are amount per unit height per unit ground area.
-See Appendix \ref{sec:emergent} for further details and code.}
+See Appendix \ref{sec:code} for further details and code.}
 \label{fig:emergent}
 \end{figure}
 
@@ -705,7 +706,7 @@ See Appendix \ref{sec:emergent} for further details and code.}
   subsequent invasions and replacements of the second species, the
   solid line shows a stable fitness landscape where both species exist
   on a peak in the fitness landscape.  At this point no further
-  invasion is possible.  See Appendix \ref{sec:fitness} for further
+  invasion is possible.  See Appendix \ref{sec:code} for further
   details and code.}
 \label{fig:fitness}
 \end{figure}
@@ -715,68 +716,18 @@ See Appendix \ref{sec:emergent} for further details and code.}
 
 \begin{appendices}\label{sec:appendices}
 
-\section{Plant physiological model}\label{sec:FFW16}
-
-See attached file \url{vignettes/physiology.pdf}
-
 \section{Modelling demography of plants, patches and metapopulations}\label{sec:demography}
 
-See attached file \url{vignettes/demography.pdf}
+Describes the system of equations being solved in {\plant} when modelling demography of plants, patches and metapopulations. See attached file \url{vignettes/demography.pdf}
 
-\section{Plant level properties}\label{sec:plant}
+\section{Description of the \texttt{FFW16} physiological model}\label{sec:FFW16}
 
-\emph{Note}: due to Manuscript Central not accepting \textsc{html}
-files, we have had to convert this (and the following appendices) to
-\textsc{pdf}s.  \textsc{html} versions are available on the wiki:
-https://github.com/traitecoevo/plant\_paper/wiki --- the \textsc{html}
-versions have less pixelated graphics and are easier to copy and
-paste out of.
+Describes the core physiological model embedded in plant (\texttt{FFW16}). See attached file \url{vignettes/physiology.pdf}
 
-See attached file \url{vignettes/plant.pdf},
-source:
-\smurl{https://github.com/traitecoevo/plant\_paper/blob/master/vignettes/src/plant.R}
-html: \smurl{https://github.com/traitecoevo/plant\_paper/wiki/plant}
+\section{Code examples}\label{sec:code}
 
-\section{Cohort spacing algorithm}\label{sec:cohort-spacing}
-
-See attached file \url{vignettes/cohort_spacing.pdf},
-source:
-\smurl{https://github.com/traitecoevo/plant\_paper/blob/master/vignettes/src/cohort_spacing.R}
-html: \smurl{https://github.com/traitecoevo/plant\_paper/wiki/cohort_spacing}
-
-\section{Finding demographic equilibrium}\label{sec:equilibrium}
-
-See attached file \url{vignettes/equilibrium.pdf}
-source:
-\smurl{https://github.com/traitecoevo/plant\_paper/blob/master/vignettes/src/equilibrium.R}
-html: \smurl{https://github.com/traitecoevo/plant\_paper/wiki/equilibrium}
-
-\section{Patch level dynamics}\label{sec:patch}
-
-See attached file \url{vignettes/patch.pdf}
-source:
-\smurl{https://github.com/traitecoevo/plant\_paper/blob/master/vignettes/src/patch.R}
-html: \smurl{https://github.com/traitecoevo/plant\_paper/wiki/patch}
-
-\section{Patch level emergent properties}\label{sec:emergent}
-
-See attached file \url{vignettes/emergent.pdf}
-source:
-\smurl{https://github.com/traitecoevo/plant\_paper/blob/master/vignettes/src/emergent.R}
-html: \smurl{https://github.com/traitecoevo/plant\_paper/wiki/emergent}
-
-\section{Calculating fitness}\label{sec:fitness}
-
-See attached file \url{vignettes/fitness.pdf}
-source:
-\smurl{https://github.com/traitecoevo/plant\_paper/blob/master/vignettes/src/fitness.R}
-html: \smurl{https://github.com/traitecoevo/plant\_paper/wiki/fitness}
-
-\section{Modifying parameters of the physiological model}\label{sec:parameters}
-See attached file \url{vignettes/parameters.pdf}
-source:
-\smurl{https://github.com/traitecoevo/plant\_paper/blob/master/vignettes/src/parameters.R}
-html: \smurl{https://github.com/traitecoevo/plant\_paper/wiki/parameters}
+A compendium of worked code examples showing how to intearct with {\plant} from R
+See attached file \url{vignettes/combined.pdf}.
 
 \end{appendices}
 \end{document}
