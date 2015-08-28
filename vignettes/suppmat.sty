@@ -91,6 +91,7 @@
 
 \RequirePackage[labelfont={sc}]{caption}
 
+\def\papertitle{\gdef\@papertitle}
 \def\address{\gdef\@address}
 \def\emailaddress{\gdef\@emailaddress}
 \def\titleprefix{\gdef\@titleprefix}
@@ -107,12 +108,14 @@
   %\vskip 1em%
   %\begin{center}%
   \singlespacing
-  {\noindent{\color{grey}\spacedlowcaps{\@titleprefix\ for}}\par}
+  {\noindent{\color{grey}\spacedlowcaps{\@titleprefix}}\par}
+  {\noindent{\color{grey}''\spacedlowcaps{\@papertitle}}''\par}
+  \vspace{1ex}
   {\noindent\raggedright\large\spacedsmallcaps{\@title}\par}%
   \vspace{1ex}%
   {\raggedleft\normalsize\spacedsmallcaps\@author\par}%
   \vspace{1ex}%
-  {\raggedright\scriptsize\it\begin{tabular}{@{\rm}r@{ }l@{}}%
+  {\raggedleft\scriptsize\it\begin{tabular}{@{\rm}r@{ }l@{}}%
       \@address
     \end{tabular}\par}%
   \vspace{1ex}%
@@ -124,7 +127,8 @@
   \vskip 1em}
 
 \newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
-\titleprefix{Supporting information}
+\titleprefix{Supporting information for:}
+\papertitle{plant: A package for modelling forest trait ecology \& evolution}
 \runninghead{TREE}
 \author{Daniel S. Falster, Richard G. FitzJohn and Mark Westoby}
 \address{Department of Biological Sciences, Macquarie University,
