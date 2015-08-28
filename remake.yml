@@ -143,7 +143,7 @@ targets:
     knitr: vignette
 
   vignettes/code.md:
-    command: combine_md("vignettes/plant.md", "vignettes/cohort_spacing.md", "vignettes/equilibrium.md", "vignettes/patch.md", "vignettes/emergent.md", "vignettes/fitness.md", "vignettes/parameters.md", output=target_name)
+    command: combine_md("vignettes/intro.md", "vignettes/plant.md", "vignettes/cohort_spacing.md", "vignettes/equilibrium.md", "vignettes/patch.md", "vignettes/emergent.md", "vignettes/fitness.md", "vignettes/parameters.md", output=target_name)
   vignettes/code.html:
     command: render("vignettes/code.md", quiet=TRUE)
   vignettes/code.pdf:

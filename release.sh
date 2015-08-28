@@ -1,6 +1,13 @@
 #!/bin/sh
 set -e
 remake all
+
+## What do we need?
+##   - ms.pdf
+##   - vignettes/code.pdf
+##   - vignettes/demography.pdf
+##   - vignettes/physiology.pdf
+
 rm -rf release supporting_material plant_paper
 mkdir release
 cp ms.pdf release

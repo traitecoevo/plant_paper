@@ -81,7 +81,7 @@ combine_md <- function(..., output) {
   }
   demote <- function(x) {
     i <- which(grepl("^#+", x))
-    i[i == 1 | grepl("^\\s*$", x[i - 1])]
+    i <- i[i == 1 | grepl("^\\s*$", x[i - 1])]
     x[i] <- paste0("#", x[i])
     x
   }
