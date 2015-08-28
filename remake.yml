@@ -99,12 +99,13 @@ targets:
       - vignettes/fitness.html
       - vignettes/cohort_spacing.html
       - vignettes/parameters.html
-      - vignettes/combined.html
+      - vignettes/code.html
 
   vignettes_pdf:
     depends:
     - vignettes/demography.pdf
     - vignettes/physiology.pdf
+    - vignettes/code.pdf
 
   vignettes_rendered:
     depends:
@@ -141,10 +142,12 @@ targets:
   vignettes/parameters.md:
     knitr: vignette
 
-  vignettes/combined.md:
+  vignettes/code.md:
     command: combine_md("vignettes/plant.md", "vignettes/cohort_spacing.md", "vignettes/equilibrium.md", "vignettes/patch.md", "vignettes/emergent.md", "vignettes/fitness.md", "vignettes/parameters.md", output=target_name)
-  vignettes/combined.html:
-    command: render("vignettes/combined.md", quiet=TRUE)
+  vignettes/code.html:
+    command: render("vignettes/code.md", quiet=TRUE)
+  vignettes/code.pdf:
+    command: md_to_pdf("vignettes/code.md")
 
   vignettes/demography.pdf:
     command: latex_build("vignettes/demography.tex", "refs.bib", clean=TRUE)

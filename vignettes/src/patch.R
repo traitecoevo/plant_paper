@@ -96,8 +96,8 @@ plot(data1$time, y, type="l", las=1,
 ## Leaf area index is the driver that controls the canopy openness
 ## (via the light extinction coefficient `p1$c_ext`, following
 ## exponential extinction).  This is not returned by
-## \code{run_ebt_collect} so instead we need to rebuild patches using
-## \code{ebt_patch}.
+## `run_ebt_collect` so instead we need to rebuild patches using
+## `ebt_patch`.
 patches1 <- lapply(seq_along(data1$time), ebt_patch, data1)
 
 ## Each element of the resulting list is a Patch object, the same as

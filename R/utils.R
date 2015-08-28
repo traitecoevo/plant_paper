@@ -107,3 +107,14 @@ combine_md <- function(..., output) {
   ret <- c(header, unlist(dat))
   writeLines(ret, output)
 }
+
+## I'm 99% sure we've done this before.
+md_to_pdf <- function(filename) {
+  output <- sub("\\.md", ".pdf", basename(filename))
+  template <- c("--template", "template.tex")
+  opts <- "--toc"
+  owd <- setwd(dirname(filename))
+  on.exit(setwd(owd))
+  call_system(Sys_which("pandoc"),
+              c(basename(filename), "-o", output, template, opts))
+}
