@@ -15,7 +15,8 @@ table_plant_parameters <- function(filename, dest){
   tab$Units[to_math] <-
             gsub(" ", "\\,", tab$Units[to_math], fixed =TRUE)
 
-  s <- FFW16_Strategy()
+  s <- c(FFW16_Strategy(),
+         lapply(as.list(args(make_FFW16_hyperpar)), eval))
   tab$Value <- NA_real_
 
   # Now extract actual values from plant
