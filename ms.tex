@@ -46,11 +46,11 @@ tradeoff}
   larger plants shade smaller plants while also expending
   proportionately more energy on building and maintaining woody stems.
   Although the importance of size-
-  structure for demography is widely recognised, many mechanistic models
+  structure for demography is widely recognised, many models
   either omit it entirely, or include only coarse approximations.
 \item
   Here we introduce the {\plant} package, an
-  extensible framework for modelling size- and trait-based demography,
+  extensible framework for modelling size- and trait--based demography,
   ecology and evolution in simulated forests.
   At its core, {\plant} is an
   individual-based model where plant physiology and demography are mediated by
@@ -59,10 +59,9 @@ tradeoff}
   disturbance regime. Dynamics within patches of competing plants can be
   resolved either in a stochastic, finite-sized patch; or deterministically, using
   novel extensions of the ``Escalator Boxcar Train''
-  technique. Combined effects of trait-, size- and patch-structured
-  dynamics are integrated into metapopulation-level estimates of
-  invasion fitness and vegetation structure. Since fitness emerges as a
-  function of traits and is integrated over a full metapopulation, plant
+  technique. These dynamics can be integrated into metapopulation--level estimates of
+  invasion fitness and vegetation structure. Because fitness emerges as a
+  function of traits, plant
   provides a novel arena for exploring eco-evolutionary dynamics.
 \item
   {\plant} is an open source R package and is available at
@@ -190,7 +189,17 @@ Being driven by traits, the model can be extended to potentially very many speci
 core rules in {\plant} are about the short-term physiological
 functioning of an individual plant and how this is influenced by its
 traits, size and light environment.  While {\plant} includes a core physiological model, the present paper uses it only as an example, to illustrate how one can take a given physiological model and infer simulate ecological and evolutionary outcomes. Thus, we do not aim to justify the particular physiological model used, to provide detailed
-comparisons to data, or to promote this physiological model over those in other \textsc{TSPMs}. (These are all topics deserving substantially more attention than can be afforded here.) An important feature of {\plant} considered as a software package is that it allows for users to substitute their own physiological models.
+comparisons to data, or to promote this physiological model over those
+in other \textsc{TSPMs}. (These are all topics deserving substantially
+more attention than can be afforded here.)
+% TODO: I'm a bit concerned that while we know that this is possible,
+% it's not that well developed and does require compiling a new
+% version of plant.  So it's not that _usefully_ extendable.  On the
+% other hand, the population of users who will do this is not very
+% large.  It might be possible to allow runtime linkage though if I
+% push a little more of the cpp code into headers and do some tweaking
+% in RcppR6...
+An important feature of {\plant} considered as a software package is that it allows for users to substitute their own physiological models.
 
 On top of the physiological model, {\plant} implements methods for
 population and adaptive dynamics (Fig.  \ref{fig:schematic}) following methods
@@ -230,31 +239,34 @@ and the respiration, turnover and allocation rates for different
 tissues, and these intermediates can also be accessed (for further details on the \texttt{FFW16} model see Appendix
 \ref{sec:FFW16} and \ref{sec:code}).
 
-While we have implemented a particular physiological model (\texttt{FFW16}), the
-package is designed to allow arbitrary additional physiologies to be
-introduced. Users are able to modify the physiological model in two
-different ways. First, one can vary the parameters of the \texttt{FFW16} model
-directly (see Appendix \ref{sec:FFW16} for list, or Appendix
-\ref{sec:code} for code examples). Second, we allow for changes in key parameters to
-bring about changes in other parameters (a hyper-parameterisation), enabling
-straightforward modelling of trade-offs. For example, the trait \textsc{lma}
-(leaf mass per unit leaf area) is used to estimate the rate of leaf turnover
-($k_l$), based on an observed scaling relationship spanning across diverse
-vegetation and plant functional types \citep{Wright-2004}:
+While we have implemented a particular physiological model
+(\texttt{FFW16}), the package is designed to allow arbitrary
+additional physiologies to be introduced. Users are able to modify the
+physiological model in two different ways. First, one can vary the
+parameters of the \texttt{FFW16} model directly (see Appendix
+\ref{sec:FFW16} for list, or Appendix \ref{sec:code} for code
+examples). Second, we allow for changes in key parameters to bring
+about changes in other parameters (a hyper-parameterisation), enabling
+straightforward modelling of trade-offs. For example, by default the
+trait \textsc{lma} (leaf mass per unit leaf area) is used to estimate
+the rate of leaf turnover ($k_l$), based on an observed scaling
+relationship spanning across diverse vegetation and plant functional
+types \citep{Wright-2004}:
 $$k_l = \beta_{kl1} \, \left(\frac{\phi}{\phi_0}\right)^{-\beta_{kl2}},$$
 where $k_l$ and $\phi$ (lma) are both parameters of the core physiological
 model, and $\beta_{kl1}, \beta_{kl2}, \phi_0$ are hyper-parameters. Such
 linkages are defined within a user-supplied hyper-parameterisation function
 (see Appendix \ref{sec:FFW16} for details, or Appendix
-\ref{sec:code} for code examples). Finally, rather than varying the
-parameters of the existing equations in the \texttt{FFW16} model, the
-equations themselves can be changed and the higher level functionality of the
-package can still be used.  Changed equations would require defining a new
-physiological model in a new C++ file, and compiling that into the package.
-As an example, in the \texttt{FFWdev} physiology, we have modified the function determining
-allocation to reproduction.
+\ref{sec:code} for code examples).
+%
+Finally, rather than varying the parameters of the existing equations
+in the \texttt{FFW16} model, the equations themselves can be
+fundamenally changed.  This requires defining a new physiological
+model in a new C++ file, and compiling that into the package.  As an
+example, in the \texttt{FFWdev} physiology, we have modified the
+function determining allocation to reproduction.
 
-With a basic physiological model in place, {\plant} can be used to estimate
+With a physiological model in place, {\plant} can be used to estimate
 essential physiological rates for individual plants
 (Fig. \ref{fig:plant}). The function \texttt{grow\_plant\_to\_size}
 takes a given strategy and light environment and grows the plant,
@@ -292,9 +304,8 @@ layout within the patch. Similar assumptions are found in other \textsc{TSPMs}
 While ideally one would also consider spatial interactions within patches,
 such models are very computationally demanding and also
 impossible to solve in a deterministic fashion \citep{Shugart-1980,
-Pacala-1996}. Moreover, it remains unclear whether resolving spatial details within a
-patch would provide further useful ecological detail, in part because the
-process of competitive thinning tends to break down spatial clusters
+Pacala-1996}. This assumption can be motivated from the observation
+that competitive thinning tends to break down spatial clusters
 \citep{Strigul-2008}.
 
 When modelling a patch of competing plants, the focus is on changes to the size-
@@ -307,13 +318,11 @@ been interested in dynamics of a patch recovering from disturbance and have
 therefore started with an empty patch and constant flow of seeds from a global
 seed rain (Fig. \ref{fig:schematic}b). A non-trivial extension could be added to allow some plants to survive disturbance \citep[following][]{Kohyama-1993}.
 
-% TODO: Appendix XXX
 The {\plant} model offers two methods for modelling the dynamics of \(N(x,
 H, a)\) in a competing population. In the first ``stochastic'' mode, users
 specify an average seed rain and patch size, and {\plant} then generates a
 vector of seed arrival events and simulates stochastic
-development of the resulting finite-sized population (see Appendices XXX for an
-example).
+development of the resulting finite-sized population.
 
 For most applications, however, rather than modelling
 dynamics within a finite-sized stochastic patch, it will be preferable to use {\plant}'s
@@ -364,7 +373,7 @@ In the original \textsc{ebt}, cohorts were introduced at a fixed time
 interval. Under competition, however, the growth
 trajectories of individuals born at similar times can diverge
 substantially over time (Fig. \ref{fig:patch}a; Appendix
-\ref{sec:demography}, and \ref{sec:code}). This can become a problem later during patch
+\ref{sec:demography} and \ref{sec:code}). This can become a problem later during patch
 development because much of the population can be located between
 widely-spaced cohorts, causing low numerical accuracy. To maintain
 numerical accuracy, we use an iterative algorithm to adaptively refine
@@ -405,7 +414,7 @@ differing in time since last disturbance and linked via seed dispersal
 structured metapopulation \citep{Gyllenberg-2001}.
 
 In {\plant}, and following an approach established in previous TSPMs
-\citep{Kohyama-1993, Moorcroft-2001, Falster-2011}),
+\citep{Kohyama-1993, Moorcroft-2001, Falster-2011},
 we assume an infinite number of patches, all experiencing
 the same disturbance regime and sharing a common seed dispersal pool
 (i.e., the island model; Fig. \ref{fig:schematic}b). We also assume
@@ -505,20 +514,21 @@ and can be used to investigate how trade-offs facilitate coexistence
 \citep{Falster-2015}. Co-occurring plant species differ in a range of physiological
 traits, yet the conditions allowing for stable coexistence remain largely
 unknown \citep{Adler-2013}.
-A variety of algorithms from the area of adaptive dynamics could be applied for modelling community assembly \citep[e.g.][]{Geritz-1998, Falster-2015}(Fig. \ref{fig:schematic}), using the estimate of invasion fitness provided by {\plant}.
+A variety of algorithms from the area of adaptive dynamics could be
+applied for modelling community assembly \citep[e.g.][Fig. \ref{fig:schematic}]{Geritz-1998, Falster-2015}, using the estimate of invasion fitness provided by {\plant}.
 
 \section{Implementation details}
 
-{\plant} is written in C++ and R, using the package \texttt{Rcpp}
-\citep{Eddelbuettel-2011, Eddelbuettel-2013} to bridge between the two
-languages. Due to the computationally intensive nature of the model,
-the core physiological and demographic components are in C++ to
-maximise speed. We used templated types that allow the demographic and
-evolutionary components to be driven by alternative physiological
-models while retaining the same interface at higher levels. Despite
-mostly being written in C++, all components of the model, down to
-individual plants, can be extracted and interacted with dynamically in
-R, using the \texttt{RcppR6} package \citep{RcppR6}.
+{\plant} is written in C++ and R, using the packages \texttt{Rcpp}
+\citep{Eddelbuettel-2011, Eddelbuettel-2013} and \texttt{RcppR6}
+\citep{RcppR6} to bridge between the two languages. Due to the
+computationally intensive nature of the model, the core physiological
+and demographic components are in C++ to maximise speed. We used
+templated types that allow the demographic and evolutionary components
+to be driven by alternative physiological models while retaining the
+same interface at higher levels. Despite mostly being written in C++,
+all components of the model, down to individual plants, can be
+extracted and interacted with dynamically in R.
 
 {\plant} makes use of much existing software, including the R
 computational environment \citep{R-2015}, the R packages \texttt{Rcpp}
@@ -530,7 +540,7 @@ computational environment \citep{R-2015}, the R packages \texttt{Rcpp}
 Installation instructions are available at this webpage, binary
 releases will also be available there.  {\plant} does not
 currently compile on Windows, but this will change as soon as R core
-upgrade the Windows C++ compiler).
+upgrade the Windows C++ compiler.
 
 \section{Comparison to existing software}
 
