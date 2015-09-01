@@ -1,8 +1,8 @@
 ## ---
-## title: "plant: A package for modelling forest trait ecology & evolution: _plant level properties_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _Plant-level properties_"
 ## ---
 
-## This vignette illustrates the sort of analysis used to generate 
+## This vignette illustrates the sort of analysis used to generate
 ## the plant figure (Fig 2) in the manuscript, i.e. modelling the
 ## dynamics of individual plants. It also shows some of the features of working
 ## with plant components of the model.
@@ -11,7 +11,7 @@ library(plant)
 ## Plants are constructed with the `FFW16_Plant` function.  That
 ## function takes as its only argument a "strategy" object; the
 ## default is `FFW16_Strategy`, but alternative strategies can be
-## provided (see below). The "strategy" object contains all 
+## provided (see below). The "strategy" object contains all
 ## the physiological underpinning the dynamics of individual plants
 ## and entire metapopulations.
 pl <- FFW16_Plant()
@@ -66,7 +66,7 @@ pp <- FFW16_PlantPlus(pl$strategy)
 pp$compute_vars_phys(env)
 names(pp$internals)
 
-## Some of the internals require `compute_vars_internals` to be run 
+## Some of the internals require `compute_vars_internals` to be run
 ## (the zapsmall function rounds numbers close to zero to zero):
 pp$compute_vars_growth()
 zapsmall(unlist(pp$internals))
@@ -75,7 +75,7 @@ zapsmall(unlist(pp$internals))
 ## This PlantPlus object also includes heartwood area and mass as two
 ## more variables for the ODE system (this might move into Plant
 ## soon -- see [this issue](https://github.com/traitecoevo/plant/issues/139)).
-## Tracking of these variables is needed to estimate stem diameter growth 
+## Tracking of these variables is needed to estimate stem diameter growth
 pp$ode_names
 
 ## Plants are a type of *reference object*.  They are different to
@@ -128,7 +128,7 @@ pl2$height
 ## And at this height, here is the total seed production:
 pl2$fecundity
 
-## To make this type of operation easier, we provide the function 
+## To make this type of operation easier, we provide the function
 ## `grow_plant_to_time`
 
 res <- grow_plant_to_time(FFW16_PlantPlus(FFW16_Strategy()), tt, env)

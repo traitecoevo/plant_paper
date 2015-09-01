@@ -1,5 +1,5 @@
 ## ---
-## title: "plant: A package for modelling forest trait ecology & evolution: _patch level dynamics_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _Patch-level dynamics_"
 ## ---
 
 ## The aim here is to use plant to investigate dynamics of plants
@@ -94,7 +94,7 @@ plot(data1$time, y, type="l", las=1,
 ## that generates a canopy that they cannot survive under.
 
 ## Leaf area index is the driver that controls the canopy openness
-## (via the light extinction coefficient `p1$c_ext`, following
+## (via the light extinction coefficient `p1$k_I`, following
 ## exponential extinction).  This is not returned by
 ## `run_ebt_collect` so instead we need to rebuild patches using
 ## `ebt_patch`.

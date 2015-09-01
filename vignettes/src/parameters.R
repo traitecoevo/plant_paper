@@ -1,5 +1,5 @@
 ## ---
-## title: "plant: A package for modelling forest trait ecology & evolution: _modifying parameters of the physiological model_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _Modifying parameters_"
 ## ---
 
 library(plant)
@@ -72,7 +72,7 @@ names(p)
 ## and it comes pre-set with the hyper-parameterisation function:
 identical(p$hyperpar, FFW16_hyperpar)
 
-## `c_ext` is the light extinction coefficient,
+## `k_I` is the light extinction coefficient,
 ## `disturbance_mean_interval` is the mean disturbance interval.  The
 ## `strategy_default` member is a Strategy:
 class(p$strategy_default)
@@ -92,7 +92,7 @@ FFW16_hyperpar(trait_matrix(lma, "lma"), s)
 ss <- strategy_list(lma, p)
 length(ss)
 
-## We can then use standard r command to extract variable from this list
+## We can then use standard R commands to extract variable from this list
 sapply(ss, function(x) x$lma)
 sapply(ss, function(x) x$k_l)
 sapply(ss, function(x) x$a_p1)

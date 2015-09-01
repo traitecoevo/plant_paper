@@ -29,17 +29,81 @@
 
 \section{Introduction}
 
-This vignette outlines methods used to model demography in the {\plant}
+This document outlines methods used to model demography in the {\plant}
 package. We first outline the system of equations being solved. These equations were primarily
 developed elsewhere, in particular in
 \citet{Deroos-1997}; \citet{Kohyama-1993}; \citet{Moorcroft-2001}, \citet{Falster-2011}; and
 \citet{Falster-2015}. They are presented here not as original findings, but rather so that
-users can understand the full system of equations being solve within {\plant}.
+users can understand the full system of equations being solved within {\plant}.
 We then then describe the numerical techniques used to solve the equations.
-Variable definitions and units are
-summarised in Table \ref{tab:definitions}.
+Table \ref{tab:definitions} provides a list of names and definitions used
+throughout this document.
+
+\begin{table}[ht]
+ \caption{Variable names and definitions in demographic model.}
+\centering
+  \begin{tabular}{p{2cm}p{2cm}p{9cm}}
+  \hline
+  Symbol & Unit & Description \\
+  \hline
+  \multicolumn{3}{l}{\textbf{Patch state variables}} \\
+  $K$   & & number of species in the system \\
+  $a, a^{\prime}$ & yr & patch age \\
+  $a_0$ & yr & patch age when plant germinates \\
+  $E_a$ & & profile of canopy opennesses within patch age $a$\\
+  $E_a(z)$& 0-1 & canopy opennesses at height $z$ within a patch age $a$\\
+
+  \multicolumn{3}{l}{\textbf{Plant state variables}} \\
+  $x$   & & vector of traits for a species\\
+  $H$   & m & height of plant\\
+  $H_0$   & m  & height of seedling after germinating\\
+  $z$   & m & height in canopy\\
+  $A_l(H)$  & m$^{-2}$ & leaf area of plant height $H$ \\
+  $Q(z, H)$ & 0-1 & fraction of leaf area for plant height $H$ above $z$\\
+
+  \multicolumn{3}{l}{\textbf{Abundance measures}} \\
+  $P(a)$ & yr$^{-1}$ & frequency-density of patches age $a$ \\
+  $Y_x$ & m$^{-2}$ yr$^{-1}$ & vector of seed rains for a species with traits $x$\\
+  $N(x, H, a)$ & m$^{-1}$ m$^{-2}$ & density of plants per unit height per ground area\\
+
+  \multicolumn{3}{l}{\textbf{Demographic rates}} \\
+  $g(x, H, E_a)$ & m yr$^{-1}$ & height growth rate \\
+  $f(x, H, E_a)$ & yr$^{-1}$ & seed production rate \\
+  $d(x, H, E_a)$ & yr$^{-1}$ & instantaneous mortality rate for plants\\
+  $d_P(a)$ & yr$^{-1}$ & instantaneous disturbance rate for patches\\
+
+  \multicolumn{3}{l}{\textbf{Demographic outcomes}} \\
+  $H(x, a_0, a)$   & m  & height of plant germinating in patch age $a_0$ at age $a$\\
+  $S_{\rm D}$ & 0-1 & probability a seed survives dispersal \\
+  $S_{\rm G} (x, H_0, E_{a_0})$ & 0-1 & probability a seed germinates successfully \\
+  $S_{\rm I} (x, a_0, a)$ & 0-1 & probability an individual survives from $a_0$ to $a$\\
+  $S_{\rm P} ( a_0, a)$ & 0-1 & probability a patch remains undisturbed from $a_0$ to $a$\\
+  $\tilde{R}(x, a_0, a)$ & & cumulative seed output for plant from $a_0$ to $a$ \\
+  $R\left(x^\prime, x\right)$ & & basic reproduction ratio for mutant growing in environment of residents \\
+
+  \multicolumn{3}{l}{\textbf{Miscellaneous constants}} \\
+  $k_I$ & 0-1  & light extinction coefficient\\
+  $\bar{a}$ & yr & mean interval between disturbances \\
+  \hline
+  \end{tabular}
+\label{tab:definitions}
+\end{table}
+
+\clearpage
 
 \section{System dynamics}\label{system-dynamics}
+
+The following material is written assuming there exists a physiological sub-model
+able to take as inputs a plant's traits $x$, size ($H$) and light environment $E_a$
+and return rates of growth, mortality and fecundity. The physiological model must
+describe how much leaf area the plant contributes to shading other plants in the patch.
+Specifically, the physiological model is responsible for calculating the following
+variables from Table \ref{tab:definitions}:
+% Best to list here of makr with a symbol in table 1?
+$A_l(H)$, $Q(z, H)$, $g(x, H, E_a)$, $d(x, H, E_a)$, $f(x, H, E_a)$, and
+$S_{\rm G} (x, H_0, E_{a_0})$.
+All are other variables in Table \ref{tab:definitions} are calculated within the
+demographic model using the equations outlined below.
 
 \subsection{Individual plants}\label{individual-plants}
 
@@ -68,16 +132,15 @@ denotes survival through germination.
 
 The notational complexity required in Eqs. \ref{eq:size} -
 \ref{eq:tildeR1} potentially obscures an important point: Eqs.
-\ref{eq:size} - \ref{eq:tildeR1} are general, non-linear solutions to
+\ref{eq:size} - \ref{eq:tildeR1} are simply the general, non-linear solutions to
 integrating growth, mortality and fecundity functions over time.
 
-\subsection{Patches of competing plants / Size-structured
-populations}\label{patches-of-competing-plants-size-structured-populations}
+\subsection{Patches of competing plants}\label{patches-of-competing-plants-size-structured-populations}
 
 Let us now consider a patch of competing plants. At any age \(a\), the
 patch is described by the density-distribution \(N(x, H, a)\) of plants
 with traits \(x\) and height \(H\). In a finite-sized patch, \(N\) is a
-collection of delta-peaks, whereas as in a very (infinitely) large patch
+discontinuous collection of points, whereas as in a very (infinitely) large patch
 \(N\) is a continuous distribution. In either case, the demographic
 behaviour of the plants within the patch is given by Eqs. \ref{eq:size}
 - \ref{eq:tildeR1}. Integrating the dynamics over time is complicated by
@@ -94,7 +157,7 @@ with the total amount of leaf area above \(z\), i.e.
 \end{equation}
 where \(A_l(H)\) is total leaf area and \(Q(z, H)\) is fraction of
 this leaf area held above height \(z\) for plants size \(H\),
-\(\alpha_{E1}\) is the light extinction coefficient, and \(K\) is the number
+\(k_I\) is the light extinction coefficient, and \(K\) is the number
 of species.
 
 Assuming patches are large, the dynamics of \(N\) can be modelled
@@ -126,14 +189,14 @@ situations where we start with an empty patch, i.e.
 \begin{equation} \label{eq:BC2} N\left(x, H,0\right) = 0,
 \end{equation}
 although non--zero distributions could be specified
-\citep[e.g][]{Moorcroft-2001}.
+\citep[e.g][]{Kohyama-1993, Moorcroft-2001}.
 
 \subsection{Age-structured distribution of
 patches}\label{age-structured-distribution-of-patches}
 
 Let us now consider the abundance of patches age \(a\) in the landscape.
 Let \(a\) be time since last disturbance, \(P(a)\) be the
-frequency-density of patches age \(a\), and \(\gamma(a)\) be the
+frequency-density of patches age \(a\), and \(d_P(a)\) be the
 age-dependent probability that a patch of age \(a\) is transformed into
 a patch of age 0 by a disturbance event. Here we focus on the situation
 where the age structure has reached an equilibrium state, which causes
@@ -143,30 +206,30 @@ respect to patch age. (See section
 non-equilibrium case). The dynamics of \(p\) are given by
 \citep{Vonfoerster-1959, Mckendrick-1926}:
 \begin{equation} \label{eq:agepde}
-\frac{{\rm d}}{{\rm d} a} P(a) = - \gamma(a) \, P(a) ,
+\frac{{\rm d}}{{\rm d} a} P(a) = - d_P(a) \, P(a) ,
 \end{equation}
 with boundary condition
-\begin{equation}  P(0) = \int_0^\infty \gamma(a) \, P(a) \, {\rm d} a.
+\begin{equation}  P(0) = \int_0^\infty d_P(a) \, P(a) \, {\rm d} a.
 \end{equation}
 The probability a patch remains undisturbed from \(a_0\) to \(a\) is
 then
 \begin{equation} \label{eq:survivalPatch}
-  S_{\rm P} (a_0, a) = \exp\left( - \int_{a_0}^{a} \gamma(a^\prime) \, {\rm d} a^\prime \right).
+  S_{\rm P} (a_0, a) = \exp\left( - \int_{a_0}^{a} d_P(a^\prime) \, {\rm d} a^\prime \right).
 \end{equation}
-
 The above equations lead to an equilibrium distribution of patch-ages
 \begin{equation} P(a) = P(0) S_{\rm P} (0, a),
 \end{equation}
 where
 \begin{equation}
-  P(0) = \frac1{\int_0^\infty S_{\rm P} (0, a) {\rm d}a},
+  P(0) = \frac1{\int_0^\infty S_{\rm P} (0, a) {\rm d}a}
 \end{equation}
 is the average lifespan of a patch and the frequency-density of patches
 age \(0\).
 
-The default approach in {\plant} is to assume  $\gamma(a)$ is an
-increasing function of patch age, which leads to a Weibull distribution
-(see section \ref{derivation-of-pde-describing-age-structured-dynamics}).
+The default approach in {\plant} is to assume  $d_P(a)$ is
+increases linearly with patch age, which leads to a Weibull distribution
+The distribution is $P(a)$ is then specified by a single parameter $\bar{a}$,
+the mean interval between disturbances. (see section \ref{derivation-of-pde-describing-age-structured-dynamics} for details).
 
 \subsection{Trait-, size- and patch-structured
 metapopulations}\label{trait--size--and-patch-structured-metapopulations}
@@ -233,7 +296,7 @@ When calculating average mortality rate, one must decide whether
 mortality due patch disturbance is included. Non-disturbance mortality
 is obtained by setting \(w(x, H, E_a) = d(x, H, E_a)\), while total
 mortality due to growth processes and disturbance is obtained by setting
-\(w(x, H, E_a) = d(x, H, E_a) + \gamma(a) S_{\rm P}(0, a).\)
+\(w(x, H, E_a) = d(x, H, E_a) + d_P(a) S_{\rm P}(0, a).\)
 
 Similarly we can integrate over the size-distribution to extract aggregate
 features of the vegetation within a patch,
@@ -255,8 +318,9 @@ fecundity and mortality -- taking into account the non-linear effects of
 competition on individual success, but ignoring the underlying genetic
 basis for the trait determination. We also adhere to the standard
 conventions in such analyses in assuming that the mutant is sufficiently
-rare to have a negligible effect on the environment where it is growing.
-The approach taken here was first described by \citep{Falster-2015}.
+rare to have a negligible effect on the environment where it is growing \citep{Geitz-1998}.
+The approach for calculating fitness implemented here follows the approach
+described by \citep{Falster-2015}.
 
 Invasion fitness is most correctly defined as the long-term per capita
 growth rate of a rare mutant population growing in the environment
@@ -289,16 +353,53 @@ an individual's fecundity over the expected lifetime the patch, taking
 into account competitive shading from residents with traits \(x\), the
 individual's probability of surviving, and its traits via the equation:
 \begin{equation} \label{eq:tildeR}
-  \tilde{R}(x^\prime, a_0, a) = \int_{a_0}^{a}  S_D \, f(x^\prime, H(x^\prime, a_0, a^\prime), E_{a^\prime}) \, S_{\rm I} (x^\prime, a_0, a^\prime) \, S_{\rm P} (a_0, a^\prime) \, {\rm d} a^\prime.
+  \tilde{R}(x^\prime, a_0, \infty) = \int_{a_0}^{\infty}  S_D \, f(x^\prime, H(x^\prime, a_0, a), E_{a}) \, S_{\rm I} (x^\prime, a_0, a) \, S_{\rm P} (a_0, a) \, {\rm d} a.
 \end{equation}
 
-\section{Approximating system dynamics using the escalator boxcar train
-(\textsc{ebt})}\label{approximating-system-dynamics-using-the-escalator-boxcar-train-ebt}
+\section{Numerical methods for solving system dynamics}
 
-Our approach for solving the trait-, size- and patch-structured
-population dynamics described by Eqs. \ref{eq:size} - \ref{eq:tildeR} is
+The equations below outline how we solve the trait-, size- and patch-structured
+population dynamics described in the previous section.
+Our approach for solving the size-density distribution  is
 based on the Escalator Boxcar Train technique (\textsc{ebt})
-\citep{Deroos-1997, Deroos-1992, Deroos-1988}. The \textsc{ebt} solves the \textsc{pde}
+\citep{Deroos-1997, Deroos-1992, Deroos-1988}.
+
+When simulating an individual plant, development of a stochastic or
+deterministic patch, we nee to solve for the size, survival, and seed
+output of individual plants. When solving for the size-density distribution
+in a deterministic patch we also need to estimate the average abundance of individuals
+Each of these problems is formulated as an Initial-Value \textsc{ode} Problem
+(\textsc{ivp}), which can then be solved using an \textsc{ode} stepper.
+
+\subsection{Approach}
+
+\subsubsection{Size}\label{size}
+
+The size of individual located on the boundary is obtained via Eq.
+\ref{eq:size}, which is solved via the \textsc{ivp}:
+\[\frac{dy}{dt} = g(x, y, t) ,\] \[ y(0) = H_0.\]
+
+\subsubsection{Survival}\label{survival}
+
+The probability of an individual located on the boundary surviving from
+\(a_0 \rightarrow a\) is obtained via Eq. \ref{eq:survivalIndividual},
+which is solved via the \textsc{ivp}:
+\[\frac{dy}{dt} = d(x, H_i(a^\prime) , E_{a^\prime}),\]
+\[ y(0) = - \log\left(S_{\rm G} (x^\prime, H_0, E_{a_0})\right) .\]
+Survival is then \[ S_{\rm I} (x, a_0, a) = \exp\left( - y(a) \right).\]
+
+\subsubsection{Seed production}\label{seed-production}
+
+The lifetime seed production of individuals located on the boundary is
+obtained via Eq. \ref{eq:tildeR}, which is solved via the \textsc{ivp}:
+\[\frac{dy}{dt} = S_D \, f(x, H_i(a^\prime), E_{a^\prime}) \, S_{\rm I} (x, a_0, a^\prime) \, S_{\rm P} (a_0, a^\prime),\]
+\[ y(0) = 0,\] where \(S_{\rm I}\) is individual survival (defined
+above) and \(S_{\rm P}\) is calculated as in Eq.
+\(\ref{eq:survivalPatch}\).
+
+\subsubsection{Density of individuals}\label{density-of-individuals}
+
+The original \textsc{ebt} solves the \textsc{pde}
 describing development of \(N(x, H, a)\) (Eq. \(\ref{eq:PDE}\)) by
 approximating the density function with a collection of cohorts spanning
 the size spectrum. Following a disturbance, a series of cohorts are
@@ -311,17 +412,16 @@ they do not die.
 
 The original \textsc{ebt} \citep{Deroos-1997, Deroos-1992, Deroos-1988} proceeds
 by approximating the first and second moments of the density
-distribution \(n \left(x, H, a \right)\) within a series of ``cohorts'',
-represented by \(\lambda_i\) and \(\mu_i\), these being the total number
+distribution \(N \left(x, H, a \right)\) within a series of ``cohorts'',
+these being the total number
 and mean size of individuals within the cohort respectively. Under this
-assumption, the rates of change \(\frac{\rm d} {{\rm d}a} \lambda_i\)
-and \(\frac{\rm d} {{\rm d}a} \mu_i\) can be approximated given by two
+assumption, the rates of change in the first and second moments can be approximated given by two
 \textsc{ode}s, which can in turn be approximated by first-order closed-form
 solutions. Eq. \(\ref{eq:PDE}\) is thereby reduced to a family of \textsc{ode}s,
 which can be stepped using an appropriate \textsc{ode} solver with an adaptive
-step size. The size distribution \(N(x, H, a)\) is then approximated by a
-series of point masses with position and amplitude given by
-\(\lambda_i\) and \(\mu_i\).
+step size. The size distribution \(N(x, H, a)\) within each cohort is then
+approximated using the approximated first and second moments of \(N\) within
+each cohort.
 
 In the current implementation we use a slightly different approach for
 approximating the size distribution \(N(x, H, a)\). Instead of tracking
@@ -352,45 +452,14 @@ boundaries is controlled indirectly, via the schedule of times at which
 new cohorts are initialised into the population. We then track the
 demography of a hypothetical individual located at each cohort boundary.
 
-The equations below outline how to solve for the size, survival, seed
-output and abundance of individuals located on the cohort boundaries.
-Each of these problems is formulated as an Initial-Value \textsc{ode} Problem
-(\textsc{ivp}), which can then be solved using an \textsc{ode} stepper.
-
-\subsection{Size}\label{size}
-
-The size of individual located on the boundary is obtained via Eq.
-\ref{eq:size}, which is solved via the \textsc{ivp}:
-\[\frac{dy}{dt} = g(x, y, t) ,\] \[ y(0) = H_0.\]
-
-\subsection{Survival}\label{survival}
-
-The probability of an individual located on the boundary surviving from
-\(a_0 \rightarrow a\) is obtained via Eq. \ref{eq:survivalIndividual},
-which is solved via the \textsc{ivp}:
-\[\frac{dy}{dt} = d(x, H_i(a^\prime) , E_{a^\prime}),\]
-\[ y(0) = - \log\left(S_{\rm G} (x^\prime, H_0, E_{a_0})\right) .\]
-Survival is then \[ S_{\rm I} (x, a_0, a) = \exp\left( - y(a) \right).\]
-
-\subsection{Seed production}\label{seed-production}
-
-The lifetime seed production of individuals located on the boundary is
-obtained via Eq. \ref{eq:tildeR}, which is solved via the \textsc{ivp}:
-\[\frac{dy}{dt} = S_D \, f(x, H_i(a^\prime), E_{a^\prime}) \, S_{\rm I} (x, a_0, a^\prime) \, S_{\rm P} (a_0, a^\prime),\]
-\[ y(0) = 0,\] where \(S_{\rm I}\) is individual survival (defined
-above) and \(S_{\rm P}\) is calculated as in Eq.
-\(\ref{eq:survivalPatch}\).
-
-\subsection{Density of individuals}\label{density-of-individuals}
-
-The density of individuals located on the boundary is obtained via Eq.
+In the current model, the density of individuals introduced at patch age
+\(a_0\) is obtained via Eq.
 \ref{eq:boundN}, which is solved via the \textsc{ivp}:
 \[\frac{dy}{dt} = \frac{\partial g(x, H_i(a^\prime), E_{a^\prime})}{\partial H} + d(x, H_i(a^\prime), E_{a^\prime}),\]
 \[ y(0) = - \log\left(N(x, H_0 , a_0) \, S_{\rm G} (x^\prime, H_0, E_{a_0}) \right).\]
 Density is then given by \[N(x, H_0 , a_0) = \exp( - y(a)).\]
 
-\section{Controlling error in the {\plant} model}
-\label{controlling-error-in-the-plant-model}
+\subsection{Controls on error in the approximated solutions}
 
 In this section we outline how to control the error of the solution
 estimated to the system described in the previous two sections.
@@ -413,9 +482,9 @@ We refer to various control parameters, which can be found within the
 \texttt{control} object.
 
 For a worked example illustrating how to modify the control parameters,
-see the vignette \texttt{parameters}.
+see the vignette section \texttt{parameters}.
 
-\subsection{Initial height of plants}\label{initial-height-of-plants}
+\subsubsection{Initial height of plants}\label{initial-height-of-plants}
 
 When a seed germinates it produces a seedling of a given height. The
 height of these seedlings is assumed to vary with the seed mass;
@@ -427,20 +496,26 @@ library's 1-D \texttt{bisect} routine
 \citep{Schaling-2014, Eddelbuettel-2015}. The accuracy of the solution
 is controlled by the parameter \texttt{plant\_seed\_tol}.
 
-\subsection{Approximation of size-density distribution via the EBT}
-\label{approximation-of-size-density-distribution-via-the-ebt}
+\subsubsection{Stepping of \textsc{ode}s}
 
-Errors in the \textsc{ebt} approximation to \(N\) can arise from two sources: i)
-poor spacing of cohorts in the size dimension, and ii) when stepping
-cohorts through time.
-
-The first factor controlling the accuracy with which cohorts are stepped
-through time is the accuracy of the \textsc{ode} stepper being used. {\plant} uses
+All of the \textsc{ivp}'s outlined above must be stepped through time.
+{\plant} uses
 the embedded Runge-Kutta Cash-Karp 4-5 algorithm \citep{Cash-1990}, with
 code ported directivity from the
 \href{http://www.gnu.org/software/gsl/}{GNU Scientific Library}
 \citep{Galassi-2009}. Accuracy of the solver is controlled by two
 control parameters for relative and absolute accuracy:
+\texttt{ode\_tol\_rel} and \texttt{ode\_tol\_abs}.
+
+\subsubsection{Approximation of size-density distribution via the EBT}
+\label{approximation-of-size-density-distribution-via-the-ebt}
+
+Errors in the \textsc{ebt} approximation to \(N\) can arise from two sources:
+i) when stepping cohorts through time, and
+ii) poor spacing of cohorts in the size dimension.
+
+As described above, the stepping of the \textsc{ode} solver is controlled by two
+control parameters for relative and absolute accuracy
 \texttt{ode\_tol\_rel} and \texttt{ode\_tol\_abs}.
 
 A second factor controlling the accuracy with which cohorts are stepped
@@ -500,9 +575,9 @@ produced from the patch. The relative error in each integration is then
 calculated using the \texttt{local\_error\_integration} function.
 
 For a worked example illustrating the \texttt{build\_schedule} function,
-see the vignette \texttt{cohort\_spacing}.
+see the vignette section \texttt{cohort\_spacing}.
 
-\subsection{Calculation of light environment and influence on
+\subsubsection{Calculation of light environment and influence on
 assimilation}\label{calculation-of-light-environment-and-influence-on-assimilation}
 
 To progress the system of \textsc{ode}s requires that we calculate the amount of
@@ -550,7 +625,7 @@ the error value is greater than this value, the interval is bisected and
 process repeated. For full details see
 \texttt{adaptive\_interpolator.h}.
 
-\subsection{Integrating over light
+\subsubsection{Integrating over light
 environment}\label{integrating-over-light-environment}
 
 Plants have leaf area distributed over a range of heights; estimating
@@ -563,7 +638,7 @@ If the control parameter \texttt{plant\_assimilation\_adaptive} is \texttt{TRUE}
 the integration is performed using adaptive refinement with accuracy
 controlled by the parameter \texttt{plant\_assimilation\_tol}.
 
-\subsection{Solving demographic seed
+\subsubsection{Solving demographic seed
 rain}\label{solving-demographic-seed-rain}
 
 For a single species, solving for \(Y_x\) is a straightforward
@@ -576,60 +651,6 @@ because there is no sure method for multi-dimensional root finding. We
 have implemented several different approaches (see
 \texttt{equlibrium.R} for details).
 
-
-\clearpage
-
-\section{Tables}\label{tables}
-
-\begin{table}[ht]
- \caption{Variable names and definitions in demographic model.}
-\centering
-  \begin{tabular}{p{2cm}p{2cm}p{9cm}}
-  \hline
-  Symbol & Unit & Description \\
-  \hline
-  \multicolumn{3}{l}{\textbf{Patch state variables}} \\
-  $N$   & & number of species \\
-  $a, a^{\prime}$ & yr & patch age \\
-  $a_0$ & yr & patch age when plant germinates \\
-  $E_a$ & & profile of canopy opennesses within patch age $a$\\
-  $E_a(z)$& 0-1 & canopy opennesses at height $z$ within a patch age $a$\\
-
-  \multicolumn{3}{l}{\textbf{Plant state variables}} \\
-  $x$   & & vector of traits for a species\\
-  $H$   & m & height of plant\\
-  $H_0$   & m  & height of seedling after germinating\\
-  $z$   & m & height in canopy\\
-  $A_l(H)$  & m$^{-2}$ & leaf area of plant height $H$ \\
-  $Q(z, H)$ & 0-1 & fraction of leaf area for plant height $H$ above $z$\\
-
-  \multicolumn{3}{l}{\textbf{Abundance measures}} \\
-  $P(a)$ & yr$^{-1}$ & frequency-density of patches age $a$ \\
-  $Y_x$ & m$^{-2}$ yr$^{-1}$ & vector of seed rains for a species with traits $x$\\
-  $N(x, H, a)$ & m$^{-1}$ m$^{-2}$ & density of plants per unit height per ground area\\
-
-  \multicolumn{3}{l}{\textbf{Demographic rates}} \\
-  $g(x, H, E_a)$ & m yr$^{-1}$ & height growth rate \\
-  $d(x, H, E_a)$ & yr$^{-1}$ & instantaneous mortality rate \\
-  $f(x, H, E_a)$ & yr$^{-1}$ & seed production rate \\
-  $\gamma(a)$ & yr$^{-1}$ & instantaneous disturbance rate\\
-
-  \multicolumn{3}{l}{\textbf{Demographic outcomes}} \\
-  $H(x, a_0, a)$   & m  & height of plant germinating in patch age $a_0$ at age $a$\\
-  $S_{\rm D}$ & 0-1 & probability a seed survives dispersal \\
-  $S_{\rm G} (x, H_0, E_{a_0})$ & 0-1 & probability a seed germinates successfully \\
-  $S_{\rm I} (x, a_0, a)$ & 0-1 & probability an individual survives from $a_0$ to $a$\\
-  $S_{\rm P} ( a_0, a)$ & 0-1 & probability a patch remains undisturbed from $a_0$ to $a$\\
-  $\tilde{R}(x, a_0, a)$ & & cumulative seed output for plant from $a_0$ to $a$ \\
-  $R\left(x^\prime, x\right)$ & & basic reproduction ratio for mutant growing in environment of residents \\
-
-  \multicolumn{3}{l}{\textbf{Miscellaneous constants}} \\
-  $k_I$ & 0-1  & light extinction coefficient\\
-  \hline
-  \end{tabular}
-\label{tab:definitions}
-\end{table}
-
 \clearpage
 
 \section{Appendices}\label{appendices}
@@ -640,21 +661,21 @@ dynamics}\label{derivation-of-pde-describing-age-structured-dynamics}
 Consider patches of habitat which are subject to some intermittent
 disturbance and where the age of a patch is corresponds to the time
 since the last disturbance. Let \(P(a, t)\) be the frequency-density of
-patches age \(a\) at time \(t\) and let \(\gamma(a)\) be the
+patches age \(a\) at time \(t\) and let \(d_P(a)\) be the
 age-dependent probability that a patch of age \(a\) is transformed into
 a patch of age \(0\) through disturbance. Then according to the Von
 Foerster equation for age-structured population dynamics
 \citep{Vonfoerster-1959}, the dynamics of \(P(a, t)\) are given by
-\[ \frac{\partial}{\partial t} P(a, t) = -\frac{\partial}{\partial a} P(a, t)-\gamma(a, t) P(a, t),\]
+\[ \frac{\partial}{\partial t} P(a, t) = -\frac{\partial}{\partial a} P(a, t)-d_P(a, t) P(a, t),\]
 with boundary condition
-\[ P(0, t) = \int^{\infty}_{0}\gamma(a, t) P(a, t) \, {\rm d}a.\]
+\[ P(0, t) = \int^{\infty}_{0}d_P(a, t) P(a, t) \, {\rm d}a.\]
 
 The frequency of patches with \(a < x\) is given by
 \(\int_{0}^{x}P(a, t) \, {\rm d}a\), with
 \(\int_{0}^{\infty} P(a, t) \, {\rm d}a = 1\). If
-\(\frac{\partial}{\partial t}\gamma(a, t) = 0\), then \(P(a)\) will
+\(\frac{\partial}{\partial t}d_P(a, t) = 0\), then \(P(a)\) will
 approach an equilibrium solution given by \[P(a) = P(0) S_{\rm P}(0, a),\] where
-\[S_{\rm P}(0, a) = \exp \left( \int_{0}^{a}-\gamma(\tau) \, {\rm d}\tau\right)\]
+\[S_{\rm P}(0, a) = \exp \left( \int_{0}^{a}-d_P(a^\prime) \, {\rm d}a^\prime\right)\]
 is the probability that a local population will remain undisturbed for
 at least \(a\) years (patch survival function), and
 \[P(0) = \frac1{ \int_{0}^{\infty}S_{\rm P}(0, a) \, {\rm d}a}\] is the
@@ -666,7 +687,7 @@ while the expected lifetime for patches is
 (2\(^{nd}\) step made using integration by parts).
 
 An equilibrium patch age distribution may be achieved under a variety of
-conditions, for example if \(\gamma(a, t)\) depends on patch age but the
+conditions, for example if \(d_P(a, t)\) depends on patch age but the
 this probability is constant over time. The probability of disturbance
 may also depend on features of the vegetation (rather than age \emph{per
 se}), in which case an equilibrium is still possible, provided the
@@ -674,17 +695,17 @@ vegetation is also assumed to be at equilibrium.
 
 \subsubsection{Exponential distribution}\label{exponential-distribution}
 
-If the probability of patch disturbance is constant with respect to
-patch age (\( = \lambda\)), then rates at which patches age \(a\) are
+If the probability of patch disturbance \(d_P\) is constant with respect to
+patch age , then rates at which patches age \(a\) are
 disturbed follow an exponential distribution:
-\(-\partial S_{\rm P}(0, a)/ \partial a = \lambda e^{-\lambda a}\). The patch age
+\(-\partial S_{\rm P}(0, a)/ \partial a = d_P \exp(-d_P a)\). The patch age
 distribution is then given by:
-\[ S_{\rm P}(0, a) = \exp\left(-\lambda a\right), P(0) = \lambda.\]
+\[ S_{\rm P}(0, a) = \exp\left(-d_P a\right), P(0) = d_P.\]
 
 \subsubsection{Weibull distribution}\label{weibull-distribution}
 
 If the probability of patch disturbance changes as a function of time,
-with \(\gamma(a) = \lambda \psi a^{\psi-1}\), then rates at which
+with \(d_P(a) = \lambda \psi a^{\psi-1}\), then rates at which
 patches age \(a\) are disturbed follow a Weibull distribution:
 \(-\partial S_{\rm P}(0, a)/ \partial a = \lambda \psi a^{\psi -1}e^{-\lambda a^\psi}\).
 Values of \(\psi>1\) imply probability of disturbance increases with
@@ -692,48 +713,29 @@ patch age; \(\psi<1\) implies probability of disturbance decreases with
 age. When \(\psi = 1\) we obtain the exponential distribution, a special
 case of the Weibull. The Weibull distribution results in following for
 the patch age distribution:
-\[S_{\rm P}(0, a) = e^{-\lambda a^\psi}, P(0) = \frac{\psi \lambda^{\frac1{\psi}}}{\Gamma\left(\frac1{\psi}\right)},\]
+\[S_{\rm P}(0, a) = \exp(-\lambda a^\psi), P(0) = \frac{\psi \lambda^{\frac1{\psi}}}{\Gamma\left(\frac1{\psi}\right)},\]
 where \(\Gamma(x)\) is the gamma function
 \(\left(\Gamma(x) = \int_{0}^{\infty}e^{-t}t^{x-1} \, dt\right)\). We can
 also specify the distribution by its mean return time
 \(\bar{a} = \frac1{P(0)}\). Then, calculate relevant value for
 \(\lambda = \left(\frac{\Gamma\left(\frac1{\psi}\right)}{\psi \bar{a}}\right)^{\psi}\).
 
-\subsubsection{Variable distributions}\label{variable-distributions}
+The default model in {\plant} is to assume $\psi=2$, such that \(d_P\) increases as
+a linear function of patch age. The distribution is $P(a)$ is the specified by a
+single parameter, $\bar{a}$.
 
-The probability of patch disturbance might also be vary with properties
-of the vegetation. In this case, we cannot prescribe a known
-distribution to \(P(a)\), it must be solved numerically. Patch survival
-can be calculated numerically as
-\[S_{\rm P}(0, a) = \exp \left( \int_{0}^{a}-\gamma(\tau) \, {\rm d}\tau\right).\]
-For calculations of fitness, we want to integrate over some fraction
-\(q\) of the patch age distribution (i.e. ~ignoring the long tail of the
-distributions). Thus we want to find the point \(x\) which satisfies
-\(\int_{0}^{x} P(a) \, {\rm d}a = q\).Locating \(x\) requires knowledge of
-\(P(0)\), which in turn requires us to approximate the tail of the
-integral \(\int_{0}^{\infty} S_{\rm P}(0, a) \, {\rm d}a\). For \(a > x\), let
-\(S_{\rm P}(0, a)\) be approximated by
-\[S_{\rm P}(0, a) \approx S_{\rm P}(0, x) \exp\left( - (x-a) \gamma(x)\right).\] Then
-\[P(0)^{-1} = \int_{0}^{\infty} S_{\rm P}(0, a) \, {\rm d}a \approx \int_{0}^{x} S_{\rm P}(0, a) \, {\rm d}a + \int_{x}^{\infty} S_{\rm P}(0, a) \, {\rm d}a\]
-\[ = \int_{0}^{x} S_{\rm P}(0, a) \, {\rm d}a + \frac{S_{\rm P}(0, x)}{\gamma(x)}. \]
-Substituting into \(\int_{0}^{x} P(a) \, {\rm d}a = q\), we obtain
-\[q = P(0) \int_{0}^{x} S_{\rm P}(0, a) \, {\rm d}a = \frac{\int_{0}^{x} S_{\rm P}(0, a) \, {\rm d}a}{\int_{0}^{x} S_{\rm P}(0, a) \, {\rm d}a + \frac{S_{\rm P}(0, x)}{\gamma(x)}}\]
-\[\Rightarrow  \frac{S_{\rm P}(0, x)}{\gamma(x)} = \frac{1-q}{q} \int_{0}^{x} S_{\rm P}(0, a) \, {\rm d}a.\]
-Thus by monitoring
-\(S_{\rm P}(0, x), \gamma(x), \int_{0}^{x} S_{\rm P}(0, a) \, {\rm d}a\) we can evaluate
-when a sufficient range of the patch age distribution has been
-incorporated.
 
 \subsection{Derivation of \textsc{pde} describing size-structured
 dynamics}\label{derivation-of-pde-describing-size-structured-dynamics}
 
 To model the population we use a \textsc{pde} describing the dynamics for a thin
-slice \(\Delta H\). Assuming that all rates are constant within the
+slice \(\Delta H\). This \textsc{pde} can be derived as follows, following
+\citet{Deroos-1997}. Assuming that all rates are constant within the
 interval \(\Delta H\), the total number of individuals within the
 interval spanned by \([h - 0.5\Delta H, H + 0.5\Delta H)\) is
 \(N(H, a)\Delta H\) . The flux of individuals in and out of the size
 class can be expressed as
-\begin{equation}\begin{array}{ll} J(H, a) = &g(H - 0.5 \Delta H, a) \, N(H - 0.5 \Delta H, a) - g(H + 0.5 \Delta H, a) \, N(H + 0.5 \Delta H, a) \\ & - d (H, a) \, N(H, a)\Delta H\\ \end{array}.
+\begin{equation}\begin{array}{ll} &g(H - 0.5 \Delta H, a) \, N(H - 0.5 \Delta H, a) - g(H + 0.5 \Delta H, a) \, N(H + 0.5 \Delta H, a) \\ & - d (H, a) \, N(H, a)\Delta H\\ \end{array}.
 \end{equation}
 The first two terms describe the flux in and out of the size class
 through growth; the last term describes losses due through mortality.

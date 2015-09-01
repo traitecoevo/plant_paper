@@ -1,5 +1,5 @@
 ---
-title: "plant: A package for modelling forest trait ecology & evolution: _introduction_"
+title: "plant: A package for modelling forest trait ecology & evolution: _Introduction_"
 ---
 
 This document provides a number of worked examples that replicate
@@ -32,4 +32,5 @@ The document here works through these components in the reverse
 order, starting with `Plant` (and really `Strategy`) objects, and
 finishing by showing how fitness emerges from the `EBT`.  The
 physiological model is described in detail in a separate "physiology"
-vignette.
+document, while the details about demographic calculations are described
+in the "demography" document.

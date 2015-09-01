@@ -11,7 +11,7 @@ table_plant_parameters <- function(filename, dest){
   to_math <- grepl("[_^]", tab$Units)
   tab$Units[to_math] <-
     sprintf("$%s$",
-            gsub("(kg|m|yr)", "\\\\mathrm{\\1}", tab$Units[to_math]))
+            gsub("(mol|kg|m|yr|d)", "\\\\mathrm{\\1}", tab$Units[to_math]))
   tab$Units[to_math] <-
             gsub(" ", "\\,", tab$Units[to_math], fixed =TRUE)
 
@@ -26,7 +26,7 @@ table_plant_parameters <- function(filename, dest){
   err <- sapply(val, is.null)
   if (any(err)) {
     message("Missing parameters: ", paste(code[err], collapse=", "))
-  } 
+  }
 
   oo <- options(scipen=999)
   on.exit(options(oo))

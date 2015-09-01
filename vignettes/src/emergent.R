@@ -1,9 +1,9 @@
 ## ---
-## title: "plant: A package for modelling forest trait ecology & evolution: _patch level emergent properties_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _Patch-level emergent properties_"
 ## ---
 
-## The aim here is to use the plant package to investigate dynamics 
-## within a patch of competing plants, focussing on emergent patch-level 
+## The aim here is to use the plant package to investigate dynamics
+## within a patch of competing plants, focussing on emergent patch-level
 ## properties, rather than properties of plants within the patch.
 
 library(plant)
@@ -114,9 +114,9 @@ text(height[1, i] + strwidth("x"), growth_rate[1, i],
      adj=c(0, 0))
 
 ## The above plots show relationships with patches of a given age
-## What about the average relationship across the entire metapopulation? 
-## To get that, we  average (integrate) over the distribution over patch 
-## (for formula see demography vignette). To achieve this we first need 
+## What about the average relationship across the entire metapopulation?
+## To get that, we  average (integrate) over the distribution over patch
+## (for formula see demography vignette). To achieve this we first need
 ## the patch-level relationships to a series of fixed heights
 hh <- seq_log_range(range(height, na.rm=TRUE), 500)
 
@@ -127,7 +127,7 @@ f <- function(height, density, hout) {
   clamp_domain(splinefun_loglog(height, density), r, 0)(hout)
 }
 
-## Now interpolate the height-density relationship in each patch to 
+## Now interpolate the height-density relationship in each patch to
 ## the series of  specified heights
 xx <- lapply(seq_along(data1$time),
              function(i) f(height[, i], density[, i], hh))

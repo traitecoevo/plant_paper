@@ -1,5 +1,5 @@
 ## ---
-## title: "plant: A package for modelling forest trait ecology & evolution: _finding demographic equilibrium_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _Finding demographic equilibrium_"
 ## ---
 
 library(plant)

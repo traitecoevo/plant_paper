@@ -1,8 +1,23 @@
 "Description","Symbol","Units","\plant"
-"Baseline rate for leaf turnover","\beta_{kl1}","yr^{-1}","B_kl1"
-"Scaling slope for LMA in leaf turnover","\beta_{kl2}","","B_kl2"
-"Baseline rate for sapwood turnover","\beta_{ks1}","yr^{-1}","B_ks1"
-"Scaling slope for wood density in sapwood turnover","\beta_{ks2}","","B_ks2"
-"Leaf nitrogen per area","\nu","kg m^{-2}", "narea"
-"Baseline rate for intrinsic mortality","\beta_{dI1}","yr^{-1}","B_dI1"
+"Leaf turnover",,,
+"Average leaf mass per area", "\phi_0","kg m^{-2}","lma_0"
+"Rate of leaf turnover at $\phi_0$","\beta_{kl1}","yr^{-1}","B_kl1"
+"Scaling slope for $\phi$ in leaf turnover","\beta_{kl2}","","B_kl2"
+"Sapwood turnover",,,
+"Average wood density", "\rho_0","kg m^{-3}","rho_0"
+"Rate of sapwood turnover at $\rho_0$","\beta_{ks1}","yr^{-1}","B_ks1"
+"Scaling slope for $\rho$ in sapwood turnover","\beta_{ks2}","","B_ks2"
+"Growth independent mortality",,,
+"Rate of instantaneous mortality at $\rho_0$","\beta_{dI1}","yr^{-1}","B_dI1"
 "Scaling slope for wood density in intrinsic mortality","\beta_{dI2}","","B_dI2"
+"Photosynthesis",,,
+"Nitrogen per leaf area","\nu_0","kg m^{-2}", "narea_0"
+"Potential CO$_2$ photosynthesis per unit narea","\beta_{lf1}","mol kg^{-1} d^{-1}", "B_lf1"
+"Curvature of light response curve","\beta_{lf2}","", "B_lf2"
+"Quantum yield of leaf photosynthesis (CO$_2$ per unit PAR)","\beta_{lf3}","mol mol^{-1}", "B_lf3"
+"Respiration",,,
+"CO$_2$ respiration per unit leaf nitrogen","\beta_{lf4}","mol kg^{-1} yr^{-1}", "B_lf4"
+"CO$_2$ respiration per unit sapwood volume","\beta_{rs1}","mol kg^{-1} yr^{-1}","B_rs1"
+"CO$_2$respiration per unit bark volume","\beta_{rb1}","mol kg^{-1} yr^{-1}","B_rb1"
+"Reproduction",,,
+"Cost of seed accessories per unit seed mass","\beta_{f1}","","B_f1"

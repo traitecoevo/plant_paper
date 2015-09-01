@@ -30,12 +30,18 @@
 
 \section{Introduction}
 
+This document outlines the core physiological model used in the {\plant}
+package. These equations were primarily developed elsewhere, in particular in
+\citet{Falster-2011}. They are presented here not as original findings,
+but rather so that users can understand the full system of equations being
+solved within {\plant}.
+
 The core job of the physiological model in {\plant} is to take a plant's
 current size, light environment and physiological parameters as inputs,
 and return it's growth, mortality and fecundity rates. In the default
 physiological model within {\plant}, these vital demographic rates are all
 derived from the rate at which living biomass is produced by the plant,
-which in turn is calculated based on well understood physiology (Fig.
+which in turn is calculated based on well-understood physiology (Fig.
 \ref{fig:schematic-phys}). Various physiological parameters
 influence demographic outcomes. Varying these parameters allows for
 species-differences to be included, potentially via traits (see last
@@ -50,15 +56,17 @@ section). Tables
 \caption{Physiological model in {\plant}, giving
 demographic rates on the basis of its traits, size and light environment. as functions of
 net mass production. The dashed line to mortality indicates that although mortality rate is assumed to depend on mass production, no
-mass is actually allocated there.}
+mass is actually allocated there. Figure adapted from
+\citet{Falster-2011}, \citet{Falster-2015}.}
 \label{fig:schematic-phys}
 \end{figure}
 
 \section{Leaf photosynthesis}\label{leaf-photosynthesis}
 
 Let \(p(x, E)\) denote the gross rate of leaf photosynthesis per unit
-area at height within the canopy of a plant with traits \(x\) at light
-level \(E(z)\). We assume a relationship of the form
+leaf area within the canopy of a plant with traits \(x\) at light
+level \(E(z)\), where \(z\) is height within the canopy.
+We assume a relationship of the form
 \begin{equation}\label{eq:photosynthesis}
 p(x, E(z)) = \frac{\alpha_{p1}}{E(z) + \alpha_{p2}},
 \end{equation}
@@ -68,7 +76,7 @@ model and correspond to maximum annual photosynthesis and light-level
 where photosynthesis is 50\% of it's maximum value. The average rate of
 leaf photosynthesis across the plant is then
 \begin{equation}\label{eq:photosynthesis_av}
-\bar{p}(x, H, E_a) = \int_0^H p(x, E(z)) \, q(z, H),
+\bar{p}(x, H, E_a) = \int_0^H p(x, E(z)) \, q(z, H) \, {\rm d}z,
 \end{equation}
 where \(q(z, H)\) gives the density of leaf area at height \(z\) (Eq.
 \ref{eq:crown3}).
@@ -82,7 +90,7 @@ The amount of biomass available for growth,
 plant \citep{Makela-1997, Thornley-2000, Falster-2011}:
 \begin{equation}\label{eq:dbdt}
 \underbrace{\strut \frac{\rm{d}B}{\rm{d}t}}_\textrm{net biomass production}
-  = \underbrace{\strut a_y}_\textrm{yield}
+  = \underbrace{\strut \alpha_{y}}_\textrm{yield}
     \big( \underbrace{\strut A_\textrm{l} \, \bar{p}}_\textrm{photosynthesis} -
      \underbrace{\strut \, \sum_\textrm{i = l, b, s, r}{M_\textrm{i} \, r_\textrm{i}}}_\textrm{respiration}\big)
     - \underbrace{\strut \sum_\textrm{i = l, b, s, r}{M_\textrm{i} \, k_\textrm{i}}}_\textrm{turnover}.
@@ -90,10 +98,10 @@ plant \citep{Makela-1997, Thornley-2000, Falster-2011}:
 Here, \(M, r\), and \(k\) refer to the mass, maintenance respiration rate, and
 turnover rate of different tissues, denoted by subscripts \(l\) = leaves,
 \(b\) = bark, \(s\) = sapwood and \(r\) = roots. \(\bar{p}\) is the assimilation
-rate of CO\(_2\) per leaf area and \(y\) is yield: the fraction of
-assimilated carbon fixed in biomass (the remaining fraction being lost
-as growth respiration). The growth respiration component comes in addition
-to any costs of maintenance respiration. Gross photosynthetic production is proportional to leaf area,
+rate of CO\(_2\) per leaf area and \(\alpha_{y}\) is yield: the fraction of
+assimilated carbon fixed in biomass. (The remaining fraction being lost
+as growth respiration; this comes in addition
+to any costs of maintenance respiration). Gross photosynthetic production is proportional to leaf area,
 \(A_\textrm{l} = M_\textrm{l} / \phi\), where \(\phi\) is leaf mass per
 area. The total mass of living tissues
 \(M_\textrm{a} = M_\textrm{l} + M_\textrm{b} + M_\textrm{s} + M_\textrm{r}.\)
@@ -115,13 +123,13 @@ g(x, H, E_a) = \frac{\rm{d}H}{\rm{d}t} = \frac{\rm{d}H}{\rm{d}A_\textrm{l}}
 \times \frac{\rm{d}B}{\rm{d}t}.
 \end{equation}
 
-The first term on the right of eq \ref{eq:dhdt},
+The first term on the right of Eq. \ref{eq:dhdt},
 \(\rm{d}H / \rm{d}A_\textrm{l}\), is the growth in plant height
 per unit growth in total leaf area -- accounting for the architectural
 strategy of the plant. Some species tend to leaf out more than grow
 tall, while other species emphasise vertical extension.
 
-The second term in eq \ref{eq:dhdt},
+The second term on the right of Eq. \ref{eq:dhdt},
 \(\rm{d}A_\textrm{l} / \rm{d}M_\textrm{a}\), accounts for the
 marginal cost of deploying an additional unit of leaf area, including
 construction of the leaf itself and various support structures. As such,
@@ -132,17 +140,17 @@ expressed as a sum of construction costs per unit leaf area:
 = \big( \frac{\rm{d}M_\textrm{l}}{\rm{d}A_\textrm{l}} + \frac{\rm{d}M_\textrm{s}}{\rm{d}A_\textrm{l}} + \frac{\rm{d}M_\textrm{b}}{\rm{d}A_\textrm{l}} + \frac{\rm{d}M_\textrm{r}}{\rm{d}A_\textrm{l}}\big)^{-1}.
 \end{equation}
 
-The third term in eq \ref{eq:dhdt},
+The third term on the right of Eq. \ref{eq:dhdt},
 \(\rm{d}M_\textrm{a} / \rm{d}M_\textrm{b}\), gives the fraction
-of net biomass production (eq. \ref{eq:dbdt}) that is allocated to
+of net biomass production (Eq. \ref{eq:dbdt}) that is allocated to
 growth rather than reproduction or storage. In the default physiological model
 we let the growth fraction decrease with height according to the function
 \begin{equation}\label{eq:allocation}
 \frac{\rm{d}M_\textrm{a}}{\rm{d}B}(H) = 1 -
- \frac{\alpha_{r1}} {1.0 + \exp\left(\alpha_{r2}  \left(1.0 - H / H_{mat}\right)\right)},
+ \frac{\alpha_{f1}} {1.0 + \exp\left(\alpha_{f2}  \left(1.0 - H / H_{mat}\right)\right)},
 \end{equation}
-where $\alpha_{r1}$ is the maximum possible allocation (0-1) and $\alpha_{r2}$
-determines the sharpness of the transition.
+where $\alpha_{f1}$ is the maximum possible allocation (0-1) and $\alpha_{f2}$
+determines the sharpness of the transition \citep{Falster-2011}.
 
 \section{Diameter growth rate}
 
@@ -151,7 +159,7 @@ expressed as the sum of increments in sapwood, bark \& heartwood areas
 ($A_\textrm{s}, A_\textrm{b}, A_\textrm{H}$ respectively):
 $$\frac{\rm{d}A_\textrm{st}}{\rm{d}t} = \frac{\rm{d}A_\textrm{b}}{\rm{d}t} + \frac{\rm{d}A_\textrm{s}}{\rm{d}t} + \frac{\rm{d}A_\textrm{H}}{\rm{d}t}.$$
 We now have an equation for basal area growth that contains many of the same
-elements as eq. \ref{eq:dhdt}:
+elements as Eq. \ref{eq:dhdt}:
 \begin{equation}\label{eq:dast}
 \frac{\rm{d}A_\textrm{st}}{\rm{d}t} = \left(\frac{\rm{d}A_\textrm{s}}{\rm{d}A_\textrm{l}} + \frac{\rm{d}A_\textrm{b}}{\rm{d}A_\textrm{l}}\right) \times
 \frac{\rm{d}A_\textrm{l}}{\rm{d}M_\textrm{a}} \times \frac{\rm{d}M_\textrm{a}}{\rm{d}B} \times \frac{\rm{d}B}{\rm{d}t} + \frac{\rm{d}A_\textrm{H}}{\rm{d}t} .
@@ -202,7 +210,7 @@ assume a relationship between \(A_\textrm{s}(z)\) and height such that
 \frac{A_\textrm{s}(z)}{A_\textrm{s}} = \left(1 - \left(\frac{z}{H}\right)^\eta\right)^2.
 \end{equation}
 
-We also assume that each unit of sapwood area supports a fixed area of
+We also assume that each unit of sapwood area supports a fixed area \(\theta\) of
 leaf \citep[the pipe model][]{Shinozaki-1964}, so that the total canopy
 area of a plant relates to basal sapwood area \(A_\textrm{s}\):
 \begin{equation}\label{eq:crown2}
@@ -224,7 +232,7 @@ q(z, H) = 2\frac{\eta}{H}\left(1-\left(\frac{z}{H}\right)^{\eta}\right) \left(\f
 Integrating \(A_\textrm{s}(z)\) gives a solution for the total mass of
 sapwood in the plant:
 \begin{equation}\label{eq:ms1}
-M_\textrm{s} = \rho \, \int_0^h \, A_\textrm{s}(z) \, \rm{d}z = \rho \, A_\textrm{s} \, H \, \eta_c,
+M_\textrm{s} = \rho \int_0^h  A_\textrm{s}(z) \, {\rm d}z = \rho  A_\textrm{s} H \eta_c
 \end{equation}
 where \(\eta_c = 1 - \frac{2}{1 + \eta} + \frac{1}{1 + 2\eta}\)
 \citep{Yokozawa-1995}. Substituting from Eq. \ref{eq:crown2} into Eq.
@@ -250,7 +258,7 @@ M_\textrm{b} = \alpha_{b1} M_\textrm{s}.
 Also consistent with pipe-model assumption, we assume a fixed ratio of
 root mass per unit leaf area
 \begin{equation}\label{eq:mr}
-M_\textrm{r} = \alpha_{r1} \, A_\textrm{l}.
+M_\textrm{r} = \alpha_{f1} \, A_\textrm{l}.
 \end{equation}
 Even though nitrogen and water uptake are not modelled explicitly,
 imposing a fixed ratio of root mass to leaf area ensures that
@@ -263,13 +271,13 @@ The rate of seed production from the plant \(f(x, H, E_a)\) is a direct
 function of mass allocated to reproduction:
 \begin{equation}\label{eq:fecundity}
 f(x, H, E_a) = \frac{(1 - \frac{\rm{d}M_\textrm{a}}{\rm{d}B}) \times \frac{\rm{d}B}{\rm{d}t}}{
-  s + \alpha_{f3}},
+  \omega + \alpha_{f3}},
 \end{equation}
-where \(s\) is the mass of the seed and \(\alpha_{f3}\) is the cost
+where \(\omega\) is the mass of the seed and \(\alpha_{f3}\) is the cost
 per seed of accessories, such as fruits, flowers and dispersal
 structures. The function $\frac{\rm{d}M_\textrm{a}}{\rm{d}B}$ gives the fraction
-of $\frac{\rm{d}B}{\rm{d}t}$ that is allocated to growth, while
-$1-\frac{\rm{d}M_\textrm{a}}{\rm{d}B}$ gives the  fraction allocated
+of $\frac{\rm{d}B}{\rm{d}t}$ that is allocated to growth (from Eq. \ref{eq:allocation}, while
+$1-\frac{\rm{d}M_\textrm{a}}{\rm{d}B}$ gives the fraction allocated
 to reproduction.
 
 \section{Mortality}\label{mortality}
@@ -278,27 +286,27 @@ Instantaneous rates of plant mortality are taken as the sum of a growth
 independent and growth dependent terms
 \citep{Falster-2011, Moorcroft-2001}:
 \begin{equation}\label{eq:mortality}
-d(x, H, E_a) = d_{\textrm{I}}(x, H) + d_{\textrm{D}}(x, H, E_a).
+d(x, H, E_a) = d_{\textrm{I}}(x, H) + d_{\textrm{G}}(x, H, E_a).
 \end{equation}
 The growth independent rate is taken to be a constant, independent of
 plant performance, but potentially varying with species traits. The
 growth dependent part is assumed to decline exponentially with the rate
 of mass production per unit leaf area, i.e.
 \begin{equation}\label{eq:mortality_GD}
-d_{\textrm{D}}(x, H, E_a) = \alpha_{d2}  \exp(-\alpha_{d3} X),
+d_{\textrm{G}}(x, H, E_a) = \alpha_{dG1}  \exp(-\alpha_{dG3} X),
 \end{equation}
 where \(X = \rm{d}B / \rm{d}t / A_\textrm{l}\). This
 relationship allows for plants to increase mortality as growth rate
 approaches zero, while also allowing for differences among species in
-the parameters \(\alpha_{d2}\) and \(\alpha_{d3}\).
+the parameters \(\alpha_{dG1}\) and \(\alpha_{dG3}\).
 
-We also require a function \(S_G(x^\prime, H_0, E_{A_0})\) for survival
+We also require a function \(S_G(x^\prime, H_0, E_{a_0})\) for survival
 through germination. For the demographic model to behave smoothly,
-\(S_G (x^\prime, H_0, E_{A_0}) / g(x, H_0, E_{A_0})\) should approach zero as
-\(g(x, H_0, E_{A_0}) \rightarrow 0\). Following \citep{Falster-2011},
+\(S_G (x^\prime, H_0, E_{a_0}) / g(x, H_0, E_{a_0})\) should approach zero as
+\(g(x, H_0, E_{a_0}) \rightarrow 0\). Following \citep{Falster-2011},
 we use the function
 \begin{equation} \label{eq:pi1}
-  S_G (x^\prime, H_0, E_{A_0}) = \frac1{X^2 + 1.0}
+  S_G (x^\prime, H_0, E_{a_0}) = \frac1{X^2 + 1.0}
 \end{equation}
 where $X = \alpha_{d0} \frac{A_l}{\rm{d}B / \rm{d}t}$ and $\alpha_{d0}$ is a
 constant. The behaviour of Eq. \ref{eq:pi1} is consistent with Eq.
@@ -309,7 +317,7 @@ traits}\label{traits}
 
 The plant physiological model includes default values for all parameters needed
 (see Table \ref{tab:params_core}). Species are known to vary considerably
-in many of these parameters, such as $\phi,\rho, \alpha_{p1}, s$; so by varying  parameters
+in many of these parameters, such as $\phi,\rho, \nu, omega$; so by varying  parameters
 one can account for different ecologies. When altering one parameter in the model, however,
 one must also consider whether there are trade-offs linking parameters.
 
@@ -329,9 +337,10 @@ $$k_l = \beta_{kl1} \, \left(\frac{\phi}{\phi_0}\right)^{-\beta_{kl2}}.$$
 We normalise the relationship around a global mean \textsc{lma} of $\phi_0$ -- this
 allows us to vary $\beta_{kl1}$ and $\beta_{kl2}$ without displacing the relationship from the
 observed mean.
+
 We also vary mass based leaf respiration rate so that it stays constant per unit leaf area and
-varies with \textsc{lma}, as is empirically observed \citet{Wright-2004}:
-$$r_\textrm{l} = \frac{c_{Rl0}}{\phi}.$$
+varies with \textsc{lma} and \textsc{narea}, as is empirically observed \citet{Wright-2004}:
+$$r_\textrm{l} = \frac{\beta_{lf4}\, \nu}{\phi}.$$
 
 \subsection{Wood density}
 
@@ -341,46 +350,81 @@ link $\rho$ to the rate of growth independent mortality:
 $$d_I = \beta_{dI1} \, \left(\frac{\rho}{\rho_0}\right) ^ {-\beta_{dI2}}.$$
 In addition, $\rho$ is assumed to influence the rate of sapwood turnover,
 $$k_s = \beta_{ks1} \, \left(\frac{\rho}{\rho_0}\right)^ {-\beta_{ks2}},$$
-and the rate of sapwood respiration per unit mass:
-$$r_r = \frac{4012.0}{\rho}.$$
+
 As with $\phi$, we normalise the mortality and turnover
 relationships around a global mean value of $\rho_0$.
 
+The rate of sapwood respiration per unit volume is assumed constant, so
+sapwood respiration per unit mass varies as:
+$$r_r = \frac{\beta_{rs1}}{\rho}.$$
+Similarly, the rate of bark respiration per unit mass varies as:
+$$r_b = \frac{\beta_{rb1}}{\rho},$$
+with $B_rb1 = 2.0*B_rs1$.
+
 \subsection{Seed mass}
 
-Effects of the trait seed mass ($s$) are naturally embedded in the equation determining
-fecundity (Eq. \ref{eq:fecundity}) and the initial height of seedlings (XXX). In addition,
+Effects of the trait seed mass ($\omega$) are naturally embedded in the equation determining
+fecundity (Eq. \ref{eq:fecundity}) and the initial height of seedlings. In addition,
 we let the accessory cost per seed be a linear function of seed size:
-$$\alpha_{f3} = 3.0 * s,$$
+$$\alpha_{f3} = \beta_{f1} * \omega,$$
 following observed relationships \citep{Henery-2001}.
 
 \subsection{Nitrogen per leaf area}
 
 Photosynthesis per unit leaf area and respiration rates per unit leaf mass (or area)
-are assumed to vary with leaf nitrogen per unit area $\nu$:
-$$\alpha_{p1} = c_{PN} \, \nu,$$
-$$r_l = c_{RN} \, \nu.$$
+are assumed to vary with leaf nitrogen per unit area $\nu$. The calculation of respiration rates is already described above. To calculate average annual photosynthesis for a leaf
+we integrate an instantaneous rate per unit leaf area over the annual solar trajectory,
+using a rectangular-hyperbolic photosynthesis light response curve:
+
+$$p(\nu, E) = \frac1{365}\int_0^{365 }\frac{Y(t) + A_m - \sqrt{(Y(t) + A_m)^2 - 4  \beta_{lf2} Y(t) A_m }}{2 \beta_{lf2}} {\rm d}t$$
+where
+\begin{itemize}
+  \item $A_m = \nu \, \beta_{lf1}$ is the maximum photosynthetic capacity of the leaf,
+  \item $\beta_{lf2}$ is the curvature of light response curve,
+  \item $Y(t) = \beta_{lf3} I(t)$ is the initial yield of light response curve with $\beta_{lf3}$ being the quantum yield parameter,
+  \item $I(t) = k_I \, I_0(t)\, E$ is the intensity of light on the leaf surface, and
+  \item $I_0(t)$ is light incident on a surface perpendicular to the sun's rays directly above the canopy at time $t$.
+\end{itemize}
+The profile of $I_0(t)$ is given by a solar model adapted from \citet{TerSteege-1997}.
+
+Values of $p(\nu, E)$ are calculated across a range of values of $E$, and then an equation of the form shown in Eq. \ref{eq:photosynthesis} is fitted to extract the parameters
+$\alpha_{p1}, \alpha_{p2}$, such that these become functions of $\nu$.
 
 \clearpage
 
 \section{Tables}\label{tables}
 
 \begin{table}[h!]
- \caption{Key variables in physiological model.
- Subscripts $i = l, s, b, r, a$ refer to leaves, sapwood, roots, total of these vegetative tissues. Similarly $A_i$ denotes areas, of leaves ($i = l$) and of cross-sections of total stem and sapwood ($i = st, ss$) respectively.}
+ \caption{Key variables in physiological model. For mass ($M$), respiration ($r$) and turnover ($k$)
+ variables, subscripts denote different tissues: \(l\) = leaves, \(b\) = bark, \(s\) = sapwood,
+ \(r\) = roots, \(a\) = all living tissue. For areas \(A\), subscripts denote: \(l\) = leaves, \(st\) = total stem cross-section, \(ss\) = sapwood cross-section sapwood.}
 \centering
-  \begin{tabular}{p{2cm}p{2cm}p{8cm}}
+  \begin{tabular}{p{2cm}p{2.5cm}p{8cm}}
   \hline
   Symbol & Unit & Description \\
   \hline
+  \multicolumn{3}{l}{\textbf{Plant construction}} \\
+  $x$   & & vector of traits for a species\\
+  $H_0$   & m  & height of seedling after germinating\\
   $H$   & m  & height of plant\\
   $B$   & kg  & biomass originating from parent plant\\
   $M_i$ & kg  & mass retained on plant in tissue $i$\\
   $A_i$ & m$^2$  & surface-area or cross-sectional-area of tissue $i$\\
-  $y$ & kg kg$^{-1}$ & Yield; ratio of carbon fixed in mass per carbon assimilated \\
+  $q(z, H)$ & m$^-1$ & probability density of leaf at height $z$ within a plant height $H$\\
+  $Q(z, H)$ & 0-1 & fraction of leaf area for plant height $H$ above $z$\\
+  \multicolumn{3}{l}{\textbf{Mass production}} \\
   $p,\bar{p}$ & kg yr$^{-1}$ m$^{-2}$  & photosynthetic rate per unit area \\
-  $r_i$ & kg yr$^{-1}$ kg$^{-1}$  & respiration per unit tissue mass \\
+  $r_i$ & kg kg$^{-1}$ yr$^{-1}$ & respiration per unit tissue mass \\
   $k_i$ & yr$^{-1}$ & turnover rate for tissue \\
+  \multicolumn{3}{l}{\textbf{Environment}} \\
+  $a$ & yr$^{-1}$ & patch age\\
+  $E_a$ & & profile of canopy opennesses within patch age $a$\\
+  $E_a(z)$& 0-1 & canopy opennesses at height $z$ within a patch age $a$\\
+  \multicolumn{3}{l}{\textbf{Demographic outcomes}} \\
+  $g(x, H, E_a)$ & m yr$^{-1}$ & height growth rate \\
+  $f(x, H, E_a)$ & yr$^{-1}$ & seed production rate \\
+  $d(x, H, E_a)$ & yr$^{-1}$ & instantaneous mortality rate for plants\\
+  $S_{\rm G} (x, H_0, E_{a_0})$ & 0-1 & probability a seed germinates successfully \\
   \hline
   \end{tabular}
 \label{tab:definitions}
@@ -423,8 +467,8 @@ express growth rate for each tissue as a function of growth rate in leaf area. }
     $\frac{\rm{d}M_\textrm{b}}{\rm{d}A_\textrm{l}} = \alpha_{b1} \, \theta \, \rho \, \eta_c\big(H + A_\textrm{l} \, \frac{\rm{d}H}{\rm{d}A_\textrm{l}} \big)$ &
     $\frac{\rm{d}M_\textrm{b}}{\rm{d}t} = \frac{\rm{d}M_\textrm{b}}{\rm{d}A_\textrm{l}} \, \frac{\rm{d}A_\textrm{l}}{\rm{d}t}$ \\
   root mass &
-    $M_\textrm{r} = \alpha_{r1} \, A_\textrm{l}$ &
-    $\frac{\rm{d}M_\textrm{r}}{\rm{d}A_\textrm{l}} = \alpha_{r1}$  &
+    $M_\textrm{r} = \alpha_{f1} \, A_\textrm{l}$ &
+    $\frac{\rm{d}M_\textrm{r}}{\rm{d}A_\textrm{l}} = \alpha_{f1}$  &
     $\frac{\rm{d}M_\textrm{r}}{\rm{d}t} = \frac{\rm{d}M_\textrm{r}}{\rm{d}A_\textrm{l}} \, \frac{\rm{d}A_\textrm{l}}{\rm{d}t}$ \\
   \hline \\
 \end{tabular}

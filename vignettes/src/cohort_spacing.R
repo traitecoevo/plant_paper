@@ -1,5 +1,5 @@
 ## ---
-## title: "plant: A package for modelling forest trait ecology & evolution: _cohort spacing algorithm_"
+## title: "plant: A package for modelling forest trait ecology & evolution: _Cohort spacing algorithm_"
 ## ---
 
 ## This vignette shows some details of cohort splitting.  It's

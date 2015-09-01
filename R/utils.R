@@ -102,7 +102,7 @@ combine_md <- function(..., output) {
 
   header <-
     c("---",
-      'title: "plant: A package for modelling forest trait ecology & evolution"',
+      'title: "Worked examples showing how to interact with plant from R"',
       "---")
   ret <- c(header, unlist(dat))
   writeLines(ret, output)
