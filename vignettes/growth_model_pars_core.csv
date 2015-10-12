@@ -6,7 +6,7 @@ Wood density,\rho,kg m^-3,rho
 Leaf area per sapwood area,\theta,-,theta
 "Height-leaf area scaling, intercept",\alpha_{l1},m^{-1},a_l1
 "Height-leaf area scaling, slope",\alpha_{l2},-,a_l2
-Root mass per leaf area,\alpha_{f1},kg m^{-2},a_r1
+Root mass per leaf area,\alpha_{r1},kg m^{-2},a_r1
 Ratio of bark area to sapwood area,\alpha_{b1},-,a_b1
 Production,,,
 Leaf photosynthesis per area,\alpha_{p1},kg yr^{-1} m^{-2},a_p1

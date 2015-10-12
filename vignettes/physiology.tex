@@ -156,13 +156,13 @@ determines the sharpness of the transition \citep{Falster-2011}.
 
 In a similar way, basal area ($A_\textrm{st}$) increment can be
 expressed as the sum of increments in sapwood, bark \& heartwood areas
-($A_\textrm{s}, A_\textrm{b}, A_\textrm{H}$ respectively):
-$$\frac{\rm{d}A_\textrm{st}}{\rm{d}t} = \frac{\rm{d}A_\textrm{b}}{\rm{d}t} + \frac{\rm{d}A_\textrm{s}}{\rm{d}t} + \frac{\rm{d}A_\textrm{H}}{\rm{d}t}.$$
+($A_\textrm{s}, A_\textrm{b}, A_\textrm{h}$ respectively):
+$$\frac{\rm{d}A_\textrm{st}}{\rm{d}t} = \frac{\rm{d}A_\textrm{b}}{\rm{d}t} + \frac{\rm{d}A_\textrm{s}}{\rm{d}t} + \frac{\rm{d}A_\textrm{h}}{\rm{d}t}.$$
 We now have an equation for basal area growth that contains many of the same
 elements as Eq. \ref{eq:dhdt}:
 \begin{equation}\label{eq:dast}
 \frac{\rm{d}A_\textrm{st}}{\rm{d}t} = \left(\frac{\rm{d}A_\textrm{s}}{\rm{d}A_\textrm{l}} + \frac{\rm{d}A_\textrm{b}}{\rm{d}A_\textrm{l}}\right) \times
-\frac{\rm{d}A_\textrm{l}}{\rm{d}M_\textrm{a}} \times \frac{\rm{d}M_\textrm{a}}{\rm{d}B} \times \frac{\rm{d}B}{\rm{d}t} + \frac{\rm{d}A_\textrm{H}}{\rm{d}t} .
+\frac{\rm{d}A_\textrm{l}}{\rm{d}M_\textrm{a}} \times \frac{\rm{d}M_\textrm{a}}{\rm{d}B} \times \frac{\rm{d}B}{\rm{d}t} + \frac{\rm{d}A_\textrm{h}}{\rm{d}t} .
 \end{equation}
 Diameter growth is then given by the geometric relationship between stem
 diameter ($D$) and $A_\textrm{st}$:
@@ -258,7 +258,7 @@ M_\textrm{b} = \alpha_{b1} M_\textrm{s}.
 Also consistent with pipe-model assumption, we assume a fixed ratio of
 root mass per unit leaf area
 \begin{equation}\label{eq:mr}
-M_\textrm{r} = \alpha_{f1} \, A_\textrm{l}.
+M_\textrm{r} = \alpha_{r1} \, A_\textrm{l}.
 \end{equation}
 Even though nitrogen and water uptake are not modelled explicitly,
 imposing a fixed ratio of root mass to leaf area ensures that
@@ -467,8 +467,8 @@ express growth rate for each tissue as a function of growth rate in leaf area. }
     $\frac{\rm{d}M_\textrm{b}}{\rm{d}A_\textrm{l}} = \alpha_{b1} \, \theta \, \rho \, \eta_c\big(H + A_\textrm{l} \, \frac{\rm{d}H}{\rm{d}A_\textrm{l}} \big)$ &
     $\frac{\rm{d}M_\textrm{b}}{\rm{d}t} = \frac{\rm{d}M_\textrm{b}}{\rm{d}A_\textrm{l}} \, \frac{\rm{d}A_\textrm{l}}{\rm{d}t}$ \\
   root mass &
-    $M_\textrm{r} = \alpha_{f1} \, A_\textrm{l}$ &
-    $\frac{\rm{d}M_\textrm{r}}{\rm{d}A_\textrm{l}} = \alpha_{f1}$  &
+    $M_\textrm{r} = \alpha_{r1} \, A_\textrm{l}$ &
+    $\frac{\rm{d}M_\textrm{r}}{\rm{d}A_\textrm{l}} = \alpha_{r1}$  &
     $\frac{\rm{d}M_\textrm{r}}{\rm{d}t} = \frac{\rm{d}M_\textrm{r}}{\rm{d}A_\textrm{l}} \, \frac{\rm{d}A_\textrm{l}}{\rm{d}t}$ \\
   \hline \\
 \end{tabular}
