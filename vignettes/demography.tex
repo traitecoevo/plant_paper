@@ -64,7 +64,7 @@ throughout this document.
   \multicolumn{3}{l}{\textbf{Abundance measures}} \\
   $P(a)$ & yr$^{-1}$ & Frequency-density of patches of age $a$ \\
   $Y_{\rm x}$ & m$^{-2}$ yr$^{-1}$ & Global seed rain for a species with traits $x$\\
-  $N(x, H, a)$ & m$^{-1}$ m$^{-2}$ & Density of plants at height $H$ per unit ground area for plants with traits $x$ in patches of age $a$\\
+  $N(H | x, a)$ & m$^{-1}$ m$^{-2}$ & Density of plants at height $H$ per unit ground area for given traits $x$ and patch age $a$\\
 
   \multicolumn{3}{l}{\textbf{Demographic rates}} \\
   $g(x, H, E_{\rm a})$ & m yr$^{-1}$ & Height growth rate of a plant with trait $x$ and height $H$ in the light environment $E_{\rm a}$ in a patch of age $a$\\
@@ -136,7 +136,7 @@ integrating growth, mortality and fecundity over time.
 \subsection{Patches of competing plants}\label{patches-of-competing-plants-size-structured-populations}
 
 We now consider a patch of competing plants. At any age \(a\), the
-patch is described by the density-distribution \(N(x, H, a)\) of plants
+patch is described by the density-distribution \(N(H | x, a)\) of plants
 with traits \(x\) and height \(H\). In a finite-sized patch, \(N\) is a
 discontinuous collection of points, whereas as in a very (infinitely) large patch
 \(N\) is a continuous distribution. In either case, the demographic
@@ -151,7 +151,7 @@ Following standards biophysical principles, we let canopy openness
 \(E_{\rm a}(z)\) at height \(z\) in a patch of age \(a\) decline exponentially
 with the total amount of leaf area above \(z\), i.e.
 \begin{equation} \label{eq:light}
-  E_{\rm a}(z) = \exp \left(-k_{\rm I}  \sum_{i = 1}^{K} \int_{0}^{\infty} A_{\rm l}(H) \, Q(z, H) \, N(x_i, h, a) \, {\rm d}H \right),
+  E_{\rm a}(z) = \exp \left(-k_{\rm I}  \sum_{i = 1}^{K} \int_{0}^{\infty} A_{\rm l}(H) \, Q(z, H) \, N(H | x_i, a) \, {\rm d}H \right),
 \end{equation}
 where \(A_{\rm l}(H)\) is total leaf area and \(Q(z, H)\) is fraction of
 this leaf area held above height \(z\) for plants size \(H\),
@@ -162,7 +162,7 @@ Assuming patches are large, the dynamics of \(N\) can be modelled
 deterministically via the following Partial Differential Equation (\textsc{pde})
 \citep{Kohyama-1993, Deroos-1997, Moorcroft-2001}:
 \begin{equation} \label{eq:PDE}
-  \frac{\partial}{\partial a} N(x, H, a) = - d(x, H, E_{\rm a}) \, N(x, H, a) - \frac{\partial}{\partial H} \left[g(x, H, E_{\rm a}) \, N(x, H, a)\right].
+  \frac{\partial}{\partial a} N(H | x, a) = - d(x, H, E_{\rm a}) \, N(H | x, a) - \frac{\partial}{\partial H} \left[g(x, H, E_{\rm a}) \, N(H | x, a)\right].
 \end{equation}
 (See section \ref{derivation-of-pde-describing-size-structured-dynamics} for derivation.)
 
@@ -170,7 +170,7 @@ Eq. \(\ref{eq:PDE}\) has two boundary conditions. The first links the
 flux of individuals across the lower bound \((H_0)\) of the size
 distribution to the rate at which seeds arrive in the patch, \(Y_{\rm x}\):
 \begin{equation} \label{eq:BC1}
-  N(x, H_0, a_0) = \left\{
+  N(H_0 | x, a_0) = \left\{
   \begin{array}{ll}   \frac{Y_{\rm x} \, S_{\rm G} (x, H_0, E_{{\rm a}0}) }{ g(x, H_0, E_{{\rm a}0}) }  & \textrm{if } g(x, H_0, E_{{\rm a}0}) > 0 \\
   0 & \textrm{otherwise.}
   \end{array} \right.
@@ -184,7 +184,7 @@ initial density as conditions deteriorate \citep{Falster-2011}.
 The second boundary condition of Eq. \(\ref{eq:PDE}\) gives the size
 distribution for patches when \(a = 0\). Throughout we consider only
 situations where we start with an empty patch, i.e.
-\begin{equation} \label{eq:BC2} N\left(x, H,0\right) = 0,
+\begin{equation} \label{eq:BC2} N\left(H|x,0\right) = 0,
 \end{equation}
 although non--zero distributions could be specified
 \citep[e.g][]{Kohyama-1993, Moorcroft-2001}.
@@ -247,7 +247,7 @@ species). The dynamics of this metapopulation are described by the
 The seed rain of each species in the metapopulation is given by rate at
 which seeds are produced across all patches,
 \begin{equation}  \label{eq:seed_rain}
-  Y_{\rm x} = \int_0^{\infty} P(a)  \int_0^{\infty} S_{\rm D} \, f(x, H, E_{\rm a}) \, N(x, H, a) \, {\rm d} m \, {\rm d} a,
+  Y_{\rm x} = \int_0^{\infty} P(a)  \int_0^{\infty} S_{\rm D} \, f(x, H, E_{\rm a}) \, N(H | x, a) \, {\rm d} m \, {\rm d} a,
 \end{equation}
 where \(S_{\rm D}\) is the average survival of seeds during dispersal.
 
@@ -272,11 +272,11 @@ Summary statistics of the metapopulation are obtained by integrating
 over the density distribution, weighting by patch abundance \(P(a)\).
 The average density of individuals per unit ground area across the metapopulation is given by
 \begin{equation}
-  \hat{N}(x) = \int_{0}^{\infty} \int_{0}^{\infty}P(a) \, N(x, H, a) \, {\rm d}a \, {\rm d}H;
+  \hat{N}(x) = \int_{0}^{\infty} \int_{0}^{\infty}P(a) \, N(H | x, a) \, {\rm d}a \, {\rm d}H;
 \end{equation}
 and the average density of plants size \(H\) by
 \begin{equation}
-  \bar{N}(x, H) = \int_{0}^{\infty}P(a) \, N(x, H, a) \, {\rm d}a.
+  \bar{N}(x, H) = \int_{0}^{\infty}P(a) \, N(H | x, a) \, {\rm d}a.
 \end{equation}
 
 Average values for other individual-level quantities can also be calculated.
@@ -284,11 +284,11 @@ Let
 \(w(x, H, E_{\rm a})\) be a quantity of interest, either a demographic rate
 (growth, mortality) or state (plant height, leaf area, light environment).
 The average value of \(w\) for plants of height $H$ and trait $x$ is
-\begin{equation}\bar{w}(x, H) = \frac1{\bar{N}(x, H)}\int_{0}^{\infty}P(a) \, N(x, H, a) \, w(x, H, E_{\rm a}) \, {\rm d}a.
+\begin{equation}\bar{w}(x, H) = \frac1{\bar{N}(x, H)}\int_{0}^{\infty}P(a) \, N(H | x, a) \, w(x, H, E_{\rm a}) \, {\rm d}a.
 \end{equation}
 The average across all individuals of the species is then
 \begin{equation}
-  \hat{w}(x) = \frac1{\hat{N}(x) }\int_{0}^{\infty} \int_{0}^{\infty}P(a) \, N(x, H, a) \, w(x, H, E_{\rm a}) \, {\rm d}a \, {\rm d}H.
+  \hat{w}(x) = \frac1{\hat{N}(x) }\int_{0}^{\infty} \int_{0}^{\infty}P(a) \, N(H | x, a) \, w(x, H, E_{\rm a}) \, {\rm d}a \, {\rm d}H.
 \end{equation}
 When calculating average mortality rate, one must decide whether
 mortality due patch disturbance is included. Non-disturbance mortality
@@ -296,10 +296,10 @@ is obtained by setting \(w(x, H, E_{\rm a}) = d(x, H, E_{\rm a})\), while total
 mortality due to growth processes and disturbance is obtained by setting
 \(w(x, H, E_{\rm a}) = d(x, H, E_{\rm a}) + d_{\rm P}(a) S_{\rm P}(0, a).\)
 
-Similarly we can integrate over the size-distribution to extract aggregate
+Similarly we can integrate over the size distribution to extract aggregate
 features of the vegetation within a patch,
 \begin{equation}
-  W(a) = \sum_{i = 1}^{N} \int_{0}^{\infty} N(x_i, H, a) \, w(x_i, H, E_{\rm a}) \, {\rm d}H,
+  W(a) = \sum_{i = 1}^{N} \int_{0}^{\infty} N(H | x_i, a)\, w(x_i, H, E_{\rm a}) \, {\rm d}H,
 \end{equation}
 and across the metapopulation,
 \begin{equation}
@@ -398,12 +398,12 @@ above) and \(S_{\rm P}\) is calculated as in Eq.
 \subsubsection{Density of individuals}\label{density-of-individuals}
 
 We
-track a point mass estimate of \(N(x, H, a)\) situated on the characteristic
+track a point mass estimate of \(N(H | x, a)\) situated on the characteristic
 corresponding to cohort boundary. By integrating along characteristics,
 the density of individuals with time of birth \(a_{0}\) is given by
 \citep{Deroos-1997}:
 \begin{equation}\label{eq:boundN}
-  N(x, H, a) = N(x, H_0 , a_0)
+  N(H | x, a) = N(H_0 | x, a_0)
    \exp \left( - \int _{a_0}^{a} \left[\frac{\partial g(x, H(x, a_0, a^\prime), E_{\rm a^\prime})}{\partial H} + d(x, H(x, a_0, a^\prime), E_{\rm a^\prime})\right] {\rm d} a^\prime \right).
 \end{equation}
 Eq. \ref{eq:boundN} states that the density \(N\) at a specific time is
@@ -428,8 +428,8 @@ In the current model, the density of individuals introduced at patch age
 \(a_0\) is obtained via Eq.
 \ref{eq:boundN}, which is solved via the \textsc{ivp}:
 \[\frac{dy}{dt} = \frac{\partial g(x, H_i(a^\prime), E_{\rm a^\prime})}{\partial H} + d(x, H_i(a^\prime), E_{\rm a^\prime}),\]
-\[ y(0) = - \log\left(N(x, H_0 , a_0) \, S_{\rm G} (x^\prime, H_0, E_{{\rm a}0}) \right).\]
-Density is then given by \[N(x, H_0 , a_0) = \exp( - y(a)).\]
+\[ y(0) = - \log\left(N(H_0 | x, a_0) \, S_{\rm G} (x^\prime, H_0, E_{{\rm a}0}) \right).\]
+Density is then given by \[N(H_0 | x, a_0) = \exp( - y(a)).\]
 
 \subsection{Controls on error in the approximated solutions}
 
@@ -704,7 +704,7 @@ To model the population we use a \textsc{pde} describing the dynamics for a thin
 slice \(\Delta H\). This \textsc{pde} can be derived as follows, following
 \citet{Deroos-1997}. Assuming that all rates are constant within the
 interval \(\Delta H\), the total number of individuals within the
-interval spanned by \([h - 0.5\Delta H, H + 0.5\Delta H)\) is
+interval spanned by \([H - 0.5\Delta H, H + 0.5\Delta H)\) is
 \(N(H, a)\Delta H\) . The flux of individuals in and out of the size
 class can be expressed as
 \begin{equation}\begin{array}{ll} &g(H - 0.5 \Delta H, a) \, N(H - 0.5 \Delta H, a) - g(H + 0.5 \Delta H, a) \, N(H + 0.5 \Delta H, a) \\ & - d (H, a) \, N(H, a)\Delta H\\ \end{array}.

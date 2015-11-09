@@ -302,16 +302,16 @@ Pacala-1996}. Simplifying spatial interactions within patches can be motivated f
 that competitive thinning tends to break down spatial clusters
 \citep{Strigul-2008}.
 
-When modelling a patch of competing plants, the focus is on how the size-density-distribution \(N(x, H, a)\) changes with patch age \(a\), with the latter defined as the time that has passed since the last disturbance. This distribution describes the density \(N\) of
-individuals with traits \(x\) and height \(H\) within a patch of age \(a\).
+When modelling a patch of competing plants, the focus is on how the size distribution \(N(H | x, a)\) changes with patch age \(a\), with the latter defined as the time that has passed since the last disturbance. This distribution describes the density \(N\) of
+individuals with height \(H\) for given traits \(x\) and patch age \(a\).
 The density \(N\) is measured as individuals per unit height and per unit ground area.
-Modelling the dynamics of \(N(x, H, a)\) requires that both the initial size-density-distribution and the inflow of new recruits be specified. We have primarily
+Modelling the dynamics of \(N(H | x, a)\) requires that both the initial size distribution and the inflow of new recruits be specified. We have primarily
 been interested in the dynamics of a patch recovering from disturbance and have
 therefore started with an empty patch and a constant flow of seeds from a global
 seed rain (Fig. \ref{fig:schematic}b). A (non-trivial) extension would result from allowing some plants to survive disturbance \citep[following][]{Kohyama-1993}.
 
-{\plant} offers two methods for modelling the dynamics of \(N(x,
-H, a)\) in a competing population. In the first stochastic mode, users
+{\plant} offers two methods for modelling the dynamics of \(N(H | x, a)\)
+in a competing population. In the first stochastic mode, users
 specify an average seed rain and patch size, and {\plant} then generates a
 vector of seed arrival events and simulates the stochastic
 development of the resulting finite-sized population.
@@ -337,7 +337,7 @@ of the corresponding individuals, conditioned on their survival
 to alter the density of individuals along these trajectories
 (Fig. \ref{fig:patch}b). The characteristic method is similar to the Escalator Boxcar Train method
 \citep{Deroos-1988, Deroos-1997} used by \citet{Falster-2011} and
-\citet{Falster-2015}, but not identical. An advantage of the characteristic method is that it allows direct approximation of the size-density-distribution. For the same reason, however, the characteristic method may be less suitable for resolving size-density-distributions in models where those distributions naturally develop sharp peaks (which happens, e.g., when plants completely cease to grow at a given height).
+\citet{Falster-2015}, but not identical. An advantage of the characteristic method is that it allows direct approximation of the size distribution. For the same reason, however, the characteristic method may be less suitable for resolving size distributions in models where those distributions naturally develop sharp peaks (which happens, e.g., when plants completely cease to grow at a given height).
 
 We implement a novel technique for
 handling strongly size-asymmetric competitive feedbacks, such as those occurring
@@ -433,7 +433,7 @@ continue to age, and their residents continue to grow, until the next disturbanc
 Such dynamic equilibria arising in \textsc{TSPMs} potentially resolve several
 challenges faced by unstructured models. First, by scaling up from
 patches to a metapopulation, we close the demographic feedback loop and
-create a self-regulating system. {\plant} yields as outputs the equilibrium seed rains and size-density-distributions for each considered species, based on the combined effects of the model's physiological rules, species traits, competitive interactions
+create a self-regulating system. {\plant} yields as outputs the equilibrium seed rains and size distributions for each considered species, based on the combined effects of the model's physiological rules, species traits, competitive interactions
 and disturbance regime.
 
 Second, the metapopulation concept allows for the effects of disturbance
