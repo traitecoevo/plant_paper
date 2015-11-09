@@ -26,7 +26,7 @@ Maximum allocation to reproduction,\alpha_{f1},0-1,a_f1
 "Parameter determining rate of change in $r(x, m_\textrm{l})$ around $H_{mat}$",\alpha_{f2},-,a_f2
 Accessory cost per seed,\alpha_{f3},kg,a_f3
 Mortality,,,
-Survival probability during dispersal,S_D,0-1,S_D
+Survival probability during dispersal,S_{\rm D},0-1,S_D
 Parameter influencing survival through germination,\alpha_{d0},kg m^{-2} yr^{-1},a_d0
 Intrinsic or growth-independent mortality,d_I,yr^{-1},d_I
 Baseline rate for growth-related mortality,\alpha_{dG1},yr^{-1},a_dG1

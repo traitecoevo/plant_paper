@@ -76,7 +76,7 @@ model and correspond to maximum annual photosynthesis and light-level
 where photosynthesis is 50\% of it's maximum value. The average rate of
 leaf photosynthesis across the plant is then
 \begin{equation}\label{eq:photosynthesis_av}
-\bar{p}(x, H, E_a) = \int_0^H p(x, E(z)) \, q(z, H) \, {\rm d}z,
+\bar{p}(x, H, E_{\rm a}) = \int_0^H p(x, E(z)) \, q(z, H) \, {\rm d}z,
 \end{equation}
 where \(q(z, H)\) gives the density of leaf area at height \(z\) (Eq.
 \ref{eq:crown3}).
@@ -109,7 +109,7 @@ area. The total mass of living tissues
 \section{Height growth rate}\label{height-growth-rate}
 
 The key measure of growth required by the demographic solver is
-rate of height growth for the plant, $g(x, H, E_a)$. To model growth in
+rate of height growth for the plant, $g(x, H, E_{\rm a})$. To model growth in
 height requires that we translate mass
 production into height increment, accounting for the costs of
 building new tissues, allocation
@@ -117,7 +117,7 @@ to reproduction, and architectural layout. Mathematically, height growth
 can be decomposed into a product of physiologically relevant terms
 \citep{Falster-2011}:
 \begin{equation} \label{eq:dhdt}
-g(x, H, E_a) = \frac{\rm{d}H}{\rm{d}t} = \frac{\rm{d}H}{\rm{d}A_\textrm{l}}
+g(x, H, E_{\rm a}) = \frac{\rm{d}H}{\rm{d}t} = \frac{\rm{d}H}{\rm{d}A_\textrm{l}}
 \times \frac{\rm{d}A_\textrm{l}}{\rm{d}M_\textrm{a}}
 \times \frac{\rm{d}M_\textrm{a}}{\rm{d}B}
 \times \frac{\rm{d}B}{\rm{d}t}.
@@ -267,10 +267,10 @@ carbon budget.
 
 \section{Seed production}\label{seed-production}
 
-The rate of seed production from the plant \(f(x, H, E_a)\) is a direct
+The rate of seed production from the plant \(f(x, H, E_{\rm a})\) is a direct
 function of mass allocated to reproduction:
 \begin{equation}\label{eq:fecundity}
-f(x, H, E_a) = \frac{(1 - \frac{\rm{d}M_\textrm{a}}{\rm{d}B}) \times \frac{\rm{d}B}{\rm{d}t}}{
+f(x, H, E_{\rm a}) = \frac{(1 - \frac{\rm{d}M_\textrm{a}}{\rm{d}B}) \times \frac{\rm{d}B}{\rm{d}t}}{
   \omega + \alpha_{f3}},
 \end{equation}
 where \(\omega\) is the mass of the seed and \(\alpha_{f3}\) is the cost
@@ -286,29 +286,29 @@ Instantaneous rates of plant mortality are taken as the sum of a growth
 independent and growth dependent terms
 \citep{Falster-2011, Moorcroft-2001}:
 \begin{equation}\label{eq:mortality}
-d(x, H, E_a) = d_{\textrm{I}}(x, H) + d_{\textrm{G}}(x, H, E_a).
+d(x, H, E_{\rm a}) = d_{\textrm{I}}(x, H) + d_{\textrm{G}}(x, H, E_{\rm a}).
 \end{equation}
 The growth independent rate is taken to be a constant, independent of
 plant performance, but potentially varying with species traits. The
 growth dependent part is assumed to decline exponentially with the rate
 of mass production per unit leaf area, i.e.
 \begin{equation}\label{eq:mortality_GD}
-d_{\textrm{G}}(x, H, E_a) = \alpha_{dG1}  \exp(-\alpha_{dG3} X),
+d_{\textrm{G}}(x, H, E_{\rm a}) = \alpha_{dG1}  \exp(-\alpha_{dG3} X),
 \end{equation}
 where \(X = \rm{d}B / \rm{d}t / A_\textrm{l}\). This
 relationship allows for plants to increase mortality as growth rate
 approaches zero, while also allowing for differences among species in
 the parameters \(\alpha_{dG1}\) and \(\alpha_{dG3}\).
 
-We also require a function \(S_G(x^\prime, H_0, E_{a_0})\) for survival
+We also require a function \(S_G(x^\prime, H_0, E_{{\rm a}0})\) for survival
 through germination. For the demographic model to behave smoothly,
-\(S_G (x^\prime, H_0, E_{a_0}) / g(x, H_0, E_{a_0})\) should approach zero as
-\(g(x, H_0, E_{a_0}) \rightarrow 0\). Following \citep{Falster-2011},
+\(S_G (x^\prime, H_0, E_{{\rm a}0}) / g(x, H_0, E_{{\rm a}0})\) should approach zero as
+\(g(x, H_0, E_{{\rm a}0}) \rightarrow 0\). Following \citep{Falster-2011},
 we use the function
 \begin{equation} \label{eq:pi1}
-  S_G (x^\prime, H_0, E_{a_0}) = \frac1{X^2 + 1.0}
+  S_G (x^\prime, H_0, E_{{\rm a}0}) = \frac1{X^2 + 1.0}
 \end{equation}
-where $X = \alpha_{d0} \frac{A_l}{\rm{d}B / \rm{d}t}$ and $\alpha_{d0}$ is a
+where $X = \alpha_{d0} \frac{A_{\rm l}}{\rm{d}B / \rm{d}t}$ and $\alpha_{d0}$ is a
 constant. The behaviour of Eq. \ref{eq:pi1} is consistent with Eq.
 \ref{eq:mortality_GD}, as both cause survival to decline with mass production.
 
@@ -333,7 +333,7 @@ The trait leaf mass per area ($\phi$) directly influences growth by changing
 $\rm{d}A_\textrm{l} / \rm{d}M_\textrm{a}$. In addition we
 link $\phi$ to the rate of leaf turnover,
 based on widely observed scaling relationship from \citet{Wright-2004}:
-$$k_l = \beta_{kl1} \, \left(\frac{\phi}{\phi_0}\right)^{-\beta_{kl2}}.$$
+$$k_{\rm l} = \beta_{kl1} \, \left(\frac{\phi}{\phi_0}\right)^{-\beta_{kl2}}.$$
 We normalise the relationship around a global mean \textsc{lma} of $\phi_0$ -- this
 allows us to vary $\beta_{kl1}$ and $\beta_{kl2}$ without displacing the relationship from the
 observed mean.
@@ -382,7 +382,7 @@ where
   \item $A_m = \nu \, \beta_{lf1}$ is the maximum photosynthetic capacity of the leaf,
   \item $\beta_{lf2}$ is the curvature of light response curve,
   \item $Y(t) = \beta_{lf3} I(t)$ is the initial yield of light response curve with $\beta_{lf3}$ being the quantum yield parameter,
-  \item $I(t) = k_I \, I_0(t)\, E$ is the intensity of light on the leaf surface, and
+  \item $I(t) = k_{\rm I} \, I_0(t)\, E$ is the intensity of light on the leaf surface, and
   \item $I_0(t)$ is light incident on a surface perpendicular to the sun's rays directly above the canopy at time $t$.
 \end{itemize}
 The profile of $I_0(t)$ is given by a solar model adapted from \citet{TerSteege-1997}.
@@ -418,13 +418,13 @@ $\alpha_{p1}, \alpha_{p2}$, such that these become functions of $\nu$.
   $k_i$ & yr$^{-1}$ & turnover rate for tissue \\
   \multicolumn{3}{l}{\textbf{Environment}} \\
   $a$ & yr$^{-1}$ & patch age\\
-  $E_a$ & & profile of canopy opennesses within patch age $a$\\
-  $E_a(z)$& 0-1 & canopy opennesses at height $z$ within a patch age $a$\\
+  $E_{\rm a}$ & & profile of canopy opennesses within patch age $a$\\
+  $E_{\rm a}(z)$& 0-1 & canopy opennesses at height $z$ within a patch age $a$\\
   \multicolumn{3}{l}{\textbf{Demographic outcomes}} \\
-  $g(x, H, E_a)$ & m yr$^{-1}$ & height growth rate \\
-  $f(x, H, E_a)$ & yr$^{-1}$ & seed production rate \\
-  $d(x, H, E_a)$ & yr$^{-1}$ & instantaneous mortality rate for plants\\
-  $S_{\rm G} (x, H_0, E_{a_0})$ & 0-1 & probability a seed germinates successfully \\
+  $g(x, H, E_{\rm a})$ & m yr$^{-1}$ & height growth rate \\
+  $f(x, H, E_{\rm a})$ & yr$^{-1}$ & seed production rate \\
+  $d(x, H, E_{\rm a})$ & yr$^{-1}$ & instantaneous mortality rate for plants\\
+  $S_{\rm G} (x, H_0, E_{{\rm a}0})$ & 0-1 & probability a seed germinates successfully \\
   \hline
   \end{tabular}
 \label{tab:definitions}

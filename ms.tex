@@ -244,11 +244,11 @@ examples). Second, we allow for changes in key parameters to bring
 about changes in other parameters (a hyper-parameterisation), enabling the
 straightforward modelling of trade-offs. For example, the
 trait \textsc{lma} (leaf mass per unit leaf area) is used by default to estimate
-the rate of leaf turnover ($k_l$), based on an observed scaling
+the rate of leaf turnover ($k_{\rm l}$), based on an observed scaling
 relationship spanning across diverse vegetation and plant functional
 types \citep{Wright-2004},
-$$k_l = \beta_{kl1} \, \left(\phi / \phi_0\right)^{-\beta_{kl2}},$$
-where $k_l$ and $\phi$ (\textsc{lma}) are both parameters of the core physiological
+$$k_{\rm l} = \beta_{kl1} \, \left(\phi / \phi_0\right)^{-\beta_{kl2}},$$
+where $k_{\rm l}$ and $\phi$ (\textsc{lma}) are both parameters of the core physiological
 model, and $\beta_{kl1}, \beta_{kl2}, \phi_0$ are hyper-parameters. Such
 linkages are defined within a user-supplied hyper-parameterisation function
 (see Appendix \ref{sec:FF16} for details, or Appendix
