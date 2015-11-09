@@ -4,14 +4,14 @@
 
 ## This vignette shows some details of cohort splitting.  It's
 ## probably not very interesting to most people, only those
-## interested in knowing how the EBT technique works in detail.  It also uses a lot
+## interested in knowing how the SCM technique works in detail.  It also uses a lot
 ## of non-exported, non-documented functions from plant so you'll see
 ## a lot of `plant:::` prefixes.
 
 library(plant)
 library(parallel)
 
-p0 <- ebt_base_parameters()
+p0 <- scm_base_parameters()
 p <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
 p$seed_rain <- 20 # close to equilibrium
 
@@ -38,12 +38,12 @@ interleave <- function(x) {
 t2 <- interleave(t1)
 t3 <- interleave(t2)
 
-## Consider running the EBT and computing seed rain at the end; this
+## Consider running the SCM and computing seed rain at the end; this
 ## is one of the key outputs from the model so a reasonable one to
 ## look for differences in.
 run_with_times <- function(p, t) {
   p$cohort_schedule_times[[1]] <- t
-  run_ebt(p)$seed_rains
+  run_scm(p)$seed_rains
 }
 
 sr_1 <- run_with_times(p, t1)
@@ -74,7 +74,7 @@ run_with_insert <- function(i, p, t) {
   run_with_times(p, insert_time(i, t))
 }
 
-## The internal function `plant:::run_ebt_error` runs the EBT and
+## The internal function `plant:::run_scm_error` runs the SCM and
 ## computes errors as the integration proceeds; this helps shed some
 ## light.
 i <- seq_len(length(t1) - 1)
@@ -91,7 +91,7 @@ abline(h=0, col="grey")
 plot(tm, res - sr_1, xlab="Time (years)", ylab="Seed rain", las=1)
 abline(h=0, col="grey")
 
-ebt <- plant:::FF16_EBT(p)
+ebt <- plant:::FF16_SCM(p)
 ebt$run()
 
 ## Now look at the contribution of different cohorts to see rain (x axis
@@ -109,10 +109,10 @@ abline(v=tm[j], col=c("red", rep("grey", 4)))
 
 ## Next up, need to work out what the fitness contribution of each
 ## cohort is.
-dat1 <- run_ebt_collect(p)
+dat1 <- run_scm_collect(p)
 p2 <- p
 p2$cohort_schedule_times[[1]] <- insert_time(j[[1]], t1)
-dat2 <- run_ebt_collect(p2)
+dat2 <- run_scm_collect(p2)
 
 ## Then consider the light environment over time.  This reconstructs
 ## the spline for the light environment for both runs, and computes
@@ -145,7 +145,7 @@ image(dat1$time, h, dy, xlab="Time (years)", ylab="Height (m)", las=1,
 ## Because the differences are mostly manifest in the leaf area, we
 ## monitor error in both the leaf area and in fitness for all cohorts:
 ## (black line indicates the cohort identified as problematic above)
-dat <- plant:::run_ebt_error(p)
+dat <- plant:::run_scm_error(p)
 image(dat1$time, dat1$time, dat$err$lai[[1]],
       xlab="Patch age (years)", ylab="Introduction time (years)", las=1)
 abline(h=t1[j[[1]]])

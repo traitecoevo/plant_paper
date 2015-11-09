@@ -1,5 +1,5 @@
 make_patch_data <- function() {
-  p0 <- ebt_base_parameters()
+  p0 <- scm_base_parameters()
   p0$control$equilibrium_nsteps <- 30
   p0$control$equilibrium_solver_name <- "hybrid"
   p0$disturbance_mean_interval <- 30.0
@@ -7,7 +7,7 @@ make_patch_data <- function() {
   ## in the fitness figure (see attractor2).
   p2 <- expand_parameters(trait_matrix(c(0.08, 0.267), "lma"), p0, FALSE)
   p2_eq <- equilibrium_seed_rain(p2)
-  run_ebt_collect(p2_eq, TRUE)
+  run_scm_collect(p2_eq, TRUE)
 }
 
 figure_patch <- function(data) {

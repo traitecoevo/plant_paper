@@ -358,8 +358,8 @@ individual's probability of surviving, and its traits via the equation:
 
 The equations below outline how we solve the trait-, size- and patch-structured
 population dynamics described in the previous section.
-Our approach for solving the size-density distribution is based on the characteristic method \citep{Angulo-2004}. It is related to
-the Escalator Boxcar Train technique (\textsc{ebt})
+Our approach for solving the size-density distribution is based on the characteristic method \citep{Angulo-2004}, which we refer to as \textsc{scm}. The \textsc{scm} is related to
+the Escalator Boxcar Train technique
 \citep{Deroos-1988, Deroos-1997, Deroos-1992}, but not identical to it.
 
 When simulating an individual plant, development of a stochastic or
@@ -479,10 +479,10 @@ code ported directivity from the
 control parameters for relative and absolute accuracy:
 \texttt{ode\_tol\_rel} and \texttt{ode\_tol\_abs}.
 
-\subsubsection{Approximation of size-density distribution via the EBT}
+\subsubsection{Approximation of size-density distribution via the \textsc{scm}}
 \label{approximation-of-size-density-distribution-via-the-ebt}
 
-Errors in the \textsc{ebt} approximation to \(N\) can arise from two sources:
+Errors in the \textsc{scm} approximation to \(N\) can arise from two sources:
 i) when stepping cohorts through time, and
 ii) poor spacing of cohorts in the size dimension.
 
@@ -536,7 +536,7 @@ in \citet{Falster-2011} and described further in \citet{Falster-2015}.
 
 To determine the error associated with a specified cohort, we integrate
 two different functions over the size distribution, within the function
-\texttt{run\_ebt\_error}. We then asses how much removing the focal
+\texttt{run\_scm\_error}. We then asses how much removing the focal
 cohort would increase the error in the two integrations. The first
 integration, performed by the function \texttt{area\_leaf\_error}, asks
 how much removal of the focal cohort would increase error in the

@@ -7,7 +7,7 @@ library(parallel)
 
 run <- function(seed_rain_in, p) {
   p$seed_rain <- seed_rain_in
-  run_ebt(p)$seed_rains
+  run_scm(p)$seed_rains
 }
 
 run_new_schedule <- function(seed_rain_in, p) {
@@ -23,7 +23,7 @@ cobweb <- function(m, ...) {
 ## Try to establish what the equilibrium seed rain is.
 
 ## Set model parameters
-p0 <- ebt_base_parameters()
+p0 <- scm_base_parameters()
 p <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
 
 ## Some output seed rains, given an input seed rain:

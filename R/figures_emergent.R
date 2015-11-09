@@ -1,5 +1,5 @@
 make_emergent_data <- function(hires=TRUE) {
-  p0 <- ebt_base_parameters()
+  p0 <- scm_base_parameters()
   if(hires) {
     p0$control$schedule_eps <- 2e-6
     p0$control$ode_tol_rel <- 1e-6
@@ -8,7 +8,7 @@ make_emergent_data <- function(hires=TRUE) {
   p0$disturbance_mean_interval <- 30.0
   p1 <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
   p1 <- build_schedule(p1)
-  data <- run_ebt_collect(p1)
+  data <- run_scm_collect(p1)
 
   height <- t(data$species[[1]]["height", , ])
   density <- exp(t(data$species[[1]]["log_density", , ]))
@@ -17,7 +17,7 @@ make_emergent_data <- function(hires=TRUE) {
 
   ## Then leaf area.  That requires a little more work because we don't
   ## have leaf areas for all the species.
-  tmp <- lapply(seq_along(data$time), ebt_patch, data)
+  tmp <- lapply(seq_along(data$time), scm_patch, data)
 
   xxx <- lapply(tmp, function(x) x$species[[1]]$area_leafs)
   data$leaf_area <- do.call("cbind", plant:::pad_matrix(xxx))

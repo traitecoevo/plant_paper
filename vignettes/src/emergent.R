@@ -8,7 +8,7 @@
 
 library(plant)
 
-p0 <- ebt_base_parameters()
+p0 <- scm_base_parameters()
 p0$control$equilibrium_nsteps <- 30
 p0$control$equilibrium_solver_name <- "hybrid"
 p0$disturbance_mean_interval <- 30.0
@@ -16,7 +16,7 @@ p0$disturbance_mean_interval <- 30.0
 ## We'll work with a single species at equilibrium
 p1 <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
 p1_eq <- equilibrium_seed_rain(p1)
-data1 <- run_ebt_collect(p1_eq)
+data1 <- run_scm_collect(p1_eq)
 
 ## There was a bit of hassle in vignette:patch in plotting all
 ## trajectories along with a couple of lines corresponding to focal
@@ -70,7 +70,7 @@ text(height[1, i] + strwidth("x"), density[1, i],
 ## Early on there is a low density "dip" caused by self thinning (5
 ## years).  As the stand develops that dip broadens and deepens and
 ## moves forward in height (these very low density cohorts are still
-## travelling the characteristic equations of the EBT).  Later on (20
+## travelling the characteristic equations of the SCM).  Later on (20
 ## years) additional an second wave of recruitment gives a second
 ## pulse of high density (around 4 m tall), which can be seen
 ## travelling along in the 40 year profile to about 13 m.  When the
@@ -82,7 +82,7 @@ text(height[1, i] + strwidth("x"), density[1, i],
 ## from; a profile of leaf area with respect to height.  Again, this
 ## requires reconstructing the patches, and using an unexported
 ## function from `plant` to put this into a matrix:
-patch <- lapply(seq_along(data1$time), ebt_patch, data1)
+patch <- lapply(seq_along(data1$time), scm_patch, data1)
 leaf_area <- lapply(patch, function(x) x$species[[1]]$area_leafs)
 leaf_area <- do.call("cbind", plant:::pad_matrix(leaf_area))
 

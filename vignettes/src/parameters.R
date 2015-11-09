@@ -111,8 +111,8 @@ sapply(pp, function(p) p$area_leaf_above(0))
 p$control
 
 ## The defaults are rather too slow for many uses, so
-## `ebt_base_parameters` provides a faster set by using `fast_control`
+## `scm_base_parameters` provides a faster set by using `fast_control`
 ## to set many of these to less accurate values.
 
-p2 <- ebt_base_parameters()
+p2 <- scm_base_parameters()
 p2$control[unlist(p$control) != unlist(p2$control)]

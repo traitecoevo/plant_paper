@@ -6,7 +6,7 @@
 ## within a single patch.
 library(plant)
 
-p0 <- ebt_base_parameters()
+p0 <- scm_base_parameters()
 p0$control$equilibrium_nsteps <- 30
 p0$control$equilibrium_solver_name <- "hybrid"
 p0$disturbance_mean_interval <- 30.0
@@ -19,7 +19,7 @@ p1_eq <- equilibrium_seed_rain(p1)
 
 ## This collects information about the state of the system at every
 ## ODE step:
-data1 <- run_ebt_collect(p1_eq)
+data1 <- run_scm_collect(p1_eq)
 
 ## Entries are:
 ##   * time: time of the step
@@ -96,9 +96,9 @@ plot(data1$time, y, type="l", las=1,
 ## Leaf area index is the driver that controls the canopy openness
 ## (via the light extinction coefficient `p1$k_I`, following
 ## exponential extinction).  This is not returned by
-## `run_ebt_collect` so instead we need to rebuild patches using
-## `ebt_patch`.
-patches1 <- lapply(seq_along(data1$time), ebt_patch, data1)
+## `run_scm_collect` so instead we need to rebuild patches using
+## `scm_patch`.
+patches1 <- lapply(seq_along(data1$time), scm_patch, data1)
 
 ## Each element of the resulting list is a Patch object, the same as
 ## was observed when running the model.
@@ -114,7 +114,7 @@ p2 <- expand_parameters(trait_matrix(0.267, "lma"), p1, FALSE)
 p2_eq <- equilibrium_seed_rain(p2)
 
 ## Then collect the patch-level dynamics:
-data2 <- run_ebt_collect(p2_eq)
+data2 <- run_scm_collect(p2_eq)
 
 t2 <- data2$time
 h1 <- data2$species[[1]]["height", , ]
@@ -166,7 +166,7 @@ segments(x[-1, ], h1[-1, ], x[-n, ], h1[-n, ], col=col1[-n, ], lend="butt")
 
 ## Each element of the resulting list is a Patch object, the same as
 ## was observed when running the model.
-patches2 <- lapply(seq_along(data2$time), ebt_patch, data2)
+patches2 <- lapply(seq_along(data2$time), scm_patch, data2)
 lai2 <- sapply(patches2, function(x) x$area_leaf_above(0.0))
 
 lai2_1 <- sapply(patches2, function(x) x$species[[1]]$area_leaf_above(0.0))
