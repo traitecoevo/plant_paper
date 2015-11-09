@@ -109,7 +109,7 @@ figure_plant <- function() {
   }
   alloc_h <- lapply(data, f)
   plot(NA, xlim=c(0, s1$hmat), ylim=c(0, 1), type="l",
-       ylab="Fractional of biomass", xlab="Height (m)", las=1)
+       ylab="Fraction of biomass", xlab="Height (m)", las=1)
   label_panel(2)
   matlines(alloc_h[["1_1"]][, 1],
            alloc_h[["1_1"]][, -1],

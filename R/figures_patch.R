@@ -42,7 +42,7 @@ figure_patch <- function(data) {
             mgp=c(2.3, 1, 0))
   on.exit(par(op))
   matplot(t, h1, type="l", col=make_transparent(cols[[1]], 0.5), lty=1,
-          las=1, xlab="Time (years)", ylab="Plant height (m)", xaxt="n")
+          las=1, xlab="Time (years)", ylab="Height (m)", xaxt="n")
   matlines(t, h2, col=make_transparent(cols[[2]], 0.5), lty=1)
   label_panel(1)
   axis(1, labels=FALSE)
@@ -53,7 +53,7 @@ figure_patch <- function(data) {
   n <- length(t)
   x <- matrix(rep(t, ncol(h1)), nrow(h1))
   plot(NA, xlim=range(t), ylim=range(h1, na.rm=TRUE),
-       las=1, xlab="Time (years)", ylab="Plant height (m)", xaxt="n")
+       las=1, xlab="Time (years)", ylab="Height (m)", xaxt="n")
   segments(x[-1, ], h2[-1, ], x[-n, ], h2[-n, ], col=col2[-n, ], lend="butt")
   segments(x[-1, ], h1[-1, ], x[-n, ], h1[-n, ], col=col1[-n, ], lend="butt")
   label_panel(2)
@@ -73,5 +73,5 @@ figure_patch <- function(data) {
   for(i in seq_len(3)) {
     axis(4, at=y_av[i], tck=0.1, col.ticks=cols[i], lty = lty[i])
   }
-  axis(1, at=108, labels="Av")
+  axis(1, at=108, labels="Average")
 }

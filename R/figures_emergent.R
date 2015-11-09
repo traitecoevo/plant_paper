@@ -91,7 +91,7 @@ figure_emergent <- function(data) {
   xlim <- c(0, max(height, na.rm=TRUE) * 1.05)
   matplot(height[, j], density[, j], type="l", lty=1, col="lightgrey",
           xlim=xlim, las=1, xaxt="n", log="y", yaxt="n",
-          xlab="Height (m)", ylab=expression("Density"~~("#"~m^-1~m^-2)))
+          xlab="Height (m)", ylab=expression("Density"~~(m^-1~m^-2)))
   axis(1, labels=FALSE)
   aty <- zapsmall(log10(axTicks(2)))
   labels <- sapply(aty,function(i) as.expression(bquote(10^ .(i))))

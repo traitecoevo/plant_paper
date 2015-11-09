@@ -73,7 +73,7 @@ figure_fitness_landscape <- function(data) {
   plot(lma[i], w$second1[i], type="l", lty=2,
        log="x", xlim=xlim, ylim=ylim, ylab="Fitness", las=1)
   label_panel(2)
-  mtext(expression("Leaf mass per unit area"~("LMA;"~kg~m^-2)), 1, 3, cex=1)
+  mtext(expression("Leaf mass per unit leaf area"~("LMA;"~kg~m^-2)), 1, 3, cex=1)
   lines(lma[i], w$second2[i], lty=3)
   lines(lma[i], w$second3[i], lty=3)
   lines(lma, w$attractor2)

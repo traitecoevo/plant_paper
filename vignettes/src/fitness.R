@@ -54,7 +54,7 @@ p1b <- add_eq(lma_b, p0)
 
 w1b <- fitness_landscape(lma, p1b)
 plot(lma, w1b, log="x", type="l", las=1,
-     xlab="Leaf mass per unit area", ylab="Fitness")
+     xlab="Leaf mass per unit leaf area", ylab="Fitness")
 abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
 
@@ -64,7 +64,7 @@ points(lma_b, 0, pch=19)
 lma_detail <- trait_matrix(seq_log(lma_b * 0.95, lma_b * 1.05, 51), "lma")
 w1b_detail <- fitness_landscape(lma_detail, p1b)
 plot(lma_detail, w1b_detail, log="x", type="l", las=1,
-     xlab="Leaf mass per unit area", ylab="Fitness")
+     xlab="Leaf mass per unit leaf area", ylab="Fitness")
 abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
 
@@ -77,7 +77,7 @@ lma_new <- lma[which.max(w1b)]
 lma_new
 
 plot(lma, w1b, log="x", type="l", las=1,
-     xlab="Leaf mass per unit area", ylab="Fitness")
+     xlab="Leaf mass per unit leaf area", ylab="Fitness")
 abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
 abline(v=lma_new, col="red")
@@ -89,7 +89,7 @@ w2 <- fitness_landscape(lma, p2)
 ## down* around the second species, with a fitness gradient that
 ## points towards increased lma.
 plot(lma, w1b, log="x", type="l", las=1,
-     xlab="Leaf mass per unit area", ylab="Fitness", col="grey")
+     xlab="Leaf mass per unit leaf area", ylab="Fitness", col="grey")
 lines(lma, w2)
 abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
@@ -106,7 +106,7 @@ p2_2 <- add_eq(lma_new2, p1b)
 w2_2 <- fitness_landscape(lma, p2_2)
 
 plot(lma, w1b, log="x", type="l", las=1,
-     xlab="Leaf mass per unit area", ylab="Fitness", col="grey")
+     xlab="Leaf mass per unit leaf area", ylab="Fitness", col="grey")
 lines(lma, w2, lty=2)
 lines(lma, w2_2)
 abline(h=0, col="grey")
@@ -120,7 +120,7 @@ p2_3 <- add_eq(lma_new3, p1b)
 w2_3 <- fitness_landscape(lma, p2_3)
 
 plot(lma, w1b, log="x", type="l", las=1,
-     xlab="Leaf mass per unit area", ylab="Fitness", col="grey")
+     xlab="Leaf mass per unit leaf area", ylab="Fitness", col="grey")
 lines(lma, w2, lty=2)
 lines(lma, w2_2, lty=2)
 lines(lma, w2_3)
@@ -136,7 +136,7 @@ p2_4 <- add_eq(lma_new4, p1b)
 w2_4 <- fitness_landscape(lma, p2_4)
 
 plot(lma, w1b, log="x", type="l", las=1,
-     xlab="Leaf mass per unit area", ylab="Fitness", col="grey")
+     xlab="Leaf mass per unit leaf area", ylab="Fitness", col="grey")
 lines(lma, w2, lty=2)
 lines(lma, w2_2, lty=2)
 lines(lma, w2_3, lty=2)

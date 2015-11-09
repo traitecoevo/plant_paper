@@ -21,7 +21,7 @@ names(s)
 unlist(s[names(s) != "control"])
 
 ## All of these parameters can be directly changed.  For example, we
-## can double the leaf mass per unit area (lma) value:
+## can double the leaf mass per unit leaf area (lma) value:
 s$lma <- s$lma * 2
 
 ## and then from this construct a plant:
