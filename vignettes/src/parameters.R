@@ -7,7 +7,7 @@ library(plant)
 ## There are a large number of parameters to the physiological model,
 ## but all are changeable.  The default strategy is detailed in the
 ## "physiology" vignette:
-s <- FFW16_Strategy()
+s <- FF16_Strategy()
 names(s)
 
 ## The strategy object here is a special object of class `r class(s)`.
@@ -25,11 +25,11 @@ unlist(s[names(s) != "control"])
 s$lma <- s$lma * 2
 
 ## and then from this construct a plant:
-pl <- FFW16_Plant(s)
+pl <- FF16_Plant(s)
 pl$strategy$lma
 
 ## `lma` affects a few places in the model; see [the source
-## code](https://github.com/traitecoevo/plant/blob/master/src/ffw16_strategy.cpp),
+## code](https://github.com/traitecoevo/plant/blob/master/src/ff16_strategy.cpp),
 ## but only really for converting from leaf area to leaf mass (leaf
 ## mass being leaf area multiplied by leaf mass per leaf area).
 ## However, as a component of the leaf economic spectrum we imagine
@@ -39,12 +39,12 @@ pl$strategy$lma
 ## additional parameters and functions that mean that changing one
 ## parameter might affect a number of other lower-level parameters.
 ## Our default hyper-parameterisation is via the
-## `FFW16_hyperpar` function:
-FFW16_hyperpar
+## `FF16_hyperpar` function:
+FF16_hyperpar
 
 ## You will rarely need to call this function directly (see below) but
 ## note how setting of lma affects parameters `k_l`, `a_p1` and `r_l`
-FFW16_hyperpar(trait_matrix(0.1, "lma"), s)
+FF16_hyperpar(trait_matrix(0.1, "lma"), s)
 
 ## These are:
 ##   * `k_l`: Turnover rate for leaves
@@ -64,13 +64,13 @@ trait_matrix(c(0.1, 500), "rho")
 ## To make use of the hyper-parameterisation, the preferred way of
 ## setting parameters is through the utility functions `strategy` and
 ## `strategy_list`.  These take a `Parameters` object:
-p <- FFW16_Parameters()
+p <- FF16_Parameters()
 
 ## The Parameters object mostly contains information about the patch:
 names(p)
 
 ## and it comes pre-set with the hyper-parameterisation function:
-identical(p$hyperpar, FFW16_hyperpar)
+identical(p$hyperpar, FF16_hyperpar)
 
 ## `k_I` is the light extinction coefficient,
 ## `disturbance_mean_interval` is the mean disturbance interval.  The
@@ -87,7 +87,7 @@ s <- strategy(trait_matrix(0.1, "lma"), p)
 ## The function `strategy_list` can be used to create a list of
 ## strategies:
 lma <- trait_matrix(seq(0.1, 0.5, length.out=5), "lma")
-FFW16_hyperpar(trait_matrix(lma, "lma"), s)
+FF16_hyperpar(trait_matrix(lma, "lma"), s)
 
 ss <- strategy_list(lma, p)
 length(ss)

@@ -2,7 +2,7 @@
 default_parameters <- function() {
   p <- ebt_base_parameters()
   p$disturbance_mean_interval <- 30.0
-  p$strategy_default <- FFW16_Strategy(hmat = 30.0)
+  p$strategy_default <- FF16_Strategy(hmat = 30.0)
   p
 }
 
@@ -24,7 +24,7 @@ extract_plant_info <- function(p, env) {
 ## about plants.
 run_plant_to_heights <- function(heights, strategy, env,
                                  time_max=100) {
-  res <- grow_plant_to_size(FFW16_PlantPlus(strategy),
+  res <- grow_plant_to_size(FF16_PlantPlus(strategy),
                             heights, "height", env,
                             time_max, warn=FALSE, filter=TRUE)
   res$info <- do.call("rbind", lapply(res$plant, extract_plant_info, env))
@@ -33,7 +33,7 @@ run_plant_to_heights <- function(heights, strategy, env,
 
 ## Given vectors of heights and openness, lets do it all.
 height_dt_openness <- function(height, openness, strategy) {
-  pl <- FFW16_PlantPlus(strategy)
+  pl <- FF16_PlantPlus(strategy)
   pl$height <- height
   min <- lcp_whole_plant(pl)
   openness <- c(min, openness[openness > min])
@@ -60,8 +60,8 @@ figure_plant <- function() {
   env2 <- fixed_environment(0.5)
 
   ## Generate most of the data here:
-  heights1 <- seq(FFW16_PlantPlus(s1)$height, s1$hmat, length.out=100L)
-  heights2 <- seq(FFW16_PlantPlus(s2)$height, s2$hmat, length.out=100L)
+  heights1 <- seq(FF16_PlantPlus(s1)$height, s1$hmat, length.out=100L)
+  heights2 <- seq(FF16_PlantPlus(s2)$height, s2$hmat, length.out=100L)
   data <- list("1_1"=run_plant_to_heights(heights1, s1, env1),
                "2_1"=run_plant_to_heights(heights2, s2, env1),
                "1_2"=run_plant_to_heights(heights1, s1, env2),
@@ -69,8 +69,8 @@ figure_plant <- function() {
 
   ## And then the LCP data
   hmax <- s1$hmat / 2
-  h1 <- seq_log(FFW16_PlantPlus(s1)$height, hmax, 2)
-  h2 <- seq_log(FFW16_PlantPlus(s2)$height, hmax, 2)
+  h1 <- seq_log(FF16_PlantPlus(s1)$height, hmax, 2)
+  h2 <- seq_log(FF16_PlantPlus(s2)$height, hmax, 2)
   openness <- seq(0, 1, length.out=51)
   d1 <- lapply(h1, height_dt_openness, openness, s1)
   d2 <- lapply(h2, height_dt_openness, openness, s2)

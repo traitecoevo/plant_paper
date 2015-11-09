@@ -91,7 +91,7 @@ abline(h=0, col="grey")
 plot(tm, res - sr_1, xlab="Time (years)", ylab="Seed rain", las=1)
 abline(h=0, col="grey")
 
-ebt <- plant:::FFW16_EBT(p)
+ebt <- plant:::FF16_EBT(p)
 ebt$run()
 
 ## Now look at the contribution of different cohorts to see rain (x axis
