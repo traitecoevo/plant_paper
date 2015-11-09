@@ -6,7 +6,7 @@ make_emergent_data <- function(hires=TRUE) {
     p0$control$ode_tol_abs <- 1e-6
   }
   p0$disturbance_mean_interval <- 30.0
-  p1 <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
+  p1 <- expand_parameters(trait_matrix(0.0825, "lma"), p0, FALSE)
   p1 <- build_schedule(p1)
   data <- run_scm_collect(p1)
 

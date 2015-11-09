@@ -181,9 +181,9 @@ plot(res_mass$time, mass, type="o", pch=19, las=1, xlab="Time (years)")
 
 p <- scm_base_parameters()
 ## Low LMA ("fast growth") species
-s1 <- strategy(trait_matrix(0.08,  "lma"), p)
+s1 <- strategy(trait_matrix(0.0825,  "lma"), p)
 ## High LMA ("low growth") species
-s2 <- strategy(trait_matrix(0.267, "lma"), p)
+s2 <- strategy(trait_matrix(0.2625, "lma"), p)
 
 ## Note that we're using an alternative way of specifying strategies
 ## here, to trigger our "hyper-parametrisation" approach.  This may be

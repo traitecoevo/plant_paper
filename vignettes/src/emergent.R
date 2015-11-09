@@ -14,7 +14,7 @@ p0$control$equilibrium_solver_name <- "hybrid"
 p0$disturbance_mean_interval <- 30.0
 
 ## We'll work with a single species at equilibrium
-p1 <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
+p1 <- expand_parameters(trait_matrix(0.0825, "lma"), p0, FALSE)
 p1_eq <- equilibrium_seed_rain(p1)
 data1 <- run_scm_collect(p1_eq)
 

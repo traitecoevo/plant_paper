@@ -12,7 +12,7 @@ p0$control$equilibrium_solver_name <- "hybrid"
 p0$disturbance_mean_interval <- 30.0
 
 ## First, with a single species:
-p1 <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
+p1 <- expand_parameters(trait_matrix(0.0825, "lma"), p0, FALSE)
 
 ## Run everything out to equilibrium:
 p1_eq <- equilibrium_seed_rain(p1)
@@ -110,7 +110,7 @@ plot(data1$time, lai1, type="l", las=1, xlab="Time (years)",
 ## another.  This adds a second species -- with a higher lma value
 ## than the first species -- to the population and runs them until
 ## they reach equilibrium seed rain at the metapopulation level.
-p2 <- expand_parameters(trait_matrix(0.267, "lma"), p1, FALSE)
+p2 <- expand_parameters(trait_matrix(0.2625, "lma"), p1, FALSE)
 p2_eq <- equilibrium_seed_rain(p2)
 
 ## Then collect the patch-level dynamics:

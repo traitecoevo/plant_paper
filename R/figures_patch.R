@@ -3,9 +3,9 @@ make_patch_data <- function() {
   p0$control$equilibrium_nsteps <- 30
   p0$control$equilibrium_solver_name <- "hybrid"
   p0$disturbance_mean_interval <- 30.0
-  ## NOTE: These lma values; 0.08 and 0.267 are the equilibrium values
+  ## NOTE: These lma values; 0.0825 and 0.2625 are the equilibrium values
   ## in the fitness figure (see attractor2).
-  p2 <- expand_parameters(trait_matrix(c(0.08, 0.267), "lma"), p0, FALSE)
+  p2 <- expand_parameters(trait_matrix(c(0.0825, 0.2625), "lma"), p0, FALSE)
   p2_eq <- equilibrium_seed_rain(p2)
   run_scm_collect(p2_eq, TRUE)
 }
@@ -38,7 +38,7 @@ figure_patch <- function(data) {
   ## col1[rd1 < 0.05] <- NA
   ## col2[rd2 < 0.05] <- NA
 
-  op <- par(mfrow=c(3, 1), mar=c(1.0, 3.6, .5, .5), oma=c(2.6, 0, 0, 0),
+  op <- par(mfrow=c(3, 1), mar=c(1.0, 3.6, .5, 3), oma=c(2.6, 0, 0, 0),
             mgp=c(2.3, 1, 0))
   on.exit(par(op))
   matplot(t, h1, type="l", col=make_transparent(cols[[1]], 0.5), lty=1,
@@ -71,7 +71,7 @@ figure_patch <- function(data) {
   # find average value over metapopulation
   y_av <- apply(y, 2, function(x) plant:::trapezium(t, x*data$patch_density))
   for(i in seq_len(3)) {
-    axis(4, at=y_av[i], tck=0.1, col.ticks=cols[i], lty = lty[i])
+    axis(4, at=y_av[i], labels=sprintf("%0.2f",y_av[i]), tck=0.1, col.ticks=cols[i], lty = lty[i], las=1)
   }
   axis(1, at=108, labels="Average")
 }

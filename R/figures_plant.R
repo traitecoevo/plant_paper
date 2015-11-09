@@ -52,13 +52,12 @@ figure_plant <- function() {
   ## plot).
   p <- scm_base_parameters()
   p$disturbance_mean_interval <- 30.0
-  ## NOTE: These lma values; 0.08 and 0.267 are the equilibrium values
+  ## NOTE: These lma values; 0.0825 and 0.2625 are the equilibrium values
   ## in the fitness figure (see attractor2).
-  s1 <- strategy(trait_matrix(0.08,  "lma"), p)
-  s2 <- strategy(trait_matrix(0.267, "lma"), p)
+  s1 <- strategy(trait_matrix(0.0825,  "lma"), p)
+  s2 <- strategy(trait_matrix(0.2625, "lma"), p)
   env1 <- fixed_environment(1.0)
   env2 <- fixed_environment(0.5)
-
   ## Generate most of the data here:
   heights1 <- seq(FF16_PlantPlus(s1)$height, s1$hmat, length.out=100L)
   heights2 <- seq(FF16_PlantPlus(s2)$height, s2$hmat, length.out=100L)

@@ -24,7 +24,7 @@ cobweb <- function(m, ...) {
 
 ## Set model parameters
 p0 <- scm_base_parameters()
-p <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
+p <- expand_parameters(trait_matrix(0.0825, "lma"), p0, FALSE)
 
 ## Some output seed rains, given an input seed rain:
 run(1.0, p)
@@ -85,7 +85,7 @@ abline(0, 1, lty=2, col="grey")
 cobweb(approach, lty=3)
 
 ## # 5. Multiple species at once:
-lma <- c(0.08, 0.15)
+lma <- c(0.0825, 0.15)
 p2 <- expand_parameters(trait_matrix(lma, "lma"), p0, FALSE)
 
 p2_eq <- equilibrium_seed_rain(p2)

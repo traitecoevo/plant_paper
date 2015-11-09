@@ -48,8 +48,8 @@ abline(h=0, col="grey")
 points(lma1, rep(0, 4), col=1:4, pch=19)
 
 ## For this system, there is an evolutionary attractor around
-## lma 0.08:
-lma_b <- 0.08
+## lma 0.0825:
+lma_b <- 0.0825
 p1b <- add_eq(lma_b, p0)
 
 w1b <- fitness_landscape(lma, p1b)
@@ -68,7 +68,7 @@ plot(lma_detail, w1b_detail, log="x", type="l", las=1,
 abline(h=0, col="grey")
 points(lma_b, 0, pch=19)
 
-## Holding the first species at 0.08 we can introduce additional
+## Holding the first species at 0.0825 we can introduce additional
 ## species (it's close enough to the optimum here, though in general
 ## this point might move substantially as new species are introduced).
 

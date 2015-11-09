@@ -12,7 +12,7 @@ library(plant)
 library(parallel)
 
 p0 <- scm_base_parameters()
-p <- expand_parameters(trait_matrix(0.08, "lma"), p0, FALSE)
+p <- expand_parameters(trait_matrix(0.0825, "lma"), p0, FALSE)
 p$seed_rain <- 20 # close to equilibrium
 
 ## The default cohort introduction times are designed to concentrate
