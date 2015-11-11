@@ -83,7 +83,7 @@ tradeoff}
 Plant growth and demography are fundamentally size- and
 trait-structured, influencing dynamics over time-scales ranging from
 instantaneous physiological effects to long-term evolutionary outcomes
-\citep{Harper-1977, Westoby-2002}.
+\citep{Harper-1977, Westoby-2002, Griffith-2016, Rees-2016}.
 %
 As an individual plant increases its leaf area, it increases its potential
 to generate photosynthate.
@@ -99,7 +99,7 @@ individual size \citep{Muller-2006, Ruger-2011, Thomas-2011}.
 Ontogenetic
 patterns of growth also vary with traits; for example,
 leaf and wood construction costs influence growth rates
-\citep{Wright-2010}, while seed size and height
+\citep{Falster-2011, Visser-2016}, while seed size and height
 at maturation determine start and end points of ontogenetic
 trajectories \citep{Westoby-2002}.
 %
@@ -128,7 +128,7 @@ primarily on unstructured population models \citep[e.g.,][]{MacArthur-1967,
 It is common to assume competitive outcomes to be influenced by
 size-related traits such as adult size and seed size, but detailed
 size structure is rarely considered, at least in plant models
-\cite[for animal examples, see][]{Deroos-1988, Deroos-1992}.
+\cite[for animal examples, see][]{Deroos-1997}.
 %
 Similarly, many of the models used to study global vegetation dynamics across
 the last 20 years have not included size-structured demography
@@ -137,7 +137,7 @@ Dekauwe-2014}.
 %
 While the importance of explicitly including size-structured dynamics is
 increasingly recognised in both evolutionary ecology
-\citep[e.g.,][]{Falster-2015} and vegetation dynamics
+\citep[e.g.,][]{Falster-2015, Rees-2016} and vegetation dynamics
 \citep[e.g.,][]{Moorcroft-2001, Purves-2008, Smith-2014,
 Weng-2015, Sakschewski-2015}, our understanding of how these features
 impact the ecology and evolution of vegetation communities remains
@@ -153,7 +153,7 @@ Our own purpose in developing {\plant} has been mainly to investigate how specie
 differing in traits may be able to coexist with one another
 \citep[following ][]{Falster-2011, Falster-2015}; as size-structured models
 provide unique opportunities for studying coexistence via differentiation in
-successional strategy \citep[see also][]{Huston-1987, Moorcroft-2001}.
+successional strategy \citep[see also][]{Huston-1987, Moorcroft-2001, Uriate-2016}.
 At the same time, we expect {\plant} to be useful for modelling other demographic and evolutionary phenomena.
 
 Broadly, the {\plant} package falls into a class we refer to as trait-, size- and
@@ -294,7 +294,8 @@ resources such as nitrogen or water could be considered by extending the
 physiological model. We assume that patches are vertically -- but not horizontally --
 structured; in other words, we account for size differences, but not for the spatial
 layout within patches. Similar assumptions are made in other \textsc{TSPMs}
-\citep{Shugart-1980, Kohyama-1993, Huston-1987, Moorcroft-2001, Smith-2014}.
+\citep{Shugart-1980, Kohyama-1993, Huston-1987, Moorcroft-2001, Smith-2014}, and also
+in related approaches, such as Integral Projection Models \citep[e.g.,][]{Rees-2016}.
 While one would ideally also consider spatial interactions within patches,
 such models are very computationally demanding \citep{Shugart-1980,
 Pacala-1996}. Simplifying spatial interactions within patches can be motivated from the observation
@@ -335,7 +336,7 @@ of the corresponding individuals, conditioned on their survival
 (Fig. \ref{fig:patch}a). Meanwhile, growth and mortality combine
 to alter the density of individuals along these trajectories
 (Fig. \ref{fig:patch}b). The characteristic method is similar to the Escalator Boxcar Train (\textsc{EBT})method
-\citep{Deroos-1988, Deroos-1997} used by \citet{Falster-2011} and
+\citep{Deroos-1997} used by \citet{Falster-2011} and
 \citet{Falster-2015}, but not identical. An advantage of the characteristic method is that it allows direct approximation of the size distribution. For the same reason, however, the characteristic method may be less suitable for resolving size distributions in models where those distributions naturally develop sharp peaks (which happens, e.g., when plants completely cease to grow at a given height).
 
 We implement a novel technique for
@@ -382,7 +383,8 @@ driven by underlying physiology and demography (Fig. \ref{fig:patch}c).
 \section{Trait-, size- and patch-structured vegetation}
 
 All vegetation in {\plant} is subject to a disturbance regime, implying that patches
-are cleared at a given rate. Such clearance can be interpreted, for example
+are cleared at a given rate \citep[e.g.,][this issue]{Treurnicht-2016}.
+Such clearance can be interpreted, for example
 as resulting from a fire, cyclone, clear-cutting or
 landslide. The vegetation thus comprises a series of patches
 differing in the time that has passed since their last disturbance, linked via seed dispersal
@@ -527,10 +529,9 @@ upgrade the Windows C++ compiler.)
 \section{Comparison with existing software}
 
 Increased interest in capturing the dynamics of size-structured populations
+\citep[e.g.][]{Griffith-2016}
 has prompted development of several tools, each with its own distinct
-strengths. The \textsc{EBT} software (see De Roos 2016 in this special feature) provides
-a flexible framework that has been used to study a range of organisms.
-Compared to the \textsc{EBT}, {\plant} is customised for plants, and
+strengths. The \textsc{EBT} software \citep{Deroos-1997}, {\plant} is customised for plants, and
 to that end offers refinements needed to handle modelling of the strongly
 size-asymmetric feedbacks that occur in plant communities, as well as the
 extension to a structured metapopulation. Other \textsc{TSPMs} also exist for modelling of vegetation, like \textsc{ED}
