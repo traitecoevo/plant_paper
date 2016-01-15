@@ -20,8 +20,8 @@ table_plant_parameters <- function(filename, dest){
   tab$Value <- NA_real_
 
   # Now extract actual values from plant
-  to_code <- tab[["\\plant"]] != "" & tab[["\\plant"]] %in% names(s)
-  code <- tab[["\\plant"]][to_code]
+  to_code <- tab[["Code"]] != "" & tab[["Code"]] %in% names(s)
+  code <- tab[["Code"]][to_code]
 
   val <- s[code]
   err <- sapply(val, is.null)
@@ -34,10 +34,10 @@ table_plant_parameters <- function(filename, dest){
   tab$Value[to_code] <- unlist(lapply(val, prettyNum))
 
   # Display names in latex
-  to_code <- tab[["\\plant"]] != ""
+  to_code <- tab[["Code"]] != ""
 
-  tab[["\\plant"]][to_code] <- sprintf("\\texttt{%s}",
-                                      gsub("_", "\\\\_", tab[["\\plant"]][to_code]))
+  tab[["Code"]][to_code] <- sprintf("\\texttt{%s}",
+                                      gsub("_", "\\\\_", tab[["Code"]][to_code]))
 
   x <- xtable(tab,
               hline.after=c(1),
