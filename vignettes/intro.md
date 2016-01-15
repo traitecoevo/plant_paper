@@ -12,7 +12,7 @@ exposition at the cost of more global variables, etc.
 The `plant` package is designed around a set of nested components.
 
 * At the highest level there is a metapopulation, represented by the
-`SCM` object.
+`SCM` object. (`SCM` denotes "Solver Characteristic Method".)
 
 * The `SCM` object contains a single `Patch` object, but we use a
 technique described in the "demography" document to demonstrate how
