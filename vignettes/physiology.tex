@@ -208,11 +208,11 @@ assume a relationship between \(A_{{\rm s},z}\) and height such that
 \frac{A_{{\rm s},z}}{A_{\rm s}} = \left(1 - \left(\frac{z}{H}\right)^\eta\right)^2.
 \end{equation}
 
-We also assume that each unit of sapwood area supports a fixed area \(\theta\) of
-leaves \citep[in agreement with the pipe model;][]{Shinozaki-1964}, so that the total canopy
+We also assume that each unit of leaf area is supported by a fixed area \(\theta\) of
+sapwood \citep[in agreement with the pipe model;][]{Shinozaki-1964}, so that the total canopy
 area of a plant relates to its basal sapwood area \(A_{\rm s}\),
 \begin{equation}\label{eq:crown2}
-\frac{M_{\rm l}}{\phi} = \theta \, A_{\rm s}.
+A_{\rm s} = \theta \, A_{\rm l}.
 \end{equation}
 The pipe model is assumed to hold within individual plants, as well as
 across plants of different size. It follows that
@@ -237,7 +237,7 @@ where \(\eta_{\rm c} = 1 - \frac{2}{1 + \eta} + \frac{1}{1 + 2\eta}\)
 \ref{eq:ms1} then gives an expression for sapwood mass as a function of
 leaf area and height,
 \begin{equation}\label{eq:ms2}
-M_{\rm s} = \rho \, \eta_{\rm c} \, \theta^{-1} \, A_{\rm l}  \, H.
+M_{\rm s} = \rho \, \eta_{\rm c} \, \theta \, A_{\rm l}  \, H.
 \end{equation}
 
 \subsection{Bark mass}\label{bark-mass}
@@ -445,12 +445,12 @@ $H = \alpha_{{\rm l1}} \, A_{\rm l  }^{\alpha_{{\rm l2}}}$ &
 $\frac{{\rm d}H}{{\rm d}A_{\rm l}} = \alpha_{{\rm l2}} \alpha_{{\rm l1}} A_{\rm l}^{\alpha_{{\rm l2}}-1}$ &
 $\frac{{\rm d}H}{{\rm d}t} = \frac{{\rm d}H}{{\rm d}A_{\rm l}} \, \frac{{\rm d}A_{\rm l}}{{\rm d}t}$ \\
 Sapwoood area &
-$A_{\rm s} = \theta^{-1} \, A_{\rm l}$ &
-$\frac{{\rm d}A_{\rm s}}{{\rm d} A_{\rm l}} = \theta^{-1}$ &
+$A_{\rm s} = \theta \, A_{\rm l}$ &
+$\frac{{\rm d}A_{\rm s}}{{\rm d} A_{\rm l}} = \theta$ &
 $\frac{{\rm d}A_{\rm s}}{{\rm d}t} = \frac{{\rm d}A_{\rm s}}{{\rm d} A_{\rm l}} \, \frac{{\rm d}A_{\rm l}}{{\rm d}t}$ \\
 Bark area &
-$A_{\rm b} = \alpha_{{\rm b1}} \, \theta^{-1} \, A_{\rm l}$ &
-$\frac{{\rm d}A_{\rm b}}{{\rm d} A_{\rm l}} = \alpha_{{\rm b1}} \, \theta^{-1}$ &
+$A_{\rm b} = \alpha_{{\rm b1}} \, \theta \, A_{\rm l}$ &
+$\frac{{\rm d}A_{\rm b}}{{\rm d} A_{\rm l}} = \alpha_{{\rm b1}} \, \theta$ &
 $\frac{{\rm d}A_{\rm b}}{{\rm d}t} = \frac{{\rm d}A_{\rm b}}{{\rm d} A_{\rm l}} \, \frac{{\rm d}A_{\rm l}}{{\rm d}t}$ \\ \\
 \multicolumn{4}{l}{\textbf{(b) Derived equations for mass of tissue }} \\
 Leaf mass &
@@ -458,12 +458,12 @@ $M_{\rm l} = \phi \, A_{\rm l} $ &
 $\frac{{\rm d}M_{\rm l}}{{\rm d}A_{\rm l}} = \phi$ &
 $\frac{{\rm d}M_{\rm l}}{{\rm d}t} = \frac{{\rm d}M_{\rm l}}{{\rm d}A_{\rm l}} \, \frac{{\rm d}A_{\rm l}}{{\rm d}t}$ \\
 Sapwood mass &
-$M_{\rm s} = \frac{\rho}{\theta} \, \eta_{\rm c} \, A_{\rm l} \, H $ &
-$\frac{{\rm d}M_{\rm s}}{{\rm d}A_{\rm l}} = \frac{\rho}{\theta} \, \eta_{\rm c} \, \big(H + A_{\rm l} \, \frac{{\rm d}H}{{\rm d}A_{\rm l}} \big)$ &
+$M_{\rm s} = \rho \, \theta \, \eta_{\rm c} \, A_{\rm l} \, H $ &
+$\frac{{\rm d}M_{\rm s}}{{\rm d}A_{\rm l}} = \rho \, \theta \, \eta_{\rm c} \, \big(H + A_{\rm l} \, \frac{{\rm d}H}{{\rm d}A_{\rm l}} \big)$ &
 $\frac{{\rm d}M_{\rm s}}{{\rm d}t} = \frac{{\rm d}M_{\rm s}}{{\rm d}A_{\rm l}} \, \frac{{\rm d}A_{\rm l}}{{\rm d}t}$ \\
 Bark mass &
-$M_{\rm b} = \alpha_{{\rm b1}} \, \frac{\rho}{\theta} \, \eta_{\rm c} \, A_{\rm l} \, H $ &
-$\frac{{\rm d}M_{\rm b}}{{\rm d}A_{\rm l}} = \alpha_{{\rm b1}} \, \frac{\rho}{\theta} \, \eta_{\rm c}\big(H + A_{\rm l} \, \frac{{\rm d}H}{{\rm d}A_{\rm l}} \big)$ &
+$M_{\rm b} = \alpha_{{\rm b1}} \, \rho \, \theta \, \eta_{\rm c} \, A_{\rm l} \, H $ &
+$\frac{{\rm d}M_{\rm b}}{{\rm d}A_{\rm l}} = \alpha_{{\rm b1}} \, \rho \, \theta \, \eta_{\rm c}\big(H + A_{\rm l} \, \frac{{\rm d}H}{{\rm d}A_{\rm l}} \big)$ &
 $\frac{{\rm d}M_{\rm b}}{{\rm d}t} = \frac{{\rm d}M_{\rm b}}{{\rm d}A_{\rm l}} \, \frac{{\rm d}A_{\rm l}}{{\rm d}t}$ \\
 Root mass &
 $M_{\rm r} = \alpha_{{\rm r1}} \, A_{\rm l}$ &
