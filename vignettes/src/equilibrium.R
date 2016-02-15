@@ -89,7 +89,6 @@ lma <- c(0.0825, 0.15)
 p2 <- expand_parameters(trait_matrix(lma, "lma"), p0, FALSE)
 
 p2_eq <- equilibrium_seed_rain(p2)
-## TODO: This is not the correct format here:
 approach <- attr(p2_eq, "progress")
 
 ## From a distance, these both hone in nicely on the equilibrium, and
