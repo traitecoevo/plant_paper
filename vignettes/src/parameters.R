@@ -114,5 +114,5 @@ p$control
 ## `scm_base_parameters` provides a faster set by using `fast_control`
 ## to set many of these to less accurate values.
 
-p2 <- scm_base_parameters()
+p2 <- scm_base_parameters("FF16")
 p2$control[unlist(p$control) != unlist(p2$control)]

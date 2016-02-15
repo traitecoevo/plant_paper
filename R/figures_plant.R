@@ -1,6 +1,6 @@
 ## First, growth trajectories of plants
 default_parameters <- function() {
-  p <- scm_base_parameters()
+  p <- scm_base_parameters("FF16")
   p$disturbance_mean_interval <- 30.0
   p$strategy_default <- FF16_Strategy(hmat = 30.0)
   p
@@ -50,7 +50,7 @@ figure_plant <- function() {
   ## Everything will be done against two strategies (differing in LMA)
   ## and against two light environments (with the exception of the LCP
   ## plot).
-  p <- scm_base_parameters()
+  p <- scm_base_parameters("FF16")
   p$disturbance_mean_interval <- 30.0
   ## NOTE: These lma values; 0.0825 and 0.2625 are the equilibrium values
   ## in the fitness figure (see attractor2).

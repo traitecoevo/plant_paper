@@ -1,5 +1,5 @@
 make_emergent_data <- function(hires=TRUE) {
-  p0 <- scm_base_parameters()
+  p0 <- scm_base_parameters("FF16")
   if(hires) {
     p0$control$schedule_eps <- 2e-6
     p0$control$ode_tol_rel <- 1e-6

@@ -1,5 +1,5 @@
 make_fitness_data <- function() {
-  p0 <- scm_base_parameters()
+  p0 <- scm_base_parameters("FF16")
   p0$control$equilibrium_nsteps <- 30
   p0$control$equilibrium_solver_name <- "hybrid"
   p0$disturbance_mean_interval <- 30.0
