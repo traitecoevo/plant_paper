@@ -138,7 +138,7 @@ figure_plant <- function() {
 
   ## Panel d: wplcp
   plot(NA, xlim=c(0, 1), ylim=ylim_dhdt, las=1,
-       xlab="Canopy openness (%)", ylab=expression("Height growth rate"~~(m~yr^-1)))
+       xlab="Canopy penness (%)", ylab=expression("Height growth rate"~~(m~yr^-1)))
   abline(h=0)
   label_panel(4)
   for (i in seq_along(d1)) {
